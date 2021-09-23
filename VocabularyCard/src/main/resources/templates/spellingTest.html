@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Vocabulary Card</title>
+<link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+<script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
+
+	<header>
+		<h1><a th:href="@{/vocabularyCard/spellingTest}" class="title">Vocabulary Card (TEST)</a></h1>
+	</header>
+
+	<div class="container">
+		<div class="float-container">
+			<div class="menu">
+				<!-- 操作メッセージ -->
+				<div th:if="${msg!=null}" class="message">
+					<div th:if="${msg.msgType=='E'}" class="error">
+						<span class="icon E">×</span> <span th:text="${msg.msgText}"></span>
+					</div>
+					<div th:if="${msg.msgType=='W'}" class="warnning">
+						<span class="icon W">!</span><span th:text="${msg.msgText}"></span>
+					</div>
+					<div th:if="${msg.msgType=='I'}" class="information">
+						<span class="icon I">i</span> <span th:text="${msg.msgText}"></span>
+					</div>
+				</div>
+
+				<p><a th:href="@{/logout}">ログアウト</a></p>
+
+				<p><a th:href="@{/vocabularyCard}">一覧に戻る</a></p>
+
+					<table class="flashCardButton">
+						<tr>
+							<td class="label" id="flashL1">L1</td>
+						</tr>
+						<tr>
+						<td class="separator">
+						</td>
+						</tr>
+						<tr>
+							<td class="label" id="flashL2">L2</td>
+						</tr>
+					</table>
+
+				<!-- 検索form -->
+				<form th:action="@{/vocabularyCard/search}" method="post"
+					id="search" th:object="${vocabularyCardQuery}">
+					<div class="form frameBorder">
+						<input type="text" th:value="*{searchSpelling}"
+							name="searchSpelling" class="searchForm menuInput" maxlength="50"
+							placeholder="LANGUAGE1"> <input type="text"
+							th:value="*{searchMeaning}" name="searchMeaning"
+							class="searchForm menuInput" maxlength="50" placeholder="LANGUAGE2">
+						<button id="doSearch">検索</button>
+					</div>
+				</form>
+
+				<br>
+				<!-- タグ表示及びタグ検索 jsでinputに上書き、各タグボタンをクリック時に送信 -->
+				<form method="post" th:action="@{/vocabularyCard/spellingTest/search}"
+					th:object="${vocabularyCardQuery}" id="searchTag">
+					<input type="text" th:value="*{searchTag}" name="searchTag"
+						id="tagValue">
+				</form>
+				<div th:each="tag:${tagList}">
+					<button th:text="${tag.name}" class="tag"
+						form="searchTag"></button>
+				</div>
+
+			</div>
+
+			<!-- カードの数だけ<div>を生成  タグには検索用フォームと関連付ける-->
+			<div th:each="vc:${cardList}" class="card displayNot">
+				<section class="tags">
+					<button th:if="${vc.tag1!=null && vc.tag1!=''}" type="submit"
+						th:text="${vc.tag1}" class="tag" form="searchTag"></button>
+					<br>
+					<button th:if="${vc.tag2!=null && vc.tag2!=''}" type="submit"
+						th:text="${vc.tag2}" class="tag" form="searchTag"></button>
+					<br>
+					<button th:if="${vc.tag3!=null && vc.tag3!=''}" type="submit"
+						th:text="${vc.tag3}" class="tag" form="searchTag"></button>
+				</section>
+
+				<section class="wordList">
+					<p class="label">L1</p>
+					<div th:text="${vc.id}" class="id"></div>
+					<div class="L1">
+						<p th:text="${vc.spelling1}" class="hiddenL1 correct" id="spelling1"></p>
+						<p class="L1WriteIn displayNone writeIn"><input type="text"><span class="L1Length"></span><button class="check" draggable="true">⇔</button></p>
+						<p th:unless="${vc.spelling2.isEmpty()}" th:text="${vc.spelling2}" class="hiddenL1 correct" id="spelling2"></p>
+						<p th:unless="${vc.spelling2.isEmpty()}" class="L1WriteIn displayNone writeIn"><input type="text"><span class="L1Length"></span><button class="check" draggable="true">⇔</button></p>
+						<p th:unless="${vc.spelling3.isEmpty()}" th:text="${vc.spelling3}" class="hiddenL1 correct" id="spelling3"></p>
+						<p th:unless="${vc.spelling3.isEmpty()}" class="L1WriteIn displayNone writeIn"><input type="text"><span class="L1Length"></span><button class="check" draggable="true">⇔</button></p>
+   					</div>
+						<p class="label">L2</p>
+					<div class="L2">
+						<p th:unless="${vc.meaning1.isEmpty()}" th:text="${vc.meaning1}" class="hiddenL2 correct"></p>
+						<p th:unless="${vc.meaning1.isEmpty()}" class="L2WriteIn displayNone writeIn"><input type="text"><span class="L2Length"></span><button class="check" draggable="true">⇔</button></p>
+						<p th:unless="${vc.meaning2.isEmpty()}" th:text="${vc.meaning2}" class="hiddenL2 correct"></p>
+						<p th:unless="${vc.meaning2.isEmpty()}" class="L2WriteIn displayNone writeIn"><input type="text"><span class="L2Length"></span><button class="check" draggable="true">⇔</button></p>
+						<p th:unless="${vc.meaning3.isEmpty()}" th:text="${vc.meaning3}" class="hiddenL2 correct"></p>
+						<p th:unless="${vc.meaning3.isEmpty()}" class="L2WriteIn displayNone writeIn"><input type="text"><span class="L2Length"></span><button class="check" draggable="true">⇔</button></p>
+					</div>
+				</section>
+				</div>
+				<div class="float-end"></div>
+			</div>
+			<br>
+		</div>
+		<br>
+	<footer>
+		<ul class="navi">
+		</ul>
+	</footer>
+
+	<script>
+	'use strict';
+	//タグ検索機能
+	const tag=document.getElementsByClassName("tag");
+	let draggedTag;
+	let clickedTag;
+	//全タグボタンにドラッグイベントとクリックイベントを設定、タグ名を取得
+	for(let i=0;i<tag.length;i++){
+	tag[i].addEventListener('dragstart',(event)=>{
+		draggedTag=tag[i].textContent;
+	});
+	tag[i].addEventListener('click',(event)=>{
+		//event.preventDefault();
+		clickedTag=tag[i].textContent;
+		//タグ検索フォームに代入
+		document.getElementById('tagValue').value=clickedTag;
+	});
+	}
+
+	//ページネイション機能
+	//cardを配列として取得
+	const cardList=document.getElementsByClassName('card');
+	var array=Array.prototype.slice.call(cardList);
+
+	const navi=document.querySelector(".navi");
+	//全体を表示件数で割り、商の数だけページ番号を作成。
+		for(let i=1;i<array.length/50+1;i++){
+			const liElement=document.createElement('li');
+			liElement.innerHTML='<li class="pageNumber">'+i+'</li>';
+			navi.insertAdjacentElement('beforeend',liElement);
+		}
+
+	//追加した<li>タグの個数分の配列を作成。
+	let pageNumber=document.getElementsByClassName('pageNumber');
+	var arrayPage=Array.prototype.slice.call(pageNumber);
+	//1ページ目を最初に表示する
+	let currentPage=1;
+	//カード50個にtoggleを行うメソッドを定義。
+	var displayCard=function(currentPage,array){
+		for(let i=(currentPage-1)*50;i<((currentPage-1)*50)+50;i++){
+		if(i+1>array.length)break;
+		array[i].classList.toggle('displayNot');
+	}};
+	displayCard(currentPage,array);
+	//各ページ番号にクリック時のイベントを割り当てる。arrayPage[0]=1であることに注意
+	for(let i=0; i<arrayPage.length;i++){
+		arrayPage[i].addEventListener("click",(event)=>{
+			displayCard(currentPage,array);
+			currentPage=(arrayPage[i].textContent);
+			displayCard(currentPage,array);
+	});
+	}
+
+    //input入力内容があった場合にのみボタンをクリックできるようにするメソッド
+	function enableClick(button,inputArray){
+    	button.disabled=true;
+		for(let i=0;i<inputArray.length;i++){
+			inputArray[i].addEventListener('input',(event)=>{
+				for (let j=0;j<inputArray.length;j++){
+					if(inputArray[j].value.trim()!=null&&inputArray[j].value.trim()!==""){
+    				button.disabled=false;
+    				break;
+    				}else{
+    					button.disabled=true;
+    				}
+    			}
+    		});
+		}
+	}
+	//検索用フォームに設定
+	var searchForm=document.getElementsByClassName('searchForm');
+	var searchButton=document.getElementById('doSearch');
+	enableClick(searchButton,searchForm);
+
+	//spellingTest機能
+	var flashL1=document.getElementById("flashL1");
+	var flashL2=document.getElementById("flashL2");
+    var L1hidden=document.querySelectorAll(".hiddenL1");
+	var L2hidden=document.querySelectorAll(".hiddenL2");
+	var L1WriteIn=document.querySelectorAll(".L1WriteIn");
+	var L2WriteIn=document.querySelectorAll(".L2WriteIn");
+	var L1Length=document.querySelectorAll(".L1Length");
+	var L2Length=document.querySelectorAll(".L2Length");
+	var writeIn=document.querySelectorAll(".writeIn");
+
+	//正解の単語の文字数を表示
+	for(let i=0;i<L1hidden.length;i++){
+		L1Length[i].textContent="(" + L1hidden[i].textContent.length + ")";
+	}
+	for(let i=0;i<L2hidden.length;i++){
+		L2Length[i].textContent="(" + L2hidden[i].textContent.length + ")";
+	}
+
+	//回答⇔一覧の切り替えを設定
+	$("#flashL1").on("click",function(){
+		for(let i=0;i<L1hidden.length;i++){
+		L1hidden[i].classList.toggle('displayNone');
+		L1WriteIn[i].classList.toggle('displayNone');
+	    }
+	});
+	$("#flashL2").on("click",function(){
+		for(let i=0;i<L2hidden.length;i++){
+		L2hidden[i].classList.toggle('displayNone');
+		L2WriteIn[i].classList.toggle('displayNone');
+	}
+	});
+
+	//スペルを一文字ごとに判定する
+	var check=document.querySelectorAll(".check");
+  	var answerArray=document.querySelectorAll(".writeIn>input");
+    var correctArray=document.querySelectorAll(".correct");
+    var perChar=[];
+    let result="<p class='correct'>";
+    //答え合わせ用ボタンごとにイベントを設定
+  	for(let i=0;i<check.length;i++){
+  		check[i].addEventListener('click',(event)=>{
+        let answer=answerArray[i].value;
+        let correct=correctArray[i].textContent;
+        let result="<p class='correct'>";
+        let rightChar=[];
+        //回答を一文字ずつ取得し、正解と比較
+        for(let j=0;j<answer.length;j++){
+        	//正解の文字列を超えた場合はbreak
+      		if(j>correct.length)break;
+        	//正解の文字番号を配列に格納
+      		if(answer.charAt(j)==correct.charAt(j)){
+            rightChar.push(j);
+      		}
+      	}
+        //正解の文字はそのまま文字列に追加、不正解は<span>を付けて追加
+        for(let k=0;k<correct.length;k++){
+          if(rightChar.includes(k)){
+            result+=correct.charAt(k);
+          }else{
+            result+=('<span class="red">'+correct.charAt(k)+'</span>');
+          }
+        }
+        result+="</p>"
+        correctArray[i].innerHTML=result;
+  		//回答欄⇔答えの切り替え
+  		writeIn[i].classList.toggle('displayNone');
+  		correctArray[i].classList.toggle('displayNone');
+  		});
+  	}
+	</script>
+</body>
+</html>

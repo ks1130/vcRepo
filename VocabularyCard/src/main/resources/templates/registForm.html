@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Vocabulary Card</title>
+<link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<header>
+		<h1>Vocabulary Card</h1>
+	</header>
+	<div th:if="${msg!=null}">
+		<div th:if="${msg.msgType=='E'}" class="error">
+			<span class="icon E">×</span>
+			<div th:text="${msg.msgText}"></div>
+		</div>
+		<div th:if="${msg.msgType=='I'}" class="information">
+			<span class="icon I">×</span>
+			<div th:text="${msg.msgText}"></div>
+		</div>
+	</div>
+	<form th:action="@{/regist/do}" th:object="${registData}" method="post">
+		<table>
+			<tr>
+				<th class="valign">ニックネーム</th>
+				<td><input type="text" name="name" th:value="*{name}">
+					<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+				</td>
+			</tr>
+			<tr>
+				<th class="valign">ログインID</th>
+				<td><input type="text" name="loginId" th:value="*{loginId}">
+					<div th:if="${#fields.hasErrors('loginId')}" th:errors=*{loginId}></div>
+				</td>
+			</tr>
+			<tr>
+				<th class="valign">パスワード</th>
+				<td><input type="text" name="password" th:value="*{password}">
+					<div th:if="${#fields.hasErrors('password')}" th:errors=*{password}></div>
+				</td>
+			</tr>
+			<tr>
+				<th class="valign">パスワード(確認用)</th>
+				<td><input type="text" name="passwordForCheck"
+					th:value="*{passwordForCheck}">
+					<div th:if="${#fields.hasErrors('passwordForCheck')}"
+						th:errors=*{passwordForCheck}></div></td>
+			</tr>
+		</table>
+		<button>アカウント作成</button>
+	</form>
+	<a th:href="@{/regist/cancel}">キャンセル</a>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>VocabularyCard</title>
+<link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+	<div class="container">
+		<h1 class="title">
+			Vocabulary Card
+		</h1>
+
+		<form th:action="@{vocabularyCard/update}" method="post"
+			th:object="${editedCard}">
+			<input type="hidden" th:field="*{id}" th:value="*{id}">
+				<table class="wordForm">
+					<tr class="label">
+						<th>L1</th>
+					</tr>
+					<tr>
+						<td><input th:value="*{spelling1}" id="spelling1" type="text"
+							th:field="*{spelling1}"></td>
+					<tr>
+					<tr>
+						<td><input th:value="*{spelling2}" id="spelling2" type="text"
+							th:field="*{spelling2}"></td>
+					<tr>
+					<tr>
+						<td><input th:value="*{spelling3}" id="spelling3" type="text"
+							th:field="*{spelling3}"></td>
+					</tr>
+					<tr>
+						<td class="label">L2</td>
+					</tr>
+					<tr>
+						<td><input th:value="*{meaning1}" type="text"
+							th:field="*{meaning1}"></td>
+					</tr>
+					<tr>
+						<td><input th:value="*{meaning2}" type="text"
+							th:field="*{meaning2}"></td>
+					</tr>
+					<tr>
+						<td><input th:value="*{meaning3}" type="text"
+							th:field="*{meaning3}"></td>
+					</tr>
+					<tr>
+						<td><input type="hidden" class="hiddenTag" th:value="*{tag1}"
+							th:field="*{tag1}"> <input type="hidden"
+							class="hiddenTag" th:value="*{tag2}" th:field="*{tag2}">
+							<input type="hidden" class="hiddenTag" th:value="*{tag3}"
+							th:field="*{tag3}"></td>
+					</tr>
+				</table>
+			<button type="submit" th:formaction="@{/vocabularyCard/update}">更新</button>
+			<button type="submit" th:formaction="@{/vocabularyCard/cancel}">キャンセル</button>
+		</form>
+	</div>
+</body>
+</html>

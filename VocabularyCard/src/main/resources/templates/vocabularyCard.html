@@ -295,6 +295,20 @@
 		});
 	}
 
+	//カード作成フォームをエンターキーでフォーカス移動するように設定
+	for(let i=0;i<createForm.length;i++){
+		createForm[i].addEventListener("keypress",(event)=>{
+			if(event.keyCode===13){
+				event.preventDefault();
+				if(i+1<createForm.length){
+				createForm[i+1].focus();
+				}
+			}
+		});
+	}
+	//カード追加ボタンのエンターキーでの送信を無効にする
+
+
 	//flashCard機能
 	var flashL1=document.getElementById("flashL1");
 	var flashL2=document.getElementById("flashL2");

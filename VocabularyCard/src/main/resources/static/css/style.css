@@ -164,6 +164,9 @@ h1{
 	border-left:none;
 	border-right:none;
 }
+.writeIn>input::placeholder{
+	color:#FF8C00;
+}
 td>input{
 	width:590px;
 	height:40px;
@@ -210,10 +213,10 @@ footer{
 	vertical-align: top;
 }
 table{
-background-color: #000055;
-color:#FF8C00;
-font-size:15px;
-margin-top:30px;
+	background-color: #000055;
+	color:#FF8C00;
+	font-size:15px;
+	margin-top:30px;
 }
 h3{
 	color:#FF8C00;
@@ -221,6 +224,13 @@ h3{
 }
 button{
 	cursor:pointer;
+}
+#hint{
+	cursor:pointer;
+}
+.eachWord{
+	padding-bottom: 10px;
+	padding-top: 10px;
 }
 #flashL1{
     cursor:pointer;

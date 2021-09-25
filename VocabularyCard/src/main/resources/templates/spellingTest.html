@@ -45,8 +45,10 @@
 						</tr>
 					</table>
 
+					<span id="hint">Hint</span>
+
 				<!-- 検索form -->
-				<form th:action="@{/vocabularyCard/search}" method="post"
+				<form th:action="@{/vocabularyCard/spellingTest/search}" method="post"
 					id="search" th:object="${vocabularyCardQuery}">
 					<div class="form frameBorder">
 						<input type="text" th:value="*{searchSpelling}"
@@ -62,7 +64,7 @@
 				<!-- タグ表示及びタグ検索 jsでinputに上書き、各タグボタンをクリック時に送信 -->
 				<form method="post" th:action="@{/vocabularyCard/spellingTest/search}"
 					th:object="${vocabularyCardQuery}" id="searchTag">
-					<input type="text" th:value="*{searchTag}" name="searchTag"
+					<input type="hidden" th:value="*{searchTag}" name="searchTag"
 						id="tagValue">
 				</form>
 				<div th:each="tag:${tagList}">
@@ -89,21 +91,51 @@
 					<p class="label">L1</p>
 					<div th:text="${vc.id}" class="id"></div>
 					<div class="L1">
-						<p th:text="${vc.spelling1}" class="hiddenL1 correct" id="spelling1"></p>
-						<p class="L1WriteIn displayNone writeIn"><input type="text"><span class="L1Length"></span><button class="check" draggable="true">⇔</button></p>
-						<p th:unless="${vc.spelling2.isEmpty()}" th:text="${vc.spelling2}" class="hiddenL1 correct" id="spelling2"></p>
-						<p th:unless="${vc.spelling2.isEmpty()}" class="L1WriteIn displayNone writeIn"><input type="text"><span class="L1Length"></span><button class="check" draggable="true">⇔</button></p>
-						<p th:unless="${vc.spelling3.isEmpty()}" th:text="${vc.spelling3}" class="hiddenL1 correct" id="spelling3"></p>
-						<p th:unless="${vc.spelling3.isEmpty()}" class="L1WriteIn displayNone writeIn"><input type="text"><span class="L1Length"></span><button class="check" draggable="true">⇔</button></p>
-   					</div>
-						<p class="label">L2</p>
+						<div class="eachWord">
+							<span th:text="${vc.spelling1}" class="hiddenL1 correct"
+								id="spelling1"></span> <span
+								class="L1WriteIn displayNone writeIn"><input type="text" placeholder=""><span
+								class="L1Length"></span></span>
+							<button class="check" draggable="true">⇔</button>
+							<br>
+						</div>
+						<div th:unless="${vc.spelling2.isEmpty()}" class="eachWord">
+							<span th:text="${vc.spelling2}" class="hiddenL1 correct"
+								id="spelling2"></span> <span
+								class="L1WriteIn displayNone writeIn"><input type="text" placeholder=""><span
+								class="L1Length"></span>
+							</span><button class="check" draggable="true">⇔</button><br>
+						</div>
+						<div th:unless="${vc.spelling3.isEmpty()}" class="eachWord">
+							<span th:text="${vc.spelling3}" class="hiddenL1 correct"
+								id="spelling3"></span> <span
+								class="L1WriteIn displayNone writeIn"><input type="text"  placeholder=""><span
+								class="L1Length"></span>
+								</span><button class="check" draggable="true">⇔</button>
+						</div>
+					</div>
+					<p class="label">L2</p>
 					<div class="L2">
-						<p th:unless="${vc.meaning1.isEmpty()}" th:text="${vc.meaning1}" class="hiddenL2 correct"></p>
-						<p th:unless="${vc.meaning1.isEmpty()}" class="L2WriteIn displayNone writeIn"><input type="text"><span class="L2Length"></span><button class="check" draggable="true">⇔</button></p>
-						<p th:unless="${vc.meaning2.isEmpty()}" th:text="${vc.meaning2}" class="hiddenL2 correct"></p>
-						<p th:unless="${vc.meaning2.isEmpty()}" class="L2WriteIn displayNone writeIn"><input type="text"><span class="L2Length"></span><button class="check" draggable="true">⇔</button></p>
-						<p th:unless="${vc.meaning3.isEmpty()}" th:text="${vc.meaning3}" class="hiddenL2 correct"></p>
-						<p th:unless="${vc.meaning3.isEmpty()}" class="L2WriteIn displayNone writeIn"><input type="text"><span class="L2Length"></span><button class="check" draggable="true">⇔</button></p>
+						<div th:unless="${vc.meaning1.isEmpty()}" class="eachWord">
+							<span th:text="${vc.meaning1}" class="hiddenL2 correct"></span> <span
+								class="L2WriteIn displayNone writeIn"><input type="text" placeholder=""><span
+								class="L2Length"></span></span>
+							<button class="check" draggable="true">⇔</button>
+							<br>
+						</div>
+						<div th:unless="${vc.meaning2.isEmpty()}" class="eachWord">
+							<span th:text="${vc.meaning2}" class="hiddenL2 correct"></span> <span
+								class="L2WriteIn displayNone writeIn"><input type="text" placeholder=""><span
+								class="L2Length"></span></span>
+							<button class="check" draggable="true">⇔</button>
+							<br>
+						</div>
+						<div th:unless="${vc.meaning3.isEmpty()}" class="eachWord">
+							<span th:text="${vc.meaning3}" class="hiddenL2 correct"></span> <span
+								class="L2WriteIn displayNone writeIn"><input type="text" placeholder=""><span
+								class="L2Length"></span></span>
+							<button class="check" draggable="true">⇔</button>
+						</div>
 					</div>
 				</section>
 				</div>
@@ -225,17 +257,26 @@
 	});
 
 	//スペルを一文字ごとに判定する
-	var check=document.querySelectorAll(".check");
-  	var answerArray=document.querySelectorAll(".writeIn>input");
-    var correctArray=document.querySelectorAll(".correct");
-    var perChar=[];
+	//イベントを作成
+	let clickEvent=new MouseEvent("click");
+	let check=document.querySelectorAll(".check");
+  	let answerArray=document.querySelectorAll(".writeIn>input");
+    let correctArray=document.querySelectorAll(".correct");
+    let perChar=[];
     let result="<p class='correct'>";
     //答え合わせ用ボタンごとにイベントを設定
   	for(let i=0;i<check.length;i++){
+  		//エンターキーを押したときにcheckボタンをクリックするイベントを発火させる
+  		answerArray[i].addEventListener('keypress',(event)=>{
+  			if(event.keyCode===13){
+  				check[i].dispatchEvent(clickEvent);
+  			}
+  		});
+  		//クリックイベントを設定
   		check[i].addEventListener('click',(event)=>{
         let answer=answerArray[i].value;
         let correct=correctArray[i].textContent;
-        let result="<p class='correct'>";
+        let result="<span class='correct'>";
         let rightChar=[];
         //回答を一文字ずつ取得し、正解と比較
         for(let j=0;j<answer.length;j++){
@@ -254,13 +295,27 @@
             result+=('<span class="red">'+correct.charAt(k)+'</span>');
           }
         }
-        result+="</p>"
+        result+="</span>"
         correctArray[i].innerHTML=result;
   		//回答欄⇔答えの切り替え
   		writeIn[i].classList.toggle('displayNone');
   		correctArray[i].classList.toggle('displayNone');
+  		//次の回答欄にフォーカス
+  		if(i+1<answerArray.length){
+  			answerArray[i+1].focus();
+  		}
   		});
   	}
+
+    let hint=document.getElementById("hint");
+    hint.addEventListener("click",(event)=>{
+    	for(let i=0;i<correctArray.length;i++){
+    		let answer=answerArray[i];
+    		let correct=correctArray[i];
+    		answer.placeholder=correct.textContent.charAt(0);
+    	}
+    });
+
 	</script>
 </body>
 </html>

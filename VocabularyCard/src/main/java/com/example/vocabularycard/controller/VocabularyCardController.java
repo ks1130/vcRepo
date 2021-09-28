@@ -174,6 +174,19 @@ public class VocabularyCardController {
 			RedirectAttributes redirectAttributes,
 			Locale locale) {
 		Optional<VocabularyCard> someCard=vocabularyCardRepository.findById(id);
+
+		if(!(someCard==null)) {
+			Integer accountId=(Integer)session.getAttribute("accountId");
+			VocabularyCard vocabularyCard=someCard.get();
+			if(vocabularyCard.getUserId().equals(accountId)) {
+				mv.setViewName("editForm");
+				mv.addObject("editedCard", vocabularyCard);
+			}else {
+				messageError(mv,redirectAttributes,locale);
+			}
+		}
+
+		/*
 		someCard.ifPresentOrElse(vocabularyCard->{
 			Integer accountId=(Integer)session.getAttribute("accountId");
 			if(vocabularyCard.getUserId().equals(accountId)) {
@@ -187,6 +200,7 @@ public class VocabularyCardController {
 			messageError(mv,redirectAttributes,locale);
 
 		});
+		*/
 		return mv;
 	}
 

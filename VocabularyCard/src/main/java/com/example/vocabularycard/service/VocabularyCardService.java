@@ -54,7 +54,7 @@ public class VocabularyCardService {
 
 		//タグクリック時
 		List<VocabularyCard> searchedCard=null;
-		if(!vocabularyCardQuery.getSearchTag().isBlank()) {
+		if(!vocabularyCardQuery.getSearchTag().isEmpty()) {
 			String searchTag=vocabularyCardQuery.getSearchTag();
 			List<VocabularyCard> cardByTug=vocabularyCardRepository.findByUserIdAndTag1OrTag2OrTag3(accountId,searchTag,searchTag,searchTag);
 			LinkedHashSet<VocabularyCard> tmpSet=new LinkedHashSet<VocabularyCard>(cardByTug);

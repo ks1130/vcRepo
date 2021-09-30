@@ -7,7 +7,7 @@
 </head>
 <body>
 	<header>
-		<h1>Vocabulary Card</h1>
+		<h1 class="title">Vocabulary Card</h1>
 	</header>
 	<div th:if="${msg!=null}">
 		<div th:if="${msg.msgType=='E'}" class="error">
@@ -35,13 +35,13 @@
 			</tr>
 			<tr>
 				<th class="valign">パスワード</th>
-				<td><input type="text" name="password" th:value="*{password}">
+				<td><input type="password" name="password" th:value="*{password}">
 					<div th:if="${#fields.hasErrors('password')}" th:errors=*{password}></div>
 				</td>
 			</tr>
 			<tr>
 				<th class="valign">パスワード(確認用)</th>
-				<td><input type="text" name="passwordForCheck"
+				<td><input type="password" name="passwordForCheck"
 					th:value="*{passwordForCheck}">
 					<div th:if="${#fields.hasErrors('passwordForCheck')}"
 						th:errors=*{passwordForCheck}></div></td>

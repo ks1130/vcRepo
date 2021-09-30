@@ -27,6 +27,7 @@ import com.example.vocabularycard.common.OpMsg;
 import com.example.vocabularycard.dao.VocabularyCardDaoImpl;
 import com.example.vocabularycard.entity.Tag;
 import com.example.vocabularycard.entity.VocabularyCard;
+import com.example.vocabularycard.form.LoginData;
 import com.example.vocabularycard.form.TagData;
 import com.example.vocabularycard.form.TagQuery;
 import com.example.vocabularycard.form.VocabularyCardData;
@@ -56,6 +57,14 @@ public class VocabularyCardController {
 	@GetMapping({"/vocabularyCard"})
 	public ModelAndView showCard(ModelAndView mv) {
 		Integer accountId=(Integer)session.getAttribute("accountId");
+
+		//ログアウト後にアクセスできないようにする
+		if(accountId==null) {
+			mv.setViewName("loginForm");
+			mv.addObject("loginData", new LoginData());
+			return mv;
+		}
+
 		//全カードをデータベースから取得、Listに格納
 		List<VocabularyCard> cardList=vocabularyCardRepository.findByUserIdOrderByIdDesc(accountId);
 		//vocabularyCard.htmlへ送る

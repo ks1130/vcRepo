@@ -182,6 +182,7 @@
 	$(window).on('scroll',function(){
 		//スクロール量を取得
 		let scroll=$(window).scrollTop();
+		console.log(scroll);
 		//スクロール量がmenuの高さを上回ったらstickyを追加、下回ったら削除
 		if(scroll>firstHeight){
 			$(".menu").addClass('sticky');

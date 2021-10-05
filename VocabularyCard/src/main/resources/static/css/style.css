@@ -8,7 +8,6 @@ h1{
 .title{
 	color:#FF8C00;
 	font-size:20px;
-
 	text-shadow:white 1px 1px 0px,white -1px -1px 0px,white -1px 1px 0px,white 1px -1px 0px,white 0px 1px 0px,white 0px -1px 0px,white -1px 0px 0px,white 1px 0px 0px;
 	text-decoration: none;
 }
@@ -16,7 +15,6 @@ h1{
 	min-height:100vh;
 	position:relative;
 	padding-bottom:120px;
-
 }
 .frameBorder{
 	border: solid 3px #000055;
@@ -27,21 +25,22 @@ h1{
 	overflow: hidden;
 	padding-right:100px;
 }
+
 .menu{
 	border:3px solid black;
 	text-decoration: underline 1px #000055;
 	height:85vh;
-	overflow-y:scroll;
+	overflow:scroll;
 	background-color:#F5F5F5;
 	margin-top:10px;
-	position:fixed;
-	position:-webkit-sticky;
-	position:sticky;
 	top:0;
 	width: 300px;
 	float: left;
-	-ms-overflow-style:none;
+-ms-overflow-style:none;
 	scrollbar-width:none;
+}
+.sticky{
+	position:fixed;
 }
 ::-webkit-scrollbar{
 	display:none;

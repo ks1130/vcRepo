@@ -14,6 +14,7 @@
 
 	<div class="container">
 		<div class="float-container">
+		<div class="menuContainer">
 			<div class="menu">
 				<!-- 操作メッセージ -->
 				<div th:if="${msg!=null}" class="message">
@@ -124,6 +125,7 @@
 				</form>
 
 			</div>
+			</div>
 		</div>
 
 		<!-- カードの数だけ<div>を生成  タグには検索用フォームと関連付ける-->
@@ -173,6 +175,21 @@
 
 	<script>
 	'use strict';
+
+	//css の position: sticky が反映されないため、javascript で実装
+	//menuの最初の位置の高さを取得
+	let firstHeight=$('.menu').offset().top;
+	$(window).on('scroll',function(){
+		//スクロール量を取得
+		let scroll=$(window).scrollTop();
+		//スクロール量がmenuの高さを上回ったらstickyを追加、下回ったら削除
+		if(scroll>firstHeight){
+			$(".menu").addClass('sticky');
+		}else{
+			$(".menu").removeClass('sticky');
+		}
+	});
+
 	//ドラッグアンドドロップ機能
 	const tag=document.getElementsByClassName("tag");
 	let draggedTag;

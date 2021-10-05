@@ -33,11 +33,6 @@ h1{
 	overflow:scroll;
 	background-color:#F5F5F5;
 	margin-top:10px;
-<<<<<<< HEAD
-	position:-webkit-sticky;
-	position:sticky;
-=======
->>>>>>> issue1
 	top:0;
 	width: 300px;
 	float: left;

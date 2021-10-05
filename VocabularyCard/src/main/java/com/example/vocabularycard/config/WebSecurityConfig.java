@@ -29,11 +29,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		http.authorizeRequests().antMatchers("/","/login/**","/regist","/regist/**").permitAll().antMatchers("/vocabularyCard/**").hasRole("USER").anyRequest().authenticated()
 		.and().formLogin().loginPage("/login").usernameParameter("loginId").passwordParameter("password").loginProcessingUrl("/login/do").defaultSuccessUrl("/vocabularyCard").failureUrl("/login/failure").permitAll()
 		.and().logout().permitAll();
+
+		http.requiresChannel()
+	      .requestMatchers(r -> r.getHeader("X-Forwarded-Proto") != null)
+	      .requiresSecure();
 	}
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception{
 		auth.userDetailsService(loginService).passwordEncoder(passwordEncoder());
-
 	}
 
 	@Bean

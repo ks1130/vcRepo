@@ -36,7 +36,7 @@ h1{
 	top:0;
 	width: 300px;
 	float: left;
--ms-overflow-style:none;
+	-ms-overflow-style:none;
 	scrollbar-width:none;
 }
 .sticky{

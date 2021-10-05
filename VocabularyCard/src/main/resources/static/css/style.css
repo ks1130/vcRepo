@@ -34,7 +34,6 @@ h1{
 	overflow-y:scroll;
 	background-color:#F5F5F5;
 	margin-top:10px;
-	position:fixed;
 	position:-webkit-sticky;
 	position:sticky;
 	top:0;

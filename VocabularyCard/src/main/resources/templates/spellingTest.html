@@ -107,7 +107,7 @@
 							id="spelling1"></span> <span
 							class="L1WriteIn displayNone writeIn"><input type="text"
 							placeholder=""><span class="L1Length"></span></span>
-						<button class="check" draggable="true">⇔</button>
+						<button class="check L1check" draggable="true">⇔</button>
 						<br>
 					</div>
 					<div th:unless="${vc.spelling2.isEmpty()}" class="eachWord">
@@ -115,7 +115,7 @@
 							id="spelling2"></span> <span
 							class="L1WriteIn displayNone writeIn"><input type="text"
 							placeholder=""><span class="L1Length"></span> </span>
-						<button class="check" draggable="true">⇔</button>
+						<button class="check L1check" draggable="true">⇔</button>
 						<br>
 					</div>
 					<div th:unless="${vc.spelling3.isEmpty()}" class="eachWord">
@@ -123,7 +123,7 @@
 							id="spelling3"></span> <span
 							class="L1WriteIn displayNone writeIn"><input type="text"
 							placeholder=""><span class="L1Length"></span> </span>
-						<button class="check" draggable="true">⇔</button>
+						<button class="check L1check" draggable="true">⇔</button>
 					</div>
 				</div>
 				<p class="label">L2</p>
@@ -132,21 +132,21 @@
 						<span th:text="${vc.meaning1}" class="hiddenL2 correct"></span> <span
 							class="L2WriteIn displayNone writeIn"><input type="text"
 							placeholder=""><span class="L2Length"></span></span>
-						<button class="check" draggable="true">⇔</button>
+						<button class="check L2check" draggable="true">⇔</button>
 						<br>
 					</div>
 					<div th:unless="${vc.meaning2.isEmpty()}" class="eachWord">
 						<span th:text="${vc.meaning2}" class="hiddenL2 correct"></span> <span
 							class="L2WriteIn displayNone writeIn"><input type="text"
 							placeholder=""><span class="L2Length"></span></span>
-						<button class="check" draggable="true">⇔</button>
+						<button class="check L2check" draggable="true">⇔</button>
 						<br>
 					</div>
 					<div th:unless="${vc.meaning3.isEmpty()}" class="eachWord">
 						<span th:text="${vc.meaning3}" class="hiddenL2 correct"></span> <span
 							class="L2WriteIn displayNone writeIn"><input type="text"
 							placeholder=""><span class="L2Length"></span></span>
-						<button class="check" draggable="true">⇔</button>
+						<button class="check L2check" draggable="true">⇔</button>
 					</div>
 				</div>
 			</section>
@@ -288,54 +288,68 @@
 	//スペルを一文字ごとに判定する
 	//イベントを作成
 	let clickEvent=new MouseEvent("click");
-	let check=document.querySelectorAll(".check");
-  	let answerArray=document.querySelectorAll(".writeIn>input");
-    let correctArray=document.querySelectorAll(".correct");
+	//let check=document.querySelectorAll(".check");
+	let L1check=document.querySelectorAll(".L1check");
+	let L2check=document.querySelectorAll(".L2check");
+  	//let answerArray=document.querySelectorAll(".writeIn>input");
+    //let correctArray=document.querySelectorAll(".correct");
     let perChar=[];
     let result="<p class='correct'>";
     //答え合わせ用ボタンごとにイベントを設定
-  	for(let i=0;i<check.length;i++){
-  		//エンターキーを押したときにcheckボタンをクリックするイベントを発火させる
-  		answerArray[i].addEventListener('keypress',(event)=>{
-  			if(event.keyCode===13){
-  				check[i].dispatchEvent(clickEvent);
-  			}
-  		});
-  		//クリックイベントを設定
-  		check[i].addEventListener('click',(event)=>{
-        let answer=answerArray[i].value;
-        let correct=correctArray[i].textContent;
-        let result="<span class='correct'>";
-        let rightChar=[];
-        //回答を一文字ずつ取得し、正解と比較
-        for(let j=0;j<answer.length;j++){
-        	//正解の文字列を超えた場合はbreak
-      		if(j>correct.length)break;
-        	//正解の文字番号を配列に格納
-      		if(answer.charAt(j)==correct.charAt(j)){
-            rightChar.push(j);
-      		}
-      	}
-        //正解の文字はそのまま文字列に追加、不正解は<span>を付けて追加
-        for(let k=0;k<correct.length;k++){
-          if(rightChar.includes(k)){
-            result+=correct.charAt(k);
-          }else{
-            result+=('<span class="red">'+correct.charAt(k)+'</span>');
-          }
-        }
-        result+="</span>"
-        correctArray[i].innerHTML=result;
-  		//回答欄⇔答えの切り替え
-  		writeIn[i].classList.toggle('displayNone');
-  		correctArray[i].classList.toggle('displayNone');
-  		//次の回答欄にフォーカス
-  		if(i+1<answerArray.length){
-  			answerArray[i+1].focus();
-  		}
-  		});
-  	}
+  	function checkAndMove(check,answerArray,correctArray,writeInArray){
+  		for(let i=0;i<check.length;i++){
+  			console.log(check);
 
+
+
+  	  		//エンターキーを押したときにcheckボタンをクリックするイベントを発火させる
+  	  		answerArray[i].addEventListener('keypress',(event)=>{
+  	  			if(event.keyCode===13){
+  	  				check[i].dispatchEvent(clickEvent);
+  	  			}
+  	  		});
+  	  		//クリックイベントを設定
+  	  		check[i].addEventListener('click',(event)=>{
+  	        let answer=answerArray[i].value;
+  	        let correct=correctArray[i].textContent;
+  	        let result="<span class='correct'>";
+  	        let rightChar=[];
+  	        //回答を一文字ずつ取得し、正解と比較
+  	        for(let j=0;j<answer.length;j++){
+  	        	//正解の文字列を超えた場合はbreak
+  	      		if(j>correct.length)break;
+  	        	//正解の文字番号を配列に格納
+  	      		if(answer.charAt(j)==correct.charAt(j)){
+  	            rightChar.push(j);
+  	      		}
+  	      	}
+  	        //正解の文字はそのまま文字列に追加、不正解は<span>を付けて追加
+  	        for(let k=0;k<correct.length;k++){
+  	          if(rightChar.includes(k)){
+  	            result+=correct.charAt(k);
+  	          }else{
+  	            result+=('<span class="red">'+correct.charAt(k)+'</span>');
+  	          }
+  	        }
+  	        result+="</span>"
+  	        correctArray[i].innerHTML=result;
+  	  		//回答欄⇔答えの切り替え
+  	  		writeInArray[i].classList.toggle('displayNone');
+  	  		correctArray[i].classList.toggle('displayNone');
+  	  		//次の回答欄にフォーカス
+  	  		if(i+1<answerArray.length){
+  	  			answerArray[i+1].focus();
+  	  		}
+  	  		});
+  	  	}
+    }
+    //checkAndMoveを設定
+    let L1answer=document.querySelectorAll(".L1WriteIn>input");
+    let L2answer=document.querySelectorAll(".L2WriteIn>input");
+  	checkAndMove(L1check,L1answer,L1hidden,L1WriteIn);
+  	checkAndMove(L2check,L2answer,L2hidden,L2WriteIn);
+
+	//頭文字を表示する
     let hint=document.getElementById("hint");
     hint.addEventListener("click",(event)=>{
     	for(let i=0;i<correctArray.length;i++){

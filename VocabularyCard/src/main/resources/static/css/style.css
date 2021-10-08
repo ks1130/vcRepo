@@ -1,9 +1,8 @@
 @charset "UTF-8";
 h1{
-    padding:10px;
-	margin:0px;
 	background-color: #000055;
 	text-align:center;
+	height:8vh;
 }
 .title{
 	color:#FF8C00;
@@ -14,36 +13,77 @@ h1{
 .container{
 	min-height:100vh;
 	position:relative;
-	padding-bottom:120px;
+	padding-bottom:50vh;
+	box-sizing: border-box;
+}
+.float-container{
+	float:left;
+	width:35vh;
 }
 .frameBorder{
 	border: solid 3px #000055;
+	box-sizing: border-box;
 }
 .card{
 	/*１枚目のカードの下に空白ができるのを防ぐため。
 	floatした親要素(.wordの親要素)の高さが未確定になるため、空白が生じる。*/
 	overflow: hidden;
-	padding-right:100px;
+	padding-right:15vh;
+}
+.menuBorder{
+	border:3px solid black;
+}
+.guide{
+	background-color:#F5F5F5;
+	box-sizing: border-box;
+	margin-top:2vh;
+}
+.menu-container{
+	background-color: #F5F5F5;
+	box-sizing: border-box;
+	width:inherit;
+	margin-top:2vh;
+
 }
 
 .menu{
-	border:3px solid black;
-	text-decoration: underline 1px #000055;
-	height:85vh;
 	overflow:scroll;
-	background-color:#F5F5F5;
-	margin-top:10px;
 	top:0;
-	width: 300px;
-	float: left;
+	height:80vh;
 	-ms-overflow-style:none;
 	scrollbar-width:none;
+	box-sizing: border-box;
+	clear:right;
+}
+.menuTab{
 }
 .sticky{
+	margin-top:-28vh;
 	position:fixed;
 }
 ::-webkit-scrollbar{
 	display:none;
+}
+.menuButton{
+	font-size:20px;
+	color:#FF8C00;
+	text-align: center;
+	text-decoration:none;
+	display:inline-block;
+	width:16.75vh;
+	box-sizing: border-box;
+}
+.selected{
+	background-color: #F5F5F5;
+}
+.unselected{
+	background-color:#000055;
+}
+.operationMenuButton{
+	float:left;
+}
+.tagMenuButton{
+	float:right;
 }
 .message{
     margin-top:10px;
@@ -93,42 +133,51 @@ h1{
 }
 
 .flashCardButton{
-	margin-left:10px;
-	width:50px;
+	margin-top:2vh;
+	margin-left:auto;
+	margin-right:auto;
+	width:10vh;
 }
 .separator{
 	height:5px;
 	background-color:#F5F5F5;
 }
 .form{
-	width:200px;
-	margin-top: 10px;
-	margin-bottom: 20px;
+	width:30vh;
+	margin-top:2vh;
+	margin-bottom: 2vh;
+	margin-right:auto;
+	margin-left:auto;
 	box-sizing:border-box;
+	align-content: center;
 }
 .menuInput{
-	width:180px;
+	width:27vh;
 }
 .wordList{
 	float: right;
-	width:600px;
+	width:100vh;
 	background-color: #F5F5F5;
 	font-size:20px;
 	border:3px solid black;
-
-	margin-bottom: 10px;
-	margin-top: 10px;
+	margin-bottom: 2vh;
+	margin-top: 2vh;
 }
 .label{
 	background-color:#000055;
 	color:#F5F5F5;
 	margin:0px;
-	font-size:12px;
+	font-size:8px;
 	border-bottom: 3px solid black;
+}
+#deleteButton{
+	display: block;
+	margin-right:auto;
+	margin-left:auto;
 }
 .check-delete{
 	float:right;
-	margin-top:10px;
+	margin-top:2vh;
 	text-align: right;
 }
 .check-delete-tag{
@@ -138,31 +187,31 @@ h1{
 	clear:both;
 }
 .tags{
-	width:150px;
+	width:20vh;
 	float:right;
-	padding-top: 10px;
+	padding-top: 2vh;
 	font-size:0px;
 }
 .tag{
 	width: auto;
 	background-color: #FF8C00;
-	margin-bottom: 10px;
+	margin-bottom: 2vh;
 	font-size: 15px;
 }
 .wordForm{
 	height:auto;
-	width:600px;
+	width:100vh;
 	background-color:#F5F5F5 ;
 	font-size:20px;
-	margin-bottom: 10px;
-	margin-top: 10px;
+	margin-bottom: 2vh;
+	margin-top: 2vh;
 	text-align:left;
 	border: solid black;
 }
 .writeIn>input{
 	background-color:#F5F5F5 ;
 	font-size:20px;
-	width:500px;
+	width:90vh;
 	border-top:none;
 	border-left:none;
 	border-right:none;
@@ -171,8 +220,8 @@ h1{
 	color:#FF8C00;
 }
 td>input{
-	width:590px;
-	height:40px;
+	width:90vh;
+	height:5vh;
 	background-color:#F5F5F5 ;
 	font-size:20px;
 	border-top:none;
@@ -191,8 +240,8 @@ td>input{
 }
 .navi >li{
 	text-align: center;
-	padding-right: 5px;
-	padding-left: 5px;
+	padding-right: 1vh;
+	padding-left: 1vh;
 	color: black;
 
 }
@@ -207,10 +256,10 @@ footer{
 	text-align:center;
 	position:fixed;
 	bottom:0;
-	height: 40px;
+	height: 6vh;
 	background-color:#000055;
 	text-shadow:white 1px 1px 0px,white -1px -1px 0px,white -1px 1px 0px,white 1px -1px 0px,white 0px 1px 0px,white 0px -1px 0px,white -1px 0px 0px,white 1px 0px 0px;
-	padding-top:-10px;
+	padding-top:-3vh;
 }
 .valign{
 	vertical-align: top;
@@ -220,7 +269,7 @@ table{
 	background-color: #000055;
 	color:#FF8C00;
 	font-size:15px;
-	margin-top:30px;
+	margin-top:1vh;
 }
 h3{
 	color:#FF8C00;
@@ -233,8 +282,8 @@ button{
 	cursor:pointer;
 }
 .eachWord{
-	padding-bottom: 10px;
-	padding-top: 10px;
+	padding-bottom: 2vh;
+	padding-top: 2vh;
 }
 #flashL1{
     cursor:pointer;

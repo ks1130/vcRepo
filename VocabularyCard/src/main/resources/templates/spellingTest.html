@@ -6,15 +6,18 @@
 <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
-<script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
 
 	<header>
-		<h1><a th:href="@{/vocabularyCard/spellingTest}" class="title">Vocabulary Card (TEST)</a></h1>
+		<h1>
+			<a th:href="@{/vocabularyCard/spellingTest}" class="title">Vocabulary
+				Card (TEST)</a>
+		</h1>
 	</header>
 
 	<div class="container">
 		<div class="float-container">
-			<div class="menu">
+			<div class="guide menuBorder">
 				<!-- 操作メッセージ -->
 				<div th:if="${msg!=null}" class="message">
 					<div th:if="${msg.msgType=='E'}" class="error">
@@ -27,123 +30,130 @@
 						<span class="icon I">i</span> <span th:text="${msg.msgText}"></span>
 					</div>
 				</div>
-
-				<p><a th:href="@{/logout}">ログアウト</a></p>
-
-				<p><a th:href="@{/vocabularyCard}">一覧に戻る</a></p>
-
-					<table class="flashCardButton">
-						<tr>
-							<td class="label" id="flashL1">L1</td>
-						</tr>
-						<tr>
-						<td class="separator">
-						</td>
-						</tr>
-						<tr>
-							<td class="label" id="flashL2">L2</td>
-						</tr>
-					</table>
-
-					<span id="hint">Hint</span>
-
-				<!-- 検索form -->
-				<form th:action="@{/vocabularyCard/spellingTest/search}" method="post"
-					id="search" th:object="${vocabularyCardQuery}">
-					<div class="form frameBorder">
-						<input type="text" th:value="*{searchSpelling}"
-							name="searchSpelling" class="searchForm menuInput" maxlength="50"
-							placeholder="LANGUAGE1"> <input type="text"
-							th:value="*{searchMeaning}" name="searchMeaning"
-							class="searchForm menuInput" maxlength="50" placeholder="LANGUAGE2">
-						<button id="doSearch">検索</button>
+				<p>
+					<a th:href="@{/logout}">ログアウト</a>
+				</p>
+				<p>
+					<a th:href="@{/vocabularyCard}">一覧に戻る</a>
+				</p>
+			</div>
+			<div class="menu-container menuBorder">
+				<!-- スクロールで追従する部分 -->
+				<div class="menuTab">
+					<div class="operationMenuButton menuButton selected">menu</div>
+					<div class="tagMenuButton menuButton unselected">tag</div>
+				</div>
+				<div class="guide menu">
+					<div class="operationMenu">
+						<table class="flashCardButton">
+							<tr>
+								<td class="label" id="flashL1">L1</td>
+							</tr>
+							<tr>
+								<td class="separator"></td>
+							</tr>
+							<tr>
+								<td class="label" id="flashL2">L2</td>
+							</tr>
+						</table>
+						<span id="hint">Hint</span>
+						<!-- 検索form -->
+						<form th:action="@{/vocabularyCard/spellingTest/search}"
+							method="post" id="search" th:object="${vocabularyCardQuery}">
+							<div class="form frameBorder">
+								<input type="text" th:value="*{searchSpelling}"
+									name="searchSpelling" class="searchForm menuInput"
+									maxlength="50" placeholder="LANGUAGE1"> <input
+									type="text" th:value="*{searchMeaning}" name="searchMeaning"
+									class="searchForm menuInput" maxlength="50"
+									placeholder="LANGUAGE2">
+								<button id="doSearch">検索</button>
+							</div>
+						</form>
 					</div>
-				</form>
-
+					<br>
+					<!-- タグ表示及びタグ検索 jsでinputに上書き、各タグボタンをクリック時に送信 -->
+					<form method="post"
+						th:action="@{/vocabularyCard/spellingTest/search}"
+						th:object="${vocabularyCardQuery}" id="searchTag">
+						<input type="hidden" th:value="*{searchTag}" name="searchTag"
+							id="tagValue">
+					</form>
+					<div th:each="tag:${tagList}">
+						<button th:text="${tag.name}" class="tag" form="searchTag"></button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- カードの数だけ<div>を生成  タグには検索用フォームと関連付ける-->
+		<div th:each="vc:${cardList}" class="card displayNot">
+			<section class="tags">
+				<button th:if="${vc.tag1!=null && vc.tag1!=''}" type="submit"
+					th:text="${vc.tag1}" class="tag" form="searchTag"></button>
 				<br>
-				<!-- タグ表示及びタグ検索 jsでinputに上書き、各タグボタンをクリック時に送信 -->
-				<form method="post" th:action="@{/vocabularyCard/spellingTest/search}"
-					th:object="${vocabularyCardQuery}" id="searchTag">
-					<input type="hidden" th:value="*{searchTag}" name="searchTag"
-						id="tagValue">
-				</form>
-				<div th:each="tag:${tagList}">
-					<button th:text="${tag.name}" class="tag"
-						form="searchTag"></button>
-				</div>
+				<button th:if="${vc.tag2!=null && vc.tag2!=''}" type="submit"
+					th:text="${vc.tag2}" class="tag" form="searchTag"></button>
+				<br>
+				<button th:if="${vc.tag3!=null && vc.tag3!=''}" type="submit"
+					th:text="${vc.tag3}" class="tag" form="searchTag"></button>
+			</section>
 
-			</div>
-
-			<!-- カードの数だけ<div>を生成  タグには検索用フォームと関連付ける-->
-			<div th:each="vc:${cardList}" class="card displayNot">
-				<section class="tags">
-					<button th:if="${vc.tag1!=null && vc.tag1!=''}" type="submit"
-						th:text="${vc.tag1}" class="tag" form="searchTag"></button>
-					<br>
-					<button th:if="${vc.tag2!=null && vc.tag2!=''}" type="submit"
-						th:text="${vc.tag2}" class="tag" form="searchTag"></button>
-					<br>
-					<button th:if="${vc.tag3!=null && vc.tag3!=''}" type="submit"
-						th:text="${vc.tag3}" class="tag" form="searchTag"></button>
-				</section>
-
-				<section class="wordList">
-					<p class="label">L1</p>
-					<div th:text="${vc.id}" class="id"></div>
-					<div class="L1">
-						<div class="eachWord">
-							<span th:text="${vc.spelling1}" class="hiddenL1 correct"
-								id="spelling1"></span> <span
-								class="L1WriteIn displayNone writeIn"><input type="text" placeholder=""><span
-								class="L1Length"></span></span>
-							<button class="check" draggable="true">⇔</button>
-							<br>
-						</div>
-						<div th:unless="${vc.spelling2.isEmpty()}" class="eachWord">
-							<span th:text="${vc.spelling2}" class="hiddenL1 correct"
-								id="spelling2"></span> <span
-								class="L1WriteIn displayNone writeIn"><input type="text" placeholder=""><span
-								class="L1Length"></span>
-							</span><button class="check" draggable="true">⇔</button><br>
-						</div>
-						<div th:unless="${vc.spelling3.isEmpty()}" class="eachWord">
-							<span th:text="${vc.spelling3}" class="hiddenL1 correct"
-								id="spelling3"></span> <span
-								class="L1WriteIn displayNone writeIn"><input type="text"  placeholder=""><span
-								class="L1Length"></span>
-								</span><button class="check" draggable="true">⇔</button>
-						</div>
+			<section class="wordList">
+				<p class="label">L1</p>
+				<div th:text="${vc.id}" class="id"></div>
+				<div class="L1">
+					<div class="eachWord">
+						<span th:text="${vc.spelling1}" class="hiddenL1 correct"
+							id="spelling1"></span> <span
+							class="L1WriteIn displayNone writeIn"><input type="text"
+							placeholder=""><span class="L1Length"></span></span>
+						<button class="check" draggable="true">⇔</button>
+						<br>
 					</div>
-					<p class="label">L2</p>
-					<div class="L2">
-						<div th:unless="${vc.meaning1.isEmpty()}" class="eachWord">
-							<span th:text="${vc.meaning1}" class="hiddenL2 correct"></span> <span
-								class="L2WriteIn displayNone writeIn"><input type="text" placeholder=""><span
-								class="L2Length"></span></span>
-							<button class="check" draggable="true">⇔</button>
-							<br>
-						</div>
-						<div th:unless="${vc.meaning2.isEmpty()}" class="eachWord">
-							<span th:text="${vc.meaning2}" class="hiddenL2 correct"></span> <span
-								class="L2WriteIn displayNone writeIn"><input type="text" placeholder=""><span
-								class="L2Length"></span></span>
-							<button class="check" draggable="true">⇔</button>
-							<br>
-						</div>
-						<div th:unless="${vc.meaning3.isEmpty()}" class="eachWord">
-							<span th:text="${vc.meaning3}" class="hiddenL2 correct"></span> <span
-								class="L2WriteIn displayNone writeIn"><input type="text" placeholder=""><span
-								class="L2Length"></span></span>
-							<button class="check" draggable="true">⇔</button>
-						</div>
+					<div th:unless="${vc.spelling2.isEmpty()}" class="eachWord">
+						<span th:text="${vc.spelling2}" class="hiddenL1 correct"
+							id="spelling2"></span> <span
+							class="L1WriteIn displayNone writeIn"><input type="text"
+							placeholder=""><span class="L1Length"></span> </span>
+						<button class="check" draggable="true">⇔</button>
+						<br>
 					</div>
-				</section>
+					<div th:unless="${vc.spelling3.isEmpty()}" class="eachWord">
+						<span th:text="${vc.spelling3}" class="hiddenL1 correct"
+							id="spelling3"></span> <span
+							class="L1WriteIn displayNone writeIn"><input type="text"
+							placeholder=""><span class="L1Length"></span> </span>
+						<button class="check" draggable="true">⇔</button>
+					</div>
 				</div>
-				<div class="float-end"></div>
-			</div>
-			<br>
+				<p class="label">L2</p>
+				<div class="L2">
+					<div th:unless="${vc.meaning1.isEmpty()}" class="eachWord">
+						<span th:text="${vc.meaning1}" class="hiddenL2 correct"></span> <span
+							class="L2WriteIn displayNone writeIn"><input type="text"
+							placeholder=""><span class="L2Length"></span></span>
+						<button class="check" draggable="true">⇔</button>
+						<br>
+					</div>
+					<div th:unless="${vc.meaning2.isEmpty()}" class="eachWord">
+						<span th:text="${vc.meaning2}" class="hiddenL2 correct"></span> <span
+							class="L2WriteIn displayNone writeIn"><input type="text"
+							placeholder=""><span class="L2Length"></span></span>
+						<button class="check" draggable="true">⇔</button>
+						<br>
+					</div>
+					<div th:unless="${vc.meaning3.isEmpty()}" class="eachWord">
+						<span th:text="${vc.meaning3}" class="hiddenL2 correct"></span> <span
+							class="L2WriteIn displayNone writeIn"><input type="text"
+							placeholder=""><span class="L2Length"></span></span>
+						<button class="check" draggable="true">⇔</button>
+					</div>
+				</div>
+			</section>
+			<div class="float-end"></div>
 		</div>
 		<br>
+	</div>
 	<footer>
 		<ul class="navi">
 		</ul>
@@ -151,6 +161,25 @@
 
 	<script>
 	'use strict';
+
+	//css の position: sticky が反映されないため、javascript で実装
+	//menuの最初の位置の高さを取得
+	let firstHeight=$('.menu-container').offset().top;
+	console.log(firstHeight);
+	$(window).on('scroll',function(){
+		let secondHeight=$('.menu-container').offset().top;
+		console.log("s:"+secondHeight);
+		//スクロール量を取得
+		let scroll=$(window).scrollTop();
+		console.log(scroll);
+		//スクロール量がmenuの高さを上回ったらstickyを追加、下回ったら削除
+		if(scroll>firstHeight){
+			$(".menu-container").addClass('sticky');
+		}else{
+			$(".menu-container").removeClass('sticky');
+		}
+	});
+
 	//タグ検索機能
 	const tag=document.getElementsByClassName("tag");
 	let draggedTag;

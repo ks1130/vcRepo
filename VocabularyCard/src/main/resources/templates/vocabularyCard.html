@@ -14,8 +14,7 @@
 
 	<div class="container">
 		<div class="float-container">
-		<div class="menuContainer">
-			<div class="menu">
+			<div class="guide menuBorder">
 				<!-- 操作メッセージ -->
 				<div th:if="${msg!=null}" class="message">
 					<div th:if="${msg.msgType=='E'}" class="error">
@@ -28,81 +27,92 @@
 						<span class="icon I">i</span> <span th:text="${msg.msgText}"></span>
 					</div>
 				</div>
+				<p>
+					<a th:href="@{/logout}">ログアウト</a>
+				</p>
+				<p>
+					<a th:href="@{/vocabularyCard/spellingTest}">テストへ移動</a>
+				</p>
+			</div>
+			<div class="menu-container menuBorder"><!-- スクロールで追従する部分 -->
 
-				<p><a th:href="@{/logout}">ログアウト</a></p>
+			<div class="menuTab">
+				<div class="operationMenuButton menuButton selected">menu</div> <div
+					class="tagMenuButton menuButton unselected">tag</div>
+			</div>
+			<div class="guide menu">
+					<div class="operationMenu">
+						<table class="flashCardButton">
+							<tr>
+								<td class="label" id="flashL1">L1</td>
+							</tr>
+							<tr>
+								<td class="separator"></td>
+							</tr>
+							<tr>
+								<td class="label" id="flashL2">L2</td>
+							</tr>
+						</table>
+						<!-- 検索form -->
+						<form th:action="@{/vocabularyCard/search}" method="post"
+							id="search" th:object="${vocabularyCardQuery}"
+							style="padding-top: 30px; margin-top: 10px;">
+							<div class="form frameBorder">
+								<input type="text" th:value="*{searchSpelling}"
+									name="searchSpelling" class="searchForm menuInput"
+									maxlength="50" placeholder="LANGUAGE1"> <input
+									type="text" th:value="*{searchMeaning}" name="searchMeaning"
+									class="searchForm menuInput" maxlength="50"
+									placeholder="LANGUAGE2">
+								<button id="doSearch">検索</button>
+							</div>
+						</form>
+						<!-- 追加用form -->
+						<form th:action="@{/vocabularyCard/create}" method="post"
+							th:object="${vocabularyCardData}" class="form">
+							<div class="frameBorder">
+								<p class="label">LANGUAGE1</p>
+								<input type="text" name="spelling1" th:value="*{spelling1}"
+									placeholder="word 1(必須)" class="createForm menuInput"
+									maxlength="50">
+								<div class="error" th:errors="*{spelling1}" th:errorclass="red"></div>
+								<input type="text" name="spelling2" th:value="*{spelling2}"
+									placeholder="word 2" class="createForm menuInput" max="50">
+								<input type="text" name="spelling3" th:value="*{spelling3}"
+									placeholder="word 3" class="createForm menuInput"
+									maxlength="50">
+								<p class="label">LANGUAGE2</p>
+								<input type="text" name="meaning1" th:value="*{meaning1}"
+									placeholder="word 1" class="createForm menuInput"
+									maxlength="50"> <input type="text" name="meaning2"
+									th:value="*{meaning2}" placeholder="word 2"
+									class="createForm menuInput" maxlength="50"> <input
+									type="text" name="meaning3" th:value="*{meaning3}"
+									placeholder="word 3" class="createForm menuInput"
+									maxlength="50">
+								<button type="submit" id="doCreate">カード追加</button>
+							</div>
+						</form>
 
-				<p><a th:href="@{/vocabularyCard/spellingTest}">テストへ移動</a></p>
+						<!-- タグ追加用のform -->
+						<form th:action="@{/vocabularyCard/createTag}" method="post"
+							th:object="${tagData}" class="form">
+							<div class="frameBorder">
+								<input type="text" name="name" th:value="*{name}"
+									placeholder="tag" class="createTagForm menuInput"
+									maxlength="20">
+								<div class="error" th:if="${#fields.hasErrors('name')}"
+									th:errors="*{name}" th:errorclass="red"></div>
+								<button type="submit" id="doCreateTag">タグ追加</button>
+							</div>
+						</form>
 
-				<table class="flashCardButton">
-					<tr>
-						<td class="label" id="flashL1">L1</td>
-					</tr>
-					<tr>
-						<td class="separator"></td>
-					</tr>
-					<tr>
-						<td class="label" id="flashL2">L2</td>
-					</tr>
-				</table>
-
-				<!-- 検索form -->
-				<form th:action="@{/vocabularyCard/search}" method="post"
-					id="search" th:object="${vocabularyCardQuery}">
-					<div class="form frameBorder">
-						<input type="text" th:value="*{searchSpelling}"
-							name="searchSpelling" class="searchForm menuInput" maxlength="50"
-							placeholder="LANGUAGE1"> <input type="text"
-							th:value="*{searchMeaning}" name="searchMeaning"
-							class="searchForm menuInput" maxlength="50" placeholder="LANGUAGE2">
-						<button id="doSearch">検索</button>
+						<!-- 削除ボタン -->
+						<button type="submit" form="checkDelete" id="deleteButton">チェックした項目を削除</button>
 					</div>
-				</form>
-
-				<!-- 追加用form -->
-				<form th:action="@{/vocabularyCard/create}" method="post"
-					th:object="${vocabularyCardData}" class="form">
-					<div class="frameBorder">
-						<p class="label">LANGUAGE1</p>
-						<input type="text" name="spelling1" th:value="*{spelling1}"
-							placeholder="word 1(必須)" class="createForm menuInput"
-							maxlength="50">
-						<div class="error" th:errors="*{spelling1}" th:errorclass="red"></div>
-						<input type="text" name="spelling2" th:value="*{spelling2}"
-							placeholder="word 2" class="createForm menuInput" max="50">
-						<input type="text" name="spelling3" th:value="*{spelling3}"
-							placeholder="word 3" class="createForm menuInput"
-							maxlength="50">
-						<p class="label">LANGUAGE2</p>
-						<input type="text" name="meaning1" th:value="*{meaning1}"
-							placeholder="word 1" class="createForm menuInput"
-							maxlength="50"> <input type="text" name="meaning2"
-							th:value="*{meaning2}" placeholder="word 2"
-							class="createForm menuInput" maxlength="50"> <input
-							type="text" name="meaning3" th:value="*{meaning3}"
-							placeholder="word 3" class="createForm menuInput"
-							maxlength="50">
-						<button type="submit" id="doCreate">カード追加</button>
-					</div>
-				</form>
-
-				<!-- タグ追加用のform -->
-				<form th:action="@{/vocabularyCard/createTag}" method="post"
-					th:object="${tagData}" class="form">
-					<div class="frameBorder">
-						<input type="text" name="name" th:value="*{name}"
-							placeholder="tag" class="createTagForm menuInput" maxlength="20">
-						<div class="error" th:if="${#fields.hasErrors('name')}"
-							th:errors="*{name}" th:errorclass="red"></div>
-						<button type="submit" id="doCreateTag">タグ追加</button>
-					</div>
-				</form>
 
 
-				<!-- 削除ボタン -->
-				<button type="submit" form="checkDelete" id="deleteButton">チェックした項目を削除</button>
-
-
-				<!-- タグ表示及びタグ検索 jsでinputに上書き、各タグボタンをクリック時に送信 -->
+					<!-- タグ表示及びタグ検索 jsでinputに上書き、各タグボタンをクリック時に送信 -->
 				<form method="post" th:action="@{/vocabularyCard/search}"
 					th:object="${vocabularyCardQuery}" id="searchTag">
 					<input type="hidden" th:value="*{searchTag}" name="searchTag"
@@ -123,51 +133,50 @@
 					<input type="hidden" name="cardId" id="addedCard"> <input
 						type="hidden" name="draggedTag" id="addedTag">
 				</form>
-
 			</div>
 			</div>
 		</div>
 
 		<!-- カードの数だけ<div>を生成  タグには検索用フォームと関連付ける-->
-			<div th:each="vc:${cardList}" class="card displayNot">
-				<section class="tags">
-					<button th:if="${vc.tag1!=null && vc.tag1!=''}" type="submit"
-						th:text="${vc.tag1}" class="tag" form="searchTag"></button>
-					<br>
-					<button th:if="${vc.tag2!=null && vc.tag2!=''}" type="submit"
-						th:text="${vc.tag2}" class="tag" form="searchTag"></button>
-					<br>
-					<button th:if="${vc.tag3!=null && vc.tag3!=''}" type="submit"
-						th:text="${vc.tag3}" class="tag" form="searchTag"></button>
-				</section>
+		<div th:each="vc:${cardList}" class="card displayNot">
+			<section class="tags">
+				<button th:if="${vc.tag1!=null && vc.tag1!=''}" type="submit"
+					th:text="${vc.tag1}" class="tag" form="searchTag"></button>
+				<br>
+				<button th:if="${vc.tag2!=null && vc.tag2!=''}" type="submit"
+					th:text="${vc.tag2}" class="tag" form="searchTag"></button>
+				<br>
+				<button th:if="${vc.tag3!=null && vc.tag3!=''}" type="submit"
+					th:text="${vc.tag3}" class="tag" form="searchTag"></button>
+			</section>
 
-				<section class="wordList">
-					<p class="label">L1</p>
-					<div th:text="${vc.id}" class="id"></div>
-					<div class="hiddenL1">
-						<p th:text="${vc.spelling1}" class="word" id="spelling1"></p>
-						<p th:text="${vc.spelling2}" class="word" id="spelling2"></p>
-						<p th:text="${vc.spelling3}" class="word" id="spelling3"></p>
-					</div>
-					<p class="label">L2</p>
-					<div class="hiddenL2">
-						<p th:text="${vc.meaning1}" class="word"></p>
-						<p th:text="${vc.meaning2}" class="word"></p>
-						<p th:text="${vc.meaning3}" class="word"></p>
-					</div>
-				</section>
-				<div class="check-delete">
-					<form th:action="@{/vocabularyCard/__${vc.id}__}" name="edit"
-						method="post">
-						<button type="submit">編集</button>
-					</form>
-				    <input type="checkbox" th:value="${vc.id}"
-						name="deletedId" class="checkbox" form="checkDelete">
+			<section class="wordList">
+				<p class="label">L1</p>
+				<div th:text="${vc.id}" class="id"></div>
+				<div class="hiddenL1">
+					<p th:text="${vc.spelling1}" class="word" id="spelling1"></p>
+					<p th:text="${vc.spelling2}" class="word" id="spelling2"></p>
+					<p th:text="${vc.spelling3}" class="word" id="spelling3"></p>
 				</div>
-				<div class="float-end"></div>
+				<p class="label">L2</p>
+				<div class="hiddenL2">
+					<p th:text="${vc.meaning1}" class="word"></p>
+					<p th:text="${vc.meaning2}" class="word"></p>
+					<p th:text="${vc.meaning3}" class="word"></p>
+				</div>
+			</section>
+			<div class="check-delete">
+				<form th:action="@{/vocabularyCard/__${vc.id}__}" name="edit"
+					method="post">
+					<button type="submit">編集</button>
+				</form>
+				<input type="checkbox" th:value="${vc.id}" name="deletedId"
+					class="checkbox" form="checkDelete">
 			</div>
-			<br>
+			<div class="float-end"></div>
 		</div>
+		<br>
+	</div>
 	<footer>
 		<ul class="navi">
 		</ul>
@@ -178,16 +187,19 @@
 
 	//css の position: sticky が反映されないため、javascript で実装
 	//menuの最初の位置の高さを取得
-	let firstHeight=$('.menu').offset().top;
+	let firstHeight=$('.menu-container').offset().top;
+	console.log(firstHeight);
 	$(window).on('scroll',function(){
+		let secondHeight=$('.menu-container').offset().top;
+		console.log("s:"+secondHeight);
 		//スクロール量を取得
 		let scroll=$(window).scrollTop();
 		console.log(scroll);
 		//スクロール量がmenuの高さを上回ったらstickyを追加、下回ったら削除
 		if(scroll>firstHeight){
-			$(".menu").addClass('sticky');
+			$(".menu-container").addClass('sticky');
 		}else{
-			$(".menu").removeClass('sticky');
+			$(".menu-container").removeClass('sticky');
 		}
 	});
 

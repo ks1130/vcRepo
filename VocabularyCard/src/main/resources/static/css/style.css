@@ -1,4 +1,7 @@
 @charset "UTF-8";
+.pointer{
+	cursor:pointer;
+}
 h1{
 	background-color: #000055;
 	text-align:center;
@@ -49,16 +52,14 @@ h1{
 .menu{
 	overflow:scroll;
 	top:0;
-	height:80vh;
+	height:85vh;
 	-ms-overflow-style:none;
 	scrollbar-width:none;
 	box-sizing: border-box;
 	clear:right;
 }
-.menuTab{
-}
 .sticky{
-	margin-top:-28vh;
+	margin-top:-30vh;
 	position:fixed;
 }
 ::-webkit-scrollbar{
@@ -82,9 +83,26 @@ h1{
 .operationMenuButton{
 	float:left;
 }
+.tagMenu{
+	padding-top:5vh;
+}
 .tagMenuButton{
 	float:right;
 }
+#hint{
+	font-size:20px;
+	color:#FF8C00;
+	border:solid 3px #000055;
+	background-color:#000055;
+	border-radius:10px;
+	margin-top:4vh;
+	margin-left:3vh;
+	margin-right:auto;
+	width:10vh;
+	text-align: center;
+}
+
+
 .message{
     margin-top:10px;
     display:inline-block;
@@ -131,10 +149,9 @@ h1{
 .login{
 	font-size:15px;
 }
-
 .flashCardButton{
-	margin-top:2vh;
-	margin-left:auto;
+	margin-top:4vh;
+	margin-left:3vh;
 	margin-right:auto;
 	width:10vh;
 }
@@ -248,9 +265,6 @@ td>input{
 .displayNot{
 	display:none;
 }
-.pageNumber{
-	cursor:pointer;
-}
 footer{
 	width:100%;
 	text-align:center;
@@ -275,9 +289,6 @@ h3{
 	color:#FF8C00;
 	font-size:20px;
 }
-button{
-	cursor:pointer;
-}
 #hint{
 	cursor:pointer;
 }
@@ -297,10 +308,10 @@ button{
 	color: #F5F5F5;
 	text-decoration: underline 0px;
 }
-.hiddenL1{
+.L1hidden{
 	text-decoration: underline 1px #000055;
 }
-.hiddenL2{
+.L2hidden{
 	text-decoration: underline 1px #000055;
 }
 .displayNone{

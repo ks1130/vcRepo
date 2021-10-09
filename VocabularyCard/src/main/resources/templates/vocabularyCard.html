@@ -38,19 +38,19 @@
 
 			<div class="menuTab">
 				<div class="operationMenuButton menuButton selected">menu</div> <div
-					class="tagMenuButton menuButton unselected">tag</div>
+					class="tagMenuButton menuButton unselected pointer">tag</div>
 			</div>
 			<div class="guide menu">
 					<div class="operationMenu">
 						<table class="flashCardButton">
 							<tr>
-								<td class="label" id="flashL1">L1</td>
+								<td class="label pointer" id="L1flash">L1</td>
 							</tr>
 							<tr>
 								<td class="separator"></td>
 							</tr>
 							<tr>
-								<td class="label" id="flashL2">L2</td>
+								<td class="label pointer" id="L2flash">L2</td>
 							</tr>
 						</table>
 						<!-- 検索form -->
@@ -113,27 +113,30 @@
 
 
 					<!-- タグ表示及びタグ検索 jsでinputに上書き、各タグボタンをクリック時に送信 -->
-				<form method="post" th:action="@{/vocabularyCard/search}"
-					th:object="${vocabularyCardQuery}" id="searchTag">
-					<input type="hidden" th:value="*{searchTag}" name="searchTag"
-						id="tagValue">
-				</form>
-				<form method="post" th:action="@{/vocabularyCard/delete}"
-					id="checkDelete"></form>
-				<div th:each="tag:${tagList}">
-					<button th:text="${tag.name}" class="tag" draggable="true"
-						form="searchTag"></button>
-					<input type="checkbox" class="check-delete-tag checkbox"
-						name="deletedTagId" th:value="${tag.id}" form="checkDelete">
-				</div>
+					<div class="tagMenu displayNone">
+						<form method="post" th:action="@{/vocabularyCard/search}"
+							th:object="${vocabularyCardQuery}" id="searchTag">
+							<input type="hidden" th:value="*{searchTag}" name="searchTag"
+								id="tagValue">
+						</form>
+						<form method="post" th:action="@{/vocabularyCard/delete}"
+							id="checkDelete"></form>
+						<div th:each="tag:${tagList}">
+							<button th:text="${tag.name}" class="tag" draggable="true"
+								form="searchTag"></button>
+							<input type="checkbox" class="check-delete-tag checkbox"
+								name="deletedTagId" th:value="${tag.id}" form="checkDelete">
+						</div>
 
-				<!-- ドラッグアンドドロップで使用するカードid、タグ名送信用のフォーム -->
-				<form method="post" th:action="@{/vocabularyCard/addTag}"
-					id="addTag">
-					<input type="hidden" name="cardId" id="addedCard"> <input
-						type="hidden" name="draggedTag" id="addedTag">
-				</form>
-			</div>
+						<!-- ドラッグアンドドロップで使用するカードid、タグ名送信用のフォーム -->
+
+						<form method="post" th:action="@{/vocabularyCard/addTag}"
+							id="addTag">
+							<input type="hidden" name="cardId" id="addedCard"> <input
+								type="hidden" name="draggedTag" id="addedTag">
+						</form>
+					</div>
+				</div>
 			</div>
 		</div>
 
@@ -153,13 +156,13 @@
 			<section class="wordList">
 				<p class="label">L1</p>
 				<div th:text="${vc.id}" class="id"></div>
-				<div class="hiddenL1">
+				<div class="L1hidden">
 					<p th:text="${vc.spelling1}" class="word" id="spelling1"></p>
 					<p th:text="${vc.spelling2}" class="word" id="spelling2"></p>
 					<p th:text="${vc.spelling3}" class="word" id="spelling3"></p>
 				</div>
 				<p class="label">L2</p>
-				<div class="hiddenL2">
+				<div class="L2hidden">
 					<p th:text="${vc.meaning1}" class="word"></p>
 					<p th:text="${vc.meaning2}" class="word"></p>
 					<p th:text="${vc.meaning3}" class="word"></p>
@@ -254,15 +257,16 @@
 	//全体を表示件数で割り、商の数だけページ番号を作成。
 		for(let i=1;i<array.length/50+1;i++){
 			const liElement=document.createElement('li');
-			liElement.innerHTML='<li class="pageNumber">'+i+'</li>';
+			liElement.innerHTML='<li class="pageNumber pointer">'+i+'</li>';
 			navi.insertAdjacentElement('beforeend',liElement);
 		}
 
 	//追加した<li>タグの個数分の配列を作成。
 	let pageNumber=document.getElementsByClassName('pageNumber');
 	var arrayPage=Array.prototype.slice.call(pageNumber);
-	//1ページ目を最初に表示する
+	//1ページ目を最初に表示し、pointerをoffにする。currentPage==arrayPage[currentPage-1].textContent
 	let currentPage=1;
+	arrayPage[0].classList.toggle("pointer");
 	//カード50個にtoggleを行うメソッドを定義。
 	var displayCard=function(currentPage,array){
 		for(let i=(currentPage-1)*50;i<((currentPage-1)*50)+50;i++){
@@ -273,9 +277,20 @@
 	//各ページ番号にクリック時のイベントを割り当てる。arrayPage[0]=1であることに注意
 	for(let i=0; i<arrayPage.length;i++){
 		arrayPage[i].addEventListener("click",(event)=>{
-			displayCard(currentPage,array);
-			currentPage=(arrayPage[i].textContent);
-			displayCard(currentPage,array);
+			if(currentPage==arrayPage[i].textContent){
+				return;
+			}else{
+				//クリック前のページを非表示にし、pointerを付与
+				displayCard(currentPage,array);
+				arrayPage[currentPage-1].classList.toggle("pointer");
+				//クリックしたページ番号に更新
+				currentPage=(arrayPage[i].textContent);
+				//更新後のページを表示し、pointerを削除
+				displayCard(currentPage,array);
+				arrayPage[currentPage-1].classList.toggle("pointer");
+				//最上部にスクロール
+				window.scroll(0,0);
+				}
 	});
 	}
 
@@ -340,19 +355,54 @@
 
 
 	//flashCard機能
-	var flashL1=document.getElementById("flashL1");
-	var flashL2=document.getElementById("flashL2");
-    var L1hidden=document.querySelectorAll(".hiddenL1");
-	var L2hidden=document.querySelectorAll(".hiddenL2");
-	$("#flashL1").on("click",function(){
+	var L1flash=document.getElementById("L1flash");
+	var L2flash=document.getElementById("L2flash");
+    var L1hidden=document.querySelectorAll(".L1hidden");
+	var L2hidden=document.querySelectorAll(".L2hidden");
+	$("#L1flash").on("click",function(){
 		for(i=0;i<L1hidden.length;i++){
-		L1hidden[i].classList.toggle('hidden');
+		L1hidden[i].classList.toggle("hidden");
 	}
 	});
-	$("#flashL2").on("click",function(){
+	$("#L2flash").on("click",function(){
 		for(i=0;i<L2hidden.length;i++){
-		L2hidden[i].classList.toggle('hidden');
+		L2hidden[i].classList.toggle("hidden");
 	}
+	});
+
+	//メニューの切り替えを設定
+	let menu=0;
+	function changeMenu(){
+		$(".operationMenu").toggleClass("displayNone");
+		$(".operationMenuButton").toggleClass("selected");
+		$(".operationMenuButton").toggleClass("unselected");
+		$(".operationMenuButton").toggleClass("pointer");
+		$(".tagMenu").toggleClass("displayNone");
+		$(".tagMenuButton").toggleClass("unselected");
+		$(".tagMenuButton").toggleClass("selected");
+		$(".tagMenuButton").toggleClass("pointer");
+	}
+	var operationMenu=document.querySelectorAll(".operationMenu");
+	$(".operationMenuButton").on("click",function(){
+		console.log(menu);
+		console.log(menu===0);
+		if(menu===0){
+			return;
+		}else{
+			changeMenu();
+			menu=0;
+		}
+	});
+	var tagMenu=document.querySelectorAll(".tagMenu");
+	$(".tagMenuButton").on("click",function(){
+		console.log(menu);
+		console.log(menu===1);
+		if(menu===1){
+			return;
+		}else{
+			changeMenu();
+			menu=1;
+		}
 	});
 
 	</script>

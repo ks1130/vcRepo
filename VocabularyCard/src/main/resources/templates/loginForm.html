@@ -2,43 +2,52 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Vocabulary Card</title>
 <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
-	<header>
-		<h1 class="title">Vocabulary Card</h1>
-	</header>
-	<div th:if="${msg!=null}" class="message">
-		<div th:if="${msg.msgType=='E'}" class="error">
-			<span class="icon E">×</span>
-			<span th:text="${msg.msgText}"></span>
+	<div class="login-container">
+		<header>
+			<h1 class="title-container">
+				<span class="title">Vocabulary Card</span>
+			</h1>
+		</header>
+		<div th:if="${msg!=null}" class="message">
+			<div th:if="${msg.msgType=='E'}" class="error">
+				<span class="icon E">×</span> <span th:text="${msg.msgText}"></span>
+			</div>
+			<div th:if="${msg.msgType=='I'}" class="information">
+				<span class="icon I">i</span> <span th:text="${msg.msgText}"></span>
+			</div>
 		</div>
-		<div th:if="${msg.msgType=='I'}" class="information">
-			<span class="icon I">i</span>
-			<span th:text="${msg.msgText}"></span>
+		<div class="login">
+			<h3>ログイン</h3>
+			<form th:action="@{/login/do}" method="post" th:object="${loginData}">
+				<table>
+					<tr>
+						<th class="valign">ID</th>
+					</tr>
+					<tr>
+						<th><input type="password" name="loginId"
+							th:value="*{loginId}">
+							<div th:if="${#fields.hasErrors('loginId')}"
+								th:errors="*{loginId}"></div></th>
+					</tr>
+					<tr>
+						<th class="valign">パスワード</th>
+					</tr>
+					<tr>
+						<th><input type="password" name="password"
+							th:value="*{password}">
+							<div th:if="${#fields.hasErrors('password')}"
+								th:errors="*{password}"></div></th>
+					</tr>
+				</table>
+				<button type="submit">ログイン</button>
+			</form>
+			<a th:href="@{/regist}">新規登録</a>
 		</div>
-	</div>
-	<div class="login">
-		<h3>ログイン</h3>
-		<form th:action="@{/login/do}" method="post" th:object="${loginData}">
-			<table>
-				<tr>
-					<th class="valign">ID</th>
-					<td><input type="password" name="loginId" th:value="*{loginId}">
-						<div th:if="${#fields.hasErrors('loginId')}"
-							th:errors="*{loginId}"></div></td>
-				</tr>
-				<tr>
-					<th class="valign">パスワード</th>
-					<td><input type="password" name="password" th:value="*{password}">
-						<div th:if="${#fields.hasErrors('password')}"
-							th:errors="*{password}"></div></td>
-				</tr>
-			</table>
-			<button type="submit">ログイン</button>
-		</form>
-		<a th:href="@{/regist}">新規登録</a>
 	</div>
 </body>
 </html>

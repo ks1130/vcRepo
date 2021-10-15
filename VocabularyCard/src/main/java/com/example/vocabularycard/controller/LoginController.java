@@ -8,6 +8,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -100,6 +101,7 @@ public class LoginController {
 	@PostMapping("/regist/do")
 	public String regist(@ModelAttribute @Validated RegistData registData,
 			BindingResult result,
+			Model model,
 			RedirectAttributes redirectAttributes,
 			Locale locale) {
 		System.out.println(result.hasErrors());
@@ -114,7 +116,8 @@ public class LoginController {
 			redirectAttributes.addFlashAttribute("msg",new OpMsg("I",msg));
 		}else {
 			String msg=messageSource.getMessage("msg.e.account_failed",null,locale);
-			redirectAttributes.addFlashAttribute("msg", new OpMsg("E",msg));
+			//redirectAttributes.addFlashAttribute("msg", new OpMsg("E",msg));
+			model.addAttribute("msg", new OpMsg("E",msg));
 			return "registForm";
 		}
 		return "redirect:/";

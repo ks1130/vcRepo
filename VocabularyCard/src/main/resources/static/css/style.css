@@ -1,17 +1,31 @@
 @charset "UTF-8";
+*{
+	margin:0px;
+	padding:0px;
+}
 .pointer{
 	cursor:pointer;
 }
-h1{
+.pointer:hover{
+	opacity:0.7;
+}
+.errorMsg{
+	font-size:12px;
+}
+.title-container{
 	background-color: #000055;
-	text-align:center;
+	width:100%;
 	height:8vh;
+	display:table;
 }
 .title{
 	color:#FF8C00;
 	font-size:20px;
 	text-shadow:white 1px 1px 0px,white -1px -1px 0px,white -1px 1px 0px,white 1px -1px 0px,white 0px 1px 0px,white 0px -1px 0px,white -1px 0px 0px,white 1px 0px 0px;
 	text-decoration: none;
+	text-align:center;
+	vertical-align: middle;
+	display:table-cell;
 }
 .container{
 	min-height:100vh;
@@ -22,6 +36,7 @@ h1{
 .float-container{
 	float:left;
 	width:35vh;
+	margin-left:2vh;
 }
 .frameBorder{
 	border: solid 3px #000055;
@@ -31,7 +46,7 @@ h1{
 	/*１枚目のカードの下に空白ができるのを防ぐため。
 	floatした親要素(.wordの親要素)の高さが未確定になるため、空白が生じる。*/
 	overflow: hidden;
-	padding-right:15vh;
+	padding-right:40vh;
 }
 .menuBorder{
 	border:3px solid black;
@@ -46,20 +61,18 @@ h1{
 	box-sizing: border-box;
 	width:inherit;
 	margin-top:2vh;
-
 }
-
 .menu{
 	overflow:scroll;
 	top:0;
-	height:85vh;
+	height:75vh;
 	-ms-overflow-style:none;
 	scrollbar-width:none;
 	box-sizing: border-box;
 	clear:right;
 }
 .sticky{
-	margin-top:-30vh;
+	margin-top:-8%;
 	position:fixed;
 }
 ::-webkit-scrollbar{
@@ -100,9 +113,8 @@ h1{
 	margin-right:auto;
 	width:10vh;
 	text-align: center;
+	cursor:pointer;
 }
-
-
 .message{
     margin-top:10px;
     display:inline-block;
@@ -137,14 +149,17 @@ h1{
 .error{
 	background-color:rgb(255, 181, 218);
 	border-radius:40px;
+	width:fit-containt;
 }
 .warnning{
 	background-color:rgb(255, 255, 128);
 	border-radius:40px;
+	width:fit-containt;
 }
 .information{
 	background-color:rgb(164, 165, 219);
 	border-radius:40px;
+	width:fit-containt;
 }
 .login{
 	font-size:15px;
@@ -173,7 +188,7 @@ h1{
 }
 .wordList{
 	float: right;
-	width:100vh;
+	width:90vh;
 	background-color: #F5F5F5;
 	font-size:20px;
 	border:3px solid black;
@@ -191,11 +206,26 @@ h1{
 	display: block;
 	margin-right:auto;
 	margin-left:auto;
+	margin-bottom:2vh;
 }
 .check-delete{
 	float:right;
 	margin-top:2vh;
 	text-align: right;
+}
+.check-delete-tag{
+	position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  margin:auto;
+}
+.checkbox{
+	height:2vh;
+	width:2vh;
+}
+.editButton{
+	font-size:12px;
 }
 .check-delete-tag{
 	float:left;
@@ -210,10 +240,25 @@ h1{
 	font-size:0px;
 }
 .tag{
-	width: auto;
+	width: 20vh;
 	background-color: #FF8C00;
 	margin-bottom: 2vh;
 	font-size: 15px;
+	overflow-wrap:break-word;
+}
+.tagList{
+	margin-left:2vh;
+	display:block;
+  	position:relative;
+  	padding-left:3vh;
+  	margin-bottom:1vh;
+}
+.tagList>.tag{
+	top:0;
+  	bottom:0;
+  	left:0;
+  	margin-bottom:0;
+  	margin:auto;
 }
 .wordForm{
 	height:auto;
@@ -224,11 +269,18 @@ h1{
 	margin-top: 2vh;
 	text-align:left;
 	border: solid black;
+	width:40vh;
+	margin-left:5vh;
+}
+.editMenu{
+	width:100vh;
+	margin-left:5vh;
+	left:0;
 }
 .writeIn>input{
 	background-color:#F5F5F5 ;
 	font-size:20px;
-	width:90vh;
+	width:85vh;
 	border-top:none;
 	border-left:none;
 	border-right:none;
@@ -260,9 +312,8 @@ td>input{
 	padding-right: 1vh;
 	padding-left: 1vh;
 	color: black;
-
 }
-.displayNot{
+.displayNone{
 	display:none;
 }
 footer{
@@ -275,9 +326,16 @@ footer{
 	text-shadow:white 1px 1px 0px,white -1px -1px 0px,white -1px 1px 0px,white 1px -1px 0px,white 0px 1px 0px,white 0px -1px 0px,white -1px 0px 0px,white 1px 0px 0px;
 	padding-top:-3vh;
 }
+.pageNumber{
+	padding-top:1vh;
+}
+.login{
+	margin-left:3vh;
+}
 .valign{
 	vertical-align: top;
 	text-align: center;
+	font-size:inherit;
 }
 table{
 	background-color: #000055;
@@ -288,9 +346,6 @@ table{
 h3{
 	color:#FF8C00;
 	font-size:20px;
-}
-#hint{
-	cursor:pointer;
 }
 .eachWord{
 	padding-bottom: 2vh;
@@ -314,7 +369,7 @@ h3{
 .L2hidden{
 	text-decoration: underline 1px #000055;
 }
-.displayNone{
+.displayByPage{
 	display:none;
 }
 .L1Length{
@@ -329,4 +384,120 @@ h3{
 }
 .red{
 	color:red;
+}
+.menuForMobile{
+	display:none;
+}
+
+@media screen and (max-width:480px){
+	.errorMsg{
+		font-size:8px;
+	}
+	.float-container{
+		right:0;
+		position:fixed;
+	}
+	.guide{
+	font-size:10px;
+	}
+	.menuButton{
+	font-size:15px;
+	}
+	.menu{
+	height:70vh;
+	}
+	.form{
+	font-size:10px;
+	}
+	button{
+	font-size:8px;
+	}
+	.card{
+	padding-right:0px;
+	float:left;
+	}
+	.wordList{
+		width:25vh;
+		font-size:8px;
+	}
+	.writeIn>input{
+	width:17vh;
+	}
+	.check{
+	width:4vh;
+	}
+	.L1Length{
+	font-size:8px;
+	}
+	.L2Length{
+	font-size:8px;}
+	.tags{
+		width:12vh;
+		}
+	.tag{
+	width:12vh;
+	font-size:8px;
+		}
+		.editButton{
+	font-size:8px;
+	}
+	.title-container{
+		height:5vh;
+	}
+	.title{
+		font-size:12px;
+	}
+	.menuForMobile{
+		height:inherit;
+		background-color:#F5F5F5;
+		font-size:10px;
+		text-align:center;
+		display:table-cell;
+		vertical-align:middle;
+		border:solid 1px;
+		color:#000055;
+		position:fixed;
+		float:right;
+		right:0;
+		z-index:100;
+	}
+	.menuForMobile>p{
+		display:table-cell;
+		vertical-align: middle;
+	}
+	#hint{
+	font-size:12px;
+	width:6vh;
+	}
+	.login{
+	font-size:12px;
+	}
+	.valign{
+	font-size:8px;
+	}
+	h3{
+	font-size:12px;
+	}
+	td>input{
+	width:20vh;
+	font-size:12px;
+	height:3vh;
+	}
+	.login-container{
+	font-size:12px;
+	}
+	.wordForm{
+	width:40vh;
+	margin-right:auto;
+	margin-left:auto;
+	}
+	.editMenu{
+	width:40vh;
+	margin-right:auto;
+	margin-left:auto;
+	left:0;
+	}
+	.label{
+	font-size:6px;
+	}
 }

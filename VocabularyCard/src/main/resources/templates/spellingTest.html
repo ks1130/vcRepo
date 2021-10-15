@@ -2,16 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Vocabulary Card</title>
+<link href="https://unpkg.com/sanitize.css" rel="stylesheet">
 <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
 	<script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
 
 	<header>
-		<h1>
+		<h1 class="title-container">
 			<a th:href="@{/vocabularyCard/spellingTest}" class="title">Vocabulary
 				Card (TEST)</a>
+			<span class="menuForMobile pointer">menu</span>
 		</h1>
 	</header>
 
@@ -81,23 +84,23 @@
 								id="tagValue">
 						</form>
 						<div th:each="tag:${tagList}">
-							<button th:text="${tag.name}" class="tag" form="searchTag"></button>
+							<button th:text="${tag.name}" class="tag pointer" form="searchTag"></button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<!-- カードの数だけ<div>を生成  タグには検索用フォームと関連付ける-->
-		<div th:each="vc:${cardList}" class="card displayNot">
+		<div th:each="vc:${cardList}" class="card displayByPage">
 			<section class="tags">
 				<button th:if="${vc.tag1!=null && vc.tag1!=''}" type="submit"
-					th:text="${vc.tag1}" class="tag" form="searchTag"></button>
+					th:text="${vc.tag1}" class="tag pointer" form="searchTag"></button>
 				<br>
 				<button th:if="${vc.tag2!=null && vc.tag2!=''}" type="submit"
-					th:text="${vc.tag2}" class="tag" form="searchTag"></button>
+					th:text="${vc.tag2}" class="tag pointer" form="searchTag"></button>
 				<br>
 				<button th:if="${vc.tag3!=null && vc.tag3!=''}" type="submit"
-					th:text="${vc.tag3}" class="tag" form="searchTag"></button>
+					th:text="${vc.tag3}" class="tag pointer" form="searchTag"></button>
 			</section>
 
 			<section class="wordList">
@@ -164,24 +167,6 @@
 	<script>
 	'use strict';
 
-	//css の position: sticky が反映されないため、javascript で実装
-	//menuの最初の位置の高さを取得
-	let firstHeight=$('.menu-container').offset().top;
-	console.log(firstHeight);
-	$(window).on('scroll',function(){
-		let secondHeight=$('.menu-container').offset().top;
-		console.log("s:"+secondHeight);
-		//スクロール量を取得
-		let scroll=$(window).scrollTop();
-		console.log(scroll);
-		//スクロール量がmenuの高さを上回ったらstickyを追加、下回ったら削除
-		if(scroll>firstHeight){
-			$(".menu-container").addClass('sticky');
-		}else{
-			$(".menu-container").removeClass('sticky');
-		}
-	});
-
 	//タグ検索機能
 	const tag=document.getElementsByClassName("tag");
 	let draggedTag;
@@ -203,46 +188,45 @@
 	//cardを配列として取得
 	const cardList=document.getElementsByClassName('card');
 	var array=Array.prototype.slice.call(cardList);
-
-	const navi=document.querySelector(".navi");
-	//全体を表示件数で割り、商の数だけページ番号を作成
-		for(let i=1;i<array.length/50+1;i++){
-			const liElement=document.createElement('li');
-			liElement.innerHTML='<li class="pageNumber pointer">'+i+'</li>';
-			navi.insertAdjacentElement('beforeend',liElement);
+	if(array.length!=0){
+		const navi=document.querySelector(".navi");
+		//全体を表示件数で割り、商の数だけページ番号を作成
+			for(let i=1;i<array.length/50+1;i++){
+				const liElement=document.createElement('li');
+				liElement.innerHTML='<li class="pageNumber pointer">'+i+'</li>';
+				navi.insertAdjacentElement('beforeend',liElement);
+			}
+		//追加した<li>タグの個数分の配列を作成
+		let pageNumber=document.getElementsByClassName('pageNumber');
+		var arrayPage=Array.prototype.slice.call(pageNumber);
+		//1ページ目を最初に表示し、pointerをoffにする。currentPage==arrayPage[currentPage-1].textContent
+		let currentPage=1;
+		arrayPage[0].classList.toggle("pointer");
+		//カード50個にtoggleを行うメソッドを定義
+		var displayCard=function(currentPage,array){
+			for(let i=(currentPage-1)*50;i<((currentPage-1)*50)+50;i++){
+			if(i+1>array.length)break;
+			array[i].classList.toggle('displayByPage');
+		}};
+		displayCard(currentPage,array);
+		//各ページ番号にクリック時のイベントを割り当てる。arrayPage[0]=1であることに注意
+		for(let i=0; i<arrayPage.length;i++){
+			arrayPage[i].addEventListener("click",(event)=>{
+				if(currentPage==arrayPage[i].textContent){
+					return;
+				}else{
+					//クリック前のページを非表示にし、pointerを付与
+					displayCard(currentPage,array);
+					arrayPage[currentPage-1].classList.toggle("pointer");
+					//クリックしたページ番号に更新
+					currentPage=(arrayPage[i].textContent);
+					//更新後のページを表示し、pointerを削除
+					displayCard(currentPage,array);
+					arrayPage[currentPage-1].classList.toggle("pointer");
+					window.scroll(0,0);
+			}
+		});
 		}
-
-	//追加した<li>タグの個数分の配列を作成
-	let pageNumber=document.getElementsByClassName('pageNumber');
-	var arrayPage=Array.prototype.slice.call(pageNumber);
-	//1ページ目を最初に表示し、pointerをoffにする。currentPage==arrayPage[currentPage-1].textContent
-	let currentPage=1;
-	arrayPage[0].classList.toggle("pointer");
-	//カード50個にtoggleを行うメソッドを定義
-	var displayCard=function(currentPage,array){
-		for(let i=(currentPage-1)*50;i<((currentPage-1)*50)+50;i++){
-		if(i+1>array.length)break;
-		array[i].classList.toggle('displayNot');
-	}};
-	displayCard(currentPage,array);
-	//各ページ番号にクリック時のイベントを割り当てる。arrayPage[0]=1であることに注意
-	for(let i=0; i<arrayPage.length;i++){
-		arrayPage[i].addEventListener("click",(event)=>{
-			if(currentPage==arrayPage[i].textContent){
-				return;
-			}else{
-				//クリック前のページを非表示にし、pointerを付与
-				displayCard(currentPage,array);
-				arrayPage[currentPage-1].classList.toggle("pointer");
-				//クリックしたページ番号に更新
-				currentPage=(arrayPage[i].textContent);
-				//更新後のページを表示し、pointerを削除
-				displayCard(currentPage,array);
-				arrayPage[currentPage-1].classList.toggle("pointer");
-				//最上部にスクロール
-				window.scroll(0,0);
-		}
-	});
 	}
 
     //input入力内容があった場合にのみボタンをクリックできるようにするメソッド
@@ -261,7 +245,6 @@
     		});
 		}
 	}
-	//検索用フォームに設定
 	var searchForm=document.getElementsByClassName('searchForm');
 	var searchButton=document.getElementById('doSearch');
 	enableClick(searchButton,searchForm);
@@ -381,8 +364,6 @@
 	}
 	var operationMenu=document.querySelectorAll(".operationMenu");
 	$(".operationMenuButton").on("click",function(){
-		console.log(menu);
-		console.log(menu===0);
 		if(menu===0){
 			return;
 		}else{
@@ -392,8 +373,6 @@
 	});
 	var tagMenu=document.querySelectorAll(".tagMenu");
 	$(".tagMenuButton").on("click",function(){
-		console.log(menu);
-		console.log(menu===1);
 		if(menu===1){
 			return;
 		}else{
@@ -401,6 +380,32 @@
 			menu=1;
 		}
 	});
+
+	//menuの追従、スマホ用の設定
+	if(screen.width<480){
+		console.log("a");
+		$(".float-container").toggleClass("displayNone");
+		$(".menuForMobile").on("click",function(){
+			console.log("a");
+			$(".float-container").toggleClass("displayNone");
+		});
+	}else{
+		console.log("b");
+		//css の position: sticky が反映されないため、javascript で実装
+		//menuの最初の位置の高さを取得
+		let firstHeight=$('.menu-container').offset().top;
+		$(window).on('scroll',function(){
+			let secondHeight=$('.menu-container').offset().top;
+			//スクロール量を取得
+			let scroll=$(window).scrollTop();
+			//スクロール量がmenuの高さを上回ったらstickyを追加、下回ったら削除
+			if(scroll>firstHeight){
+				$(".menu-container").addClass('sticky');
+			}else{
+				$(".menu-container").removeClass('sticky');
+			}
+		});
+	}
 
 	</script>
 </body>

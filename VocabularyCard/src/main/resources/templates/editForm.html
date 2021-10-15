@@ -2,15 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>VocabularyCard</title>
+<link href="https://unpkg.com/sanitize.css" rel="stylesheet">
 <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
 	<div class="container">
-		<h1 class="title">
-			Vocabulary Card
-		</h1>
-
+		<header>
+			<h1 class="title-container">
+				<a th:href="@{/vocabularyCard}" class="title">Vocabulary Card</a>
+			</h1>
+		</header>
 		<form th:action="@{vocabularyCard/update}" method="post"
 			th:object="${editedCard}">
 			<input type="hidden" th:field="*{id}" th:value="*{id}">
@@ -53,9 +56,11 @@
 							th:field="*{tag3}"></td>
 					</tr>
 				</table>
+		<div class="editMenu">
 			<button type="submit" th:formaction="@{/vocabularyCard/update}">更新</button>
 			<button type="submit" th:formaction="@{/vocabularyCard/cancel}">キャンセル</button>
+		</div>
 		</form>
-	</div>
+		</div>
 </body>
 </html>

@@ -4,13 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Vocabulary Card</title>
+<link href="https://unpkg.com/sanitize.css" rel="stylesheet">
 <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
 	<script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
 
 	<header>
-		<h1><a th:href="@{/vocabularyCard}" class="title">Vocabulary Card</a></h1>
+		<h1 class="title-container">
+			<a th:href="@{/vocabularyCard}" class="title">Vocabulary Card</a>
+			<span class="menuForMobile pointer">menu</span>
+		</h1>
 	</header>
 
 	<div class="container">
@@ -101,7 +105,7 @@
 							<div class="frameBorder">
 								<input type="text" name="name" th:value="*{name}"
 									placeholder="tag" class="createTagForm menuInput"
-									maxlength="20">
+									maxlength="30">
 								<div class="error" th:if="${#fields.hasErrors('name')}"
 									th:errors="*{name}" th:errorclass="red"></div>
 								<button type="submit" id="doCreateTag">タグ追加</button>
@@ -112,7 +116,6 @@
 						<button type="submit" form="checkDelete" id="deleteButton">チェックした項目を削除</button>
 					</div>
 
-
 					<!-- タグ表示及びタグ検索 jsでinputに上書き、各タグボタンをクリック時に送信 -->
 					<div class="tagMenu displayNone">
 						<form method="post" th:action="@{/vocabularyCard/search}"
@@ -122,8 +125,8 @@
 						</form>
 						<form method="post" th:action="@{/vocabularyCard/delete}"
 							id="checkDelete"></form>
-						<div th:each="tag:${tagList}">
-							<button th:text="${tag.name}" class="tag" draggable="true"
+						<div th:each="tag:${tagList}" class="tagList">
+							<button th:text="${tag.name}" class="tag pointer" draggable="true"
 								form="searchTag"></button>
 							<input type="checkbox" class="check-delete-tag checkbox"
 								name="deletedTagId" th:value="${tag.id}" form="checkDelete">
@@ -142,16 +145,16 @@
 		</div>
 
 		<!-- カードの数だけ<div>を生成  タグには検索用フォームと関連付ける-->
-		<div th:each="vc:${cardList}" class="card displayNot">
+		<div th:each="vc:${cardList}" class="card displayByPage">
 			<section class="tags">
 				<button th:if="${vc.tag1!=null && vc.tag1!=''}" type="submit"
-					th:text="${vc.tag1}" class="tag" form="searchTag"></button>
+					th:text="${vc.tag1}" class="tag pointer" form="searchTag"></button>
 				<br>
 				<button th:if="${vc.tag2!=null && vc.tag2!=''}" type="submit"
-					th:text="${vc.tag2}" class="tag" form="searchTag"></button>
+					th:text="${vc.tag2}" class="tag pointer" form="searchTag"></button>
 				<br>
 				<button th:if="${vc.tag3!=null && vc.tag3!=''}" type="submit"
-					th:text="${vc.tag3}" class="tag" form="searchTag"></button>
+					th:text="${vc.tag3}" class="tag pointer" form="searchTag"></button>
 			</section>
 
 			<section class="wordList">
@@ -172,7 +175,7 @@
 			<div class="check-delete">
 				<form th:action="@{/vocabularyCard/__${vc.id}__}" name="edit"
 					method="post">
-					<button type="submit">編集</button>
+					<button class="editButton pointer" type="submit">編集</button>
 				</form>
 				<input type="checkbox" th:value="${vc.id}" name="deletedId"
 					class="checkbox" form="checkDelete">
@@ -188,24 +191,6 @@
 
 	<script>
 	'use strict';
-
-	//css の position: sticky が反映されないため、javascript で実装
-	//menuの最初の位置の高さを取得
-	let firstHeight=$('.menu-container').offset().top;
-	console.log(firstHeight);
-	$(window).on('scroll',function(){
-		let secondHeight=$('.menu-container').offset().top;
-		console.log("s:"+secondHeight);
-		//スクロール量を取得
-		let scroll=$(window).scrollTop();
-		console.log(scroll);
-		//スクロール量がmenuの高さを上回ったらstickyを追加、下回ったら削除
-		if(scroll>firstHeight){
-			$(".menu-container").addClass('sticky');
-		}else{
-			$(".menu-container").removeClass('sticky');
-		}
-	});
 
 	//ドラッグアンドドロップ機能
 	const tag=document.getElementsByClassName("tag");
@@ -251,51 +236,49 @@
 	//ページネイション機能
 	//cardを配列として取得
 	const cardList=document.getElementsByClassName('card');
-	console.log(cardList.length);
 	var array=Array.prototype.slice.call(cardList);
-
-	const navi=document.querySelector(".navi");
-	//全体を表示件数で割り、商の数だけページ番号を作成。
+	if(array.length!=0){
+		const navi=document.querySelector(".navi");
+		//全体を表示件数で割り、商の数だけページ番号を作成。
 		for(let i=1;i<array.length/50+1;i++){
 			const liElement=document.createElement('li');
 			liElement.innerHTML='<li class="pageNumber pointer">'+i+'</li>';
 			navi.insertAdjacentElement('beforeend',liElement);
 		}
-
-	//追加した<li>タグの個数分の配列を作成。
-	let pageNumber=document.getElementsByClassName('pageNumber');
-	var arrayPage=Array.prototype.slice.call(pageNumber);
-	//1ページ目を最初に表示し、pointerをoffにする。currentPage==arrayPage[currentPage-1].textContent
-	let currentPage=1;
-	arrayPage[0].classList.toggle("pointer");
-	//カード50個にtoggleを行うメソッドを定義。
-	var displayCard=function(currentPage,array){
-		for(let i=(currentPage-1)*50;i<((currentPage-1)*50)+50;i++){
-		if(i+1>array.length)break;
-		array[i].classList.toggle('displayNot');
-	}};
-	displayCard(currentPage,array);
-	//各ページ番号にクリック時のイベントを割り当てる。arrayPage[0]=1であることに注意
-	for(let i=0; i<arrayPage.length;i++){
-		arrayPage[i].addEventListener("click",(event)=>{
-			if(currentPage==arrayPage[i].textContent){
-				return;
-			}else{
-				//クリック前のページを非表示にし、pointerを付与
-				displayCard(currentPage,array);
-				arrayPage[currentPage-1].classList.toggle("pointer");
-				//クリックしたページ番号に更新
-				currentPage=(arrayPage[i].textContent);
-				//更新後のページを表示し、pointerを削除
-				displayCard(currentPage,array);
-				arrayPage[currentPage-1].classList.toggle("pointer");
-				//最上部にスクロール
-				window.scroll(0,0);
-				}
+		//追加した<li>タグの個数分の配列を作成。
+		let pageNumber=document.getElementsByClassName('pageNumber');
+		var arrayPage=Array.prototype.slice.call(pageNumber);
+		//1ページ目を最初に表示し、pointerをoffにする。currentPage==arrayPage[currentPage-1].textContent
+		let currentPage=1;
+		arrayPage[0].classList.toggle("pointer");
+		//カード50個にtoggleを行うメソッドを定義。
+		var displayCard=function(currentPage,array){
+			for(let i=(currentPage-1)*50;i<((currentPage-1)*50)+50;i++){
+			if(i+1>array.length)break;
+			array[i].classList.toggle('displayByPage');
+		}};
+		displayCard(currentPage,array);
+		//各ページ番号にクリック時のイベントを割り当てる。arrayPage[0]=1であることに注意
+		for(let i=0; i<arrayPage.length;i++){
+			arrayPage[i].addEventListener("click",(event)=>{
+				if(currentPage==arrayPage[i].textContent){
+					return;
+				}else{
+					//クリック前のページを非表示にし、pointerを付与
+					displayCard(currentPage,array);
+					arrayPage[currentPage-1].classList.toggle("pointer");
+					//クリックしたページ番号に更新
+					currentPage=(arrayPage[i].textContent);
+					//更新後のページを表示し、pointerを削除
+					displayCard(currentPage,array);
+					arrayPage[currentPage-1].classList.toggle("pointer");
+					window.scroll(0,0);
+					}
 	});
 	}
+	}
 
-    //input入力内容があった場合にのみボタンをクリックできるようにするメソッド
+    //input入力内容があった場合にのみボタンをクリックできるようにする
 	function enableClick(button,inputArray){
     	button.disabled=true;
 		for(var i=0;i<inputArray.length;i++){
@@ -311,15 +294,13 @@
     		});
 		}
 	}
-	//検索用フォームに設定
+    //各formに「設定
 	var searchForm=document.getElementsByClassName('searchForm');
 	var searchButton=document.getElementById('doSearch');
 	enableClick(searchButton,searchForm);
-	//カード追加用フォーム
 	var createForm=document.getElementsByClassName('createForm');
 	var createButton=document.getElementById('doCreate');
 	enableClick(createButton,createForm);
-	//タグ追加用フォーム
 	var createTagForm=document.getElementsByClassName('createTagForm');
 	var createTagButton=document.getElementById('doCreateTag');
 	enableClick(createTagButton,createTagForm);
@@ -385,8 +366,6 @@
 	}
 	var operationMenu=document.querySelectorAll(".operationMenu");
 	$(".operationMenuButton").on("click",function(){
-		console.log(menu);
-		console.log(menu===0);
 		if(menu===0){
 			return;
 		}else{
@@ -396,8 +375,6 @@
 	});
 	var tagMenu=document.querySelectorAll(".tagMenu");
 	$(".tagMenuButton").on("click",function(){
-		console.log(menu);
-		console.log(menu===1);
 		if(menu===1){
 			return;
 		}else{
@@ -405,6 +382,30 @@
 			menu=1;
 		}
 	});
+
+	//menuの追従、スマホ用の設定
+	if(screen.width<480){
+		$(".float-container").toggleClass("displayNone");
+		$(".menuForMobile").on("click",function(){
+			console.log("a");
+			$(".float-container").toggleClass("displayNone");
+		});
+	}else{
+		//css の position: sticky が反映されないため、javascript で実装
+		//menuの最初の位置の高さを取得
+		let firstHeight=$('.menu-container').offset().top;
+		$(window).on('scroll',function(){
+			let secondHeight=$('.menu-container').offset().top;
+			//スクロール量を取得
+			let scroll=$(window).scrollTop();
+			//スクロール量がmenuの高さを上回ったらstickyを追加、下回ったら削除
+			if(scroll>firstHeight){
+				$(".menu-container").addClass('sticky');
+			}else{
+				$(".menu-container").removeClass('sticky');
+			}
+		});
+	}
 
 	</script>
 </body>

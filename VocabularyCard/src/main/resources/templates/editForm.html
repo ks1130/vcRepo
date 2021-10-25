@@ -8,59 +8,101 @@
 <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
+	<script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
+
 	<div class="container">
 		<header>
-			<h1 class="title-container">
-				<a th:href="@{/vocabularyCard}" class="title">Vocabulary Card</a>
+			<h1 class="title-container titleVC-container">
+				<a th:href="@{/vocabularyCard}" class="title titleVC">Vocabulary
+					Card</a>
 			</h1>
 		</header>
+		<!-- 操作メッセージ -->
+		<div th:if="${msg!=null}">
+			<div th:if="${msg.msgType=='E'}" class="error">
+				<span class="icon E">×</span><span th:text="${msg.msgText}"></span>
+			</div>
+		</div>
+
 		<form th:action="@{vocabularyCard/update}" method="post"
-			th:object="${editedCard}">
+			th:object="${editedCard}" id="editForm">
 			<input type="hidden" th:field="*{id}" th:value="*{id}">
-				<table class="wordForm">
-					<tr class="label">
-						<th>L1</th>
-					</tr>
-					<tr>
-						<td><input th:value="*{spelling1}" id="spelling1" type="text"
-							th:field="*{spelling1}"></td>
-					<tr>
-					<tr>
-						<td><input th:value="*{spelling2}" id="spelling2" type="text"
-							th:field="*{spelling2}"></td>
-					<tr>
-					<tr>
-						<td><input th:value="*{spelling3}" id="spelling3" type="text"
-							th:field="*{spelling3}"></td>
-					</tr>
-					<tr>
-						<td class="label">L2</td>
-					</tr>
-					<tr>
-						<td><input th:value="*{meaning1}" type="text"
-							th:field="*{meaning1}"></td>
-					</tr>
-					<tr>
-						<td><input th:value="*{meaning2}" type="text"
-							th:field="*{meaning2}"></td>
-					</tr>
-					<tr>
-						<td><input th:value="*{meaning3}" type="text"
-							th:field="*{meaning3}"></td>
-					</tr>
-					<tr>
-						<td><input type="hidden" class="hiddenTag" th:value="*{tag1}"
-							th:field="*{tag1}"> <input type="hidden"
-							class="hiddenTag" th:value="*{tag2}" th:field="*{tag2}">
-							<input type="hidden" class="hiddenTag" th:value="*{tag3}"
-							th:field="*{tag3}"></td>
-					</tr>
-				</table>
-		<div class="editMenu">
-			<button type="submit" th:formaction="@{/vocabularyCard/update}">更新</button>
-			<button type="submit" th:formaction="@{/vocabularyCard/cancel}">キャンセル</button>
-		</div>
-		</form>
-		</div>
+			<table class="wordForm">
+				<tr class="label">
+					<th>L1</th>
+				</tr>
+				<tr>
+					<td><input th:value="*{spelling1}" id="spelling1" type="text"
+						th:field="*{spelling1}" class="spelling"></td>
+				<tr>
+				<tr>
+					<td><input th:value="*{spelling2}" id="spelling2" type="text"
+						th:field="*{spelling2}" class="spelling"></td>
+				<tr>
+				<tr>
+					<td><input th:value="*{spelling3}" id="spelling3" type="text"
+						th:field="*{spelling3}" class="spelling"></td>
+				</tr>
+				<tr>
+					<td class="label">L2</td>
+				</tr>
+				<tr>
+					<td><input th:value="*{meaning1}" type="text"
+						th:field="*{meaning1}" class="meaning"></td>
+				</tr>
+				<tr>
+					<td><input th:value="*{meaning2}" type="text"
+						th:field="*{meaning2}" class="meaning"></td>
+				</tr>
+				<tr>
+					<td><input th:value="*{meaning3}" type="text"
+						th:field="*{meaning3}" class="meaning"></td>
+				</tr>
+			</table>
+			<div class="editedTags">
+				<div>
+					<input type="text" class="tag editedTag" th:value="*{tag1}"
+						th:field="*{tag1}">
+				</div>
+				<div>
+					<input type="text" class="tag editedTag" th:value="*{tag2}"
+						th:field="*{tag2}">
+				</div>
+				<div>
+					<input type="text" class="tag editedTag" th:value="*{tag3}"
+						th:field="*{tag3}">
+				</div>
+			</div>
+			<div class="editMenu">
+				<button type="submit" th:formaction="@{/vocabularyCard/update}">更新</button>
+				<button type="submit" th:formaction="@{/vocabularyCard/cancel}">キャンセル</button>
+			</div>
+		</form><button id="sample">sample</button>
+	</div>
+
+	<script>
+		'use strict'
+		/*//inputの空白があるところを繰り上げる
+
+		const spelling = document.getElementsByClassName("spelling");
+		const meaning = document.getElementsByClassName("spelling");
+		const tag = document.getElementsByClassName("tag");
+		const input=[spelling,meaning,tag];
+		$("#sample").click(function(input){
+			console.log(input.length);
+			for(var i=0;i<input.length;i++){
+				if (input[i][1].value.length ===0 && input[i][2].length > 0) {
+					input[i][1].value = input[i][2].value;
+					input[i][2].value="";
+					console.log("true1");
+				}
+				if (input[i][0].value.length == 0 && input[i][1].value.length > 0) {
+					input[i][0].value = input[i][1].value;
+					input[i][1].value = "";
+					console.log("true2");
+				}
+			}
+		});*/
+	</script>
 </body>
 </html>

@@ -7,12 +7,14 @@
 <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
+<script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
+	<header>
+		<h1 class="title-container">
+			<span class="title">Vocabulary Card</span>
+		</h1>
+	</header>
 	<div class="login-container">
-		<header>
-			<h1 class="title-container">
-				<span class="title">Vocabulary Card</span>
-			</h1>
-		</header>
+	<div id="loginFloat">
 		<div th:if="${msg!=null}" class="message">
 			<div th:if="${msg.msgType=='E'}" class="error">
 				<span class="icon E">×</span> <span th:text="${msg.msgText}"></span>
@@ -22,32 +24,250 @@
 			</div>
 		</div>
 		<div class="login">
-			<h3>ログイン</h3>
 			<form th:action="@{/login/do}" method="post" th:object="${loginData}">
 				<table>
 					<tr>
 						<th class="valign">ID</th>
 					</tr>
 					<tr>
-						<th><input type="password" name="loginId"
-							th:value="*{loginId}">
+						<td><input type="password" name="loginId"
+							th:value="*{loginId}" class="loginInput">
 							<div th:if="${#fields.hasErrors('loginId')}"
-								th:errors="*{loginId}"></div></th>
+								th:errors="*{loginId}"></div></td>
 					</tr>
 					<tr>
 						<th class="valign">パスワード</th>
 					</tr>
 					<tr>
-						<th><input type="password" name="password"
-							th:value="*{password}">
+						<td><input type="password" name="password"
+							th:value="*{password}" class="loginInput">
 							<div th:if="${#fields.hasErrors('password')}"
-								th:errors="*{password}"></div></th>
+								th:errors="*{password}"></div></td>
 					</tr>
 				</table>
 				<button type="submit">ログイン</button>
 			</form>
 			<a th:href="@{/regist}">新規登録</a>
 		</div>
+		</div>
+		<div class="topText">
+			<div class="topic-container">スペリングをテストできる単語帳
+				<ul class="feature">
+					<li>スペルを確認するテスト。間違えたスペルを教えてくれる。</li>
+					<li>複数の単語や意味をまとめて1つのカードに登録。多対多の単語帳を作れる。
+					<li>タグ付けして一括で管理、表示、テストできる。
+				</ul>
+			</div>
+		</div>
+
+		<div class="topPage">
+			<div class="sampleMenu">
+				<p class="sampleText">サンプル</p>
+				<table class="flashCardButton">
+					<tr>
+						<td class="label pointer" id="L1flash">L1</td>
+					</tr>
+					<tr>
+						<td class="separator"></td>
+					</tr>
+					<tr>
+						<td class="label pointer" id="L2flash">L2</td>
+					</tr>
+				</table>
+				<div id="hint" class="pointer">Hint</div>
+			</div>
+			<div class="sampleCard">
+				<div class="card">
+					<section class="sampleWordList">
+						<p class="label">L1</p>
+						<div class="L1">
+							<div class="eachWord">
+								<span class="L1hidden correct" id="spelling1">sample</span> <span
+									class="L1writeIn displayNone writeIn"><input type="text"
+									placeholder=""><span class="L1Length"></span></span>
+								<button class="check L1check" draggable="true">⇔</button>
+								<br>
+							</div>
+						</div>
+						<p class="label">L2</p>
+						<div class="L2">
+							<div class="eachWord">
+								<span class="L2hidden correct">サンプル</span> <span
+									class="L2writeIn displayNone writeIn"><input type="text"
+									placeholder=""><span class="L2Length"></span></span>
+								<button class="check L2check" draggable="true">⇔</button>
+								<br> <span class="L2hidden correct">見本</span> <span
+									class="L2writeIn displayNone writeIn"><input type="text"
+									placeholder=""><span class="L2Length"></span></span>
+								<button class="check L2check" draggable="true">⇔</button>
+								<br> <span class="L2hidden correct">試す</span> <span
+									class="L2writeIn displayNone writeIn"><input type="text"
+									placeholder=""><span class="L2Length"></span></span>
+								<button class="check L2check" draggable="true">⇔</button>
+								<br>
+							</div>
+						</div>
+					</section>
+				</div>
+			</div>
+			<div class="card">
+				<section class="sampleWordList">
+					<p class="label">L1</p>
+					<div class="L1">
+						<div class="eachWord">
+							<span class="L1hidden correct" id="spelling1">demonstration</span>
+							<span class="L1writeIn displayNone writeIn"><input
+								type="text" placeholder=""><span class="L1Length"></span></span>
+							<button class="check L1check" draggable="true">⇔</button>
+							<br> <span class="L1hidden correct" id="spelling1">performance</span>
+							<span class="L1writeIn displayNone writeIn"><input
+								type="text" placeholder=""><span class="L1Length"></span></span>
+							<button class="check L1check" draggable="true">⇔</button>
+							<br>
+						</div>
+					</div>
+					<p class="label">L2</p>
+					<div class="L2">
+						<div class="eachWord">
+							<span class="L2hidden correct">実演</span> <span
+								class="L2writeIn displayNone writeIn"><input type="text"
+								placeholder=""><span class="L2Length"></span></span>
+							<button class="check L2check" draggable="true">⇔</button>
+							<br>
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
 	</div>
+	<script type="text/javascript">
+	//spellingTest機能
+	var L1flash=document.getElementById("L1flash");
+	var L2flash=document.getElementById("L2flash");
+    var L1hidden=document.querySelectorAll(".L1hidden");
+	var L2hidden=document.querySelectorAll(".L2hidden");
+	var L1writeIn=document.querySelectorAll(".L1writeIn");
+	var L2writeIn=document.querySelectorAll(".L2writeIn");
+	var L1Length=document.querySelectorAll(".L1Length");
+	var L2Length=document.querySelectorAll(".L2Length");
+	//正解の単語の文字数を表示
+	for(let i=0;i<L1hidden.length;i++){
+		L1Length[i].textContent="(" + L1hidden[i].textContent.length + ")";
+	}
+	for(let i=0;i<L2hidden.length;i++){
+		L2Length[i].textContent="(" + L2hidden[i].textContent.length + ")";
+	}
+	//回答⇔一覧の切り替えを設定
+	//表示=0,非表示=1
+	let currentL1Switch=0;
+	let currentL2Switch=0;
+	$("#L1flash").on("click",function(){
+		if(currentL1Switch==0){
+			for(let i=0;i<L1hidden.length;i++){
+				if(!L1hidden[i].classList.contains('displayNone')){
+					L1hidden[i].classList.toggle('displayNone');
+					L1writeIn[i].classList.toggle('displayNone');
+				}
+			}
+			currentL1Switch=1;
+		}else{
+			for(let i=0;i<L1hidden.length;i++){
+				if(L1hidden[i].classList.contains('displayNone')){
+					L1hidden[i].classList.toggle('displayNone');
+					L1writeIn[i].classList.toggle('displayNone');
+				}
+			}
+			currentL1Switch=0;
+		}
+	});
+	$("#L2flash").on("click",function(){
+		if(currentL2Switch==0){
+			for(let i=0;i<L2hidden.length;i++){
+				if(!L2hidden[i].classList.contains('displayNone')){
+					L2hidden[i].classList.toggle('displayNone');
+					L2writeIn[i].classList.toggle('displayNone');
+				}
+			}
+			currentL2Switch=1;
+		}else{
+			for(let i=0;i<L2hidden.length;i++){
+				if(L2hidden[i].classList.contains('displayNone')){
+					L2hidden[i].classList.toggle('displayNone');
+					L2writeIn[i].classList.toggle('displayNone');
+				}
+			}
+			currentL2Switch=0;
+		}
+	});
+	//スペルを一文字ごとに判定する
+	//イベントを作成
+	let clickEvent=new MouseEvent("click");
+	//let check=document.querySelectorAll(".check");
+	let L1check=document.querySelectorAll(".L1check");
+	let L2check=document.querySelectorAll(".L2check");
+    let perChar=[];
+    let result="<p class='correct'>";
+    //答え合わせ用ボタンごとにイベントを設定
+  	function checkAndMove(check,answerArray,correctArray,writeInArray){
+  		for(let i=0;i<check.length;i++){
+  	  		//エンターキーを押したときにcheckボタンをクリックするイベントを発火させる
+  	  		answerArray[i].addEventListener('keypress',(event)=>{
+  	  			if(event.keyCode===13){
+  	  				check[i].dispatchEvent(clickEvent);
+  	  			}
+  	  		});
+  	  		//クリックイベントを設定
+  	  		check[i].addEventListener('click',(event)=>{
+  	        let answer=answerArray[i].value;
+  	        let correct=correctArray[i].textContent;
+  	        let result="<span class='correct'>";
+  	        let rightChar=[];
+  	        //回答を一文字ずつ取得し、正解と比較
+  	        for(let j=0;j<answer.length;j++){
+  	        	//正解の文字列を超えた場合はbreak
+  	      		if(j>correct.length)break;
+  	        	//正解の文字番号を配列に格納
+  	      		if(answer.charAt(j)==correct.charAt(j)){
+  	            rightChar.push(j);
+  	      		}
+  	      	}
+  	        //正解の文字はそのまま文字列に追加、不正解は<span>を付けて追加
+  	        for(let k=0;k<correct.length;k++){
+  	          if(rightChar.includes(k)){
+  	            result+=correct.charAt(k);
+  	          }else{
+  	            result+=('<span class="red">'+correct.charAt(k)+'</span>');
+  	          }
+  	        }
+  	        result+="</span>"
+  	        correctArray[i].innerHTML=result;
+  	  		//回答欄⇔答えの切り替え
+  	  		writeInArray[i].classList.toggle('displayNone');
+  	  		correctArray[i].classList.toggle('displayNone');
+  	  		//次の回答欄にフォーカス
+  	  		if(i+1<answerArray.length){
+  	  			answerArray[i+1].focus();
+  	  		}
+  	  		});
+  	  	}
+    }
+    //checkAndMoveを設定
+    let L1answer=document.querySelectorAll(".L1writeIn>input");
+    let L2answer=document.querySelectorAll(".L2writeIn>input");
+  	checkAndMove(L1check,L1answer,L1hidden,L1writeIn);
+  	checkAndMove(L2check,L2answer,L2hidden,L2writeIn);
+
+	//頭文字を表示する
+	let allAnswers=document.querySelectorAll(".writeIn>input");
+    let allCorrects=document.querySelectorAll(".correct");
+    let hint=document.getElementById("hint");
+    hint.addEventListener("click",(event)=>{
+    	for(let i=0;i<allCorrects.length;i++){
+    		let answer=allAnswers[i];
+    		let correct=allCorrects[i];
+    		answer.placeholder=correct.textContent.charAt(0);
+    	}
+    });
+	</script>
 </body>
 </html>

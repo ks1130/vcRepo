@@ -86,6 +86,12 @@ public class VocabularyCardController {
 		return mv;
 	}
 
+	//つかいかた解説ページ
+	@GetMapping("/vocabularyCard/operation")
+	public String guideOperation() {
+		return "operation";
+	}
+
 	//検索フォーム送信時、タグ検索時
 	@PostMapping("/vocabularyCard/search")
 	public ModelAndView showCard(@ModelAttribute VocabularyCardQuery vocabularyCardQuery,
@@ -214,11 +220,26 @@ public class VocabularyCardController {
 	}
 
 	@PostMapping("/vocabularyCard/update")
-	public String update(@ModelAttribute @Validated VocabularyCardData vocabularyCardData) {
+	public String update(
+			@ModelAttribute @Validated VocabularyCardData vocabularyCardData,
+			BindingResult result,
+			Model model,
+			RedirectAttributes redirectAttributes,
+			Locale locale) {
 		System.out.println(vocabularyCardData.getId());
 		VocabularyCard vc=vocabularyCardData.toEntity((Integer)session.getAttribute("accountId"));
-		vocabularyCardRepository.saveAndFlush(vc);
-		return "redirect:/vocabularyCard";
+		if(!result.hasErrors()&&vocabularyCardService.isValid(vocabularyCardData, result)) {
+			String msg=messageSource.getMessage("msg.i.card_updated",null, locale);
+			redirectAttributes.addFlashAttribute("msg", new OpMsg("I",msg));
+			vocabularyCardRepository.saveAndFlush(vc);
+			return "redirect:/vocabularyCard";
+		}else {
+			model.addAttribute("editedCard", vc);
+			String msg=messageSource.getMessage("msg.e.input_something_wrong",null,locale);
+			model.addAttribute("msg", new OpMsg("E",msg));
+			return "editForm";
+		}
+
 	}
 
 	@PostMapping("/vocabularyCard/cancel")

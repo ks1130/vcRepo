@@ -61,15 +61,15 @@
 			</table>
 			<div class="editedTags">
 				<div>
-					<input type="text" class="tag editedTag" th:value="*{tag1}"
+					<input type="text" class="editedTag" th:value="*{tag1}"
 						th:field="*{tag1}">
 				</div>
 				<div>
-					<input type="text" class="tag editedTag" th:value="*{tag2}"
+					<input type="text" class="editedTag" th:value="*{tag2}"
 						th:field="*{tag2}">
 				</div>
 				<div>
-					<input type="text" class="tag editedTag" th:value="*{tag3}"
+					<input type="text" class="editedTag" th:value="*{tag3}"
 						th:field="*{tag3}">
 				</div>
 			</div>
@@ -77,7 +77,7 @@
 				<button type="submit" th:formaction="@{/vocabularyCard/update}">更新</button>
 				<button type="submit" th:formaction="@{/vocabularyCard/cancel}">キャンセル</button>
 			</div>
-		</form><button id="sample">sample</button>
+		</form>
 	</div>
 
 	<script>

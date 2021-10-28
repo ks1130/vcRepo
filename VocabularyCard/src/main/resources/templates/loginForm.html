@@ -45,9 +45,10 @@
 								th:errors="*{password}"></div></td>
 					</tr>
 				</table>
-				<button type="submit">ログイン</button>
+				<button type="submit" class="loginButton">ログイン</button>
+				<a th:href="@{/regist}">新規登録</a>
 			</form>
-			<a th:href="@{/regist}">新規登録</a>
+
 		</div>
 		</div>
 		<div class="topText">
@@ -62,23 +63,70 @@
 
 		<div class="topPage">
 			<div class="sampleMenu">
+				<img alt="menu" th:src="@{/images/menu.png}"
+					class="menuForSample pointer displayNone">
 				<p class="sampleText">サンプル</p>
-				<table class="flashCardButton">
-					<tr>
-						<td class="label pointer" id="L1flash">L1</td>
-					</tr>
-					<tr>
-						<td class="separator"></td>
-					</tr>
-					<tr>
-						<td class="label pointer" id="L2flash">L2</td>
-					</tr>
-				</table>
-				<div id="hint" class="pointer">Hint</div>
+				<div id="sampleMenuArea" class="">
+					<table class="flashCardButton">
+						<tr>
+							<td class="label orange pointer" id="L1flash">L1</td>
+						</tr>
+						<tr>
+							<td class="separator"></td>
+						</tr>
+						<tr>
+							<td class="label orange pointer" id="L2flash">L2</td>
+						</tr>
+					</table>
+					<div id="hint" class="gray pointer">Hint</div>
+					<br>
+					<div id="speech-container" class="form frameBorder sampleForm">
+						<div id="volume-container">
+							<img alt="menu" th:src="@{/images/speaker.png}" class="speaker">
+							<input type="range" min=0 max=1 step=0.1 id="volume">
+						</div>
+						<div id="lang-container">
+							<div>読み上げ言語</div>
+							<span class="label">L1</span> <select id="L1lang">
+								<option value="en-US">英語(アメリカ)</option>
+								<option value="en-GB">英語(イギリス)</option>
+								<option value="zh-CN">中国語</option>
+								<option value="ko-KR">韓国語</option>
+								<option value="jp-JP">日本語</option>
+							</select> <br> <span class="label">L2</span> <select id="L2lang">
+								<option value="en-US">英語(アメリカ)</option>
+								<option value="en-GB">英語(イギリス)</option>
+								<option value="zh-CN">中国語</option>
+								<option value="ko-KR">韓国語</option>
+								<option value="jp-JP">日本語</option>
+							</select>
+						</div>
+
+					</div>
+					<!-- 追加用form -->
+					<div class="frameBorder form sampleForm">
+						<p class="label">LANGUAGE1</p>
+						<input type="text" name="spelling1" placeholder="word 1(必須)"
+							class="createForm menuInput sampleL1input" maxlength="50">
+						<div class="error"></div>
+						<input type="text" name="spelling2" placeholder="word 2"
+							class="createForm menuInput sampleL1input" max="50"> <input
+							type="text" name="spelling3" placeholder="word 3"
+							class="createForm menuInput sampleL1input" maxlength="50">
+						<p class="label">LANGUAGE2</p>
+						<input type="text" name="meaning1" placeholder="word 1"
+							class="createForm menuInput sampleL2input" maxlength="50">
+						<input type="text" name="meaning2" placeholder="word 2"
+							class="createForm menuInput sampleL2input" maxlength="50">
+						<input type="text" name="meaning3" placeholder="word 3"
+							class="createForm menuInput sampleL2input" maxlength="50">
+						<button type="submit" id="doCreate" class="keep">カード追加</button>
+					</div>
+				</div>
 			</div>
 			<div class="sampleCard">
 				<div class="card">
-					<section class="sampleWordList">
+					<section class="wordList floatCancel">
 						<p class="label">L1</p>
 						<div class="L1">
 							<div class="eachWord">
@@ -86,6 +134,7 @@
 									class="L1writeIn displayNone writeIn"><input type="text"
 									placeholder=""><span class="L1Length"></span></span>
 								<button class="check L1check" draggable="true">⇔</button>
+								<button class="L1speakButton">再生</button>
 								<br>
 							</div>
 						</div>
@@ -96,47 +145,67 @@
 									class="L2writeIn displayNone writeIn"><input type="text"
 									placeholder=""><span class="L2Length"></span></span>
 								<button class="check L2check" draggable="true">⇔</button>
+								<button class="L2speakButton">再生</button>
 								<br> <span class="L2hidden correct">見本</span> <span
 									class="L2writeIn displayNone writeIn"><input type="text"
 									placeholder=""><span class="L2Length"></span></span>
 								<button class="check L2check" draggable="true">⇔</button>
-								<br> <span class="L2hidden correct">試す</span> <span
-									class="L2writeIn displayNone writeIn"><input type="text"
-									placeholder=""><span class="L2Length"></span></span>
-								<button class="check L2check" draggable="true">⇔</button>
+								<button class="L2speakButton">再生</button>
 								<br>
 							</div>
 						</div>
 					</section>
 				</div>
 			</div>
-			<div class="card">
-				<section class="sampleWordList">
-					<p class="label">L1</p>
-					<div class="L1">
-						<div class="eachWord">
-							<span class="L1hidden correct" id="spelling1">demonstration</span>
-							<span class="L1writeIn displayNone writeIn"><input
-								type="text" placeholder=""><span class="L1Length"></span></span>
-							<button class="check L1check" draggable="true">⇔</button>
-							<br> <span class="L1hidden correct" id="spelling1">performance</span>
-							<span class="L1writeIn displayNone writeIn"><input
-								type="text" placeholder=""><span class="L1Length"></span></span>
-							<button class="check L1check" draggable="true">⇔</button>
-							<br>
+
+			<div class="sampleCard">
+				<div class="card">
+					<section class="wordList floatCancel">
+						<p class="label">L1</p>
+						<div class="L1">
+							<div class="eachWord">
+								<span class="L1hidden correct sampleL1hidden" id="spelling1">word1</span>
+								<span class="L1writeIn displayNone writeIn"><input
+									type="text" placeholder=""><span class="L1Length"></span></span>
+								<button class="check L1check" draggable="true">⇔</button>
+								<button class="L1speakButton">再生</button>
+								<br> <span class="L1hidden correct sampleL1hidden"
+									id="spelling2">word2</span> <span
+									class="L1writeIn displayNone writeIn"><input type="text"
+									placeholder=""><span class="L1Length"></span></span>
+								<button class="check L1check" draggable="true">⇔</button>
+								<button class="L1speakButton">再生</button>
+								<br> <span class="L1hidden correct sampleL1hidden"
+									id="spelling3">word3</span> <span
+									class="L1writeIn displayNone writeIn"><input type="text"
+									placeholder=""><span class="L1Length"></span></span>
+								<button class="check L1check" draggable="true">⇔</button>
+								<button class="L1speakButton">再生</button>
+							</div>
 						</div>
-					</div>
-					<p class="label">L2</p>
-					<div class="L2">
-						<div class="eachWord">
-							<span class="L2hidden correct">実演</span> <span
-								class="L2writeIn displayNone writeIn"><input type="text"
-								placeholder=""><span class="L2Length"></span></span>
-							<button class="check L2check" draggable="true">⇔</button>
-							<br>
+						<p class="label">L2</p>
+						<div class="L2">
+							<div class="eachWord">
+								<span class="L2hidden correct sampleL2hidden">word1</span> <span
+									class="L2writeIn displayNone writeIn"><input type="text"
+									placeholder=""><span class="L2Length"></span></span>
+								<button class="check L2check" draggable="true">⇔</button>
+								<button class="L2speakButton">再生</button>
+								<br> <span class="L2hidden correct sampleL2hidden">word2</span>
+								<span class="L2writeIn displayNone writeIn"><input
+									type="text" placeholder=""><span class="L2Length"></span></span>
+								<button class="check L2check" draggable="true">⇔</button>
+								<button class="L2speakButton">再生</button>
+								<br> <span class="L2hidden correct sampleL2hidden">word3</span>
+								<span class="L2writeIn displayNone writeIn"><input
+									type="text" placeholder=""><span class="L2Length"></span></span>
+								<button class="check L2check" draggable="true">⇔</button>
+								<button class="L2speakButton">再生</button>
+								<br>
+							</div>
 						</div>
-					</div>
-				</section>
+					</section>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -151,17 +220,17 @@
 	var L1Length=document.querySelectorAll(".L1Length");
 	var L2Length=document.querySelectorAll(".L2Length");
 	//正解の単語の文字数を表示
-	for(let i=0;i<L1hidden.length;i++){
-		L1Length[i].textContent="(" + L1hidden[i].textContent.length + ")";
-	}
-	for(let i=0;i<L2hidden.length;i++){
-		L2Length[i].textContent="(" + L2hidden[i].textContent.length + ")";
-	}
+
+
 	//回答⇔一覧の切り替えを設定
 	//表示=0,非表示=1
 	let currentL1Switch=0;
 	let currentL2Switch=0;
 	$("#L1flash").on("click",function(){
+		for(let i=0;i<L1hidden.length;i++){
+			L1Length[i].textContent="(" + L1hidden[i].textContent.length + ")";
+			console.log("a");
+		}
 		if(currentL1Switch==0){
 			for(let i=0;i<L1hidden.length;i++){
 				if(!L1hidden[i].classList.contains('displayNone')){
@@ -170,6 +239,8 @@
 				}
 			}
 			currentL1Switch=1;
+			$("#L1flash").addClass("gray");
+			$("#L1flash").removeClass("orange");
 		}else{
 			for(let i=0;i<L1hidden.length;i++){
 				if(L1hidden[i].classList.contains('displayNone')){
@@ -178,9 +249,14 @@
 				}
 			}
 			currentL1Switch=0;
+			$("#L1flash").addClass("orange");
+			$("#L1flash").removeClass("gray");
 		}
 	});
 	$("#L2flash").on("click",function(){
+		for(let i=0;i<L2hidden.length;i++){
+			L2Length[i].textContent="(" + L2hidden[i].textContent.length + ")";
+		}
 		if(currentL2Switch==0){
 			for(let i=0;i<L2hidden.length;i++){
 				if(!L2hidden[i].classList.contains('displayNone')){
@@ -257,17 +333,87 @@
   	checkAndMove(L1check,L1answer,L1hidden,L1writeIn);
   	checkAndMove(L2check,L2answer,L2hidden,L2writeIn);
 
-	//頭文字を表示する
+  	//サンプル用のカード
+  	var sampleL1hidden=document.getElementsByClassName("sampleL1hidden");
+  	function checkAndMoveForSample(){
+
+  	}
+
+  	//頭文字を表示する
 	let allAnswers=document.querySelectorAll(".writeIn>input");
     let allCorrects=document.querySelectorAll(".correct");
     let hint=document.getElementById("hint");
+    let hintSwitch=0;//0=off,1=on
     hint.addEventListener("click",(event)=>{
-    	for(let i=0;i<allCorrects.length;i++){
-    		let answer=allAnswers[i];
-    		let correct=allCorrects[i];
-    		answer.placeholder=correct.textContent.charAt(0);
+    	if(hintSwitch==0){
+    		for(let i=0;i<allCorrects.length;i++){
+    			let answer=allAnswers[i];
+    			let correct=allCorrects[i];
+    			answer.placeholder=correct.textContent.charAt(0);
+    		}
+    		hintSwitch=1;
+    		hint.classList.add("orange");
+    		hint.classList.remove("gray");
+    	}else{
+    		for(let i=0;i<allCorrects.length;i++){
+    			console.log("a");
+    			let answer=allAnswers[i];
+    			answer.placeholder="";
+    		}
+    		hintSwitch=0;
+    		hint.classList.add("gray");
+    		hint.classList.remove("orange");
     	}
     });
+
+    //読みあげ機能
+    if("speechSynthesis" in window){
+    	console.log("true");
+   	 	var L1speak=document.getElementsByClassName("L1speakButton");
+    	var L2speak=document.getElementsByClassName("L2speakButton");
+   		for(let i=0;i<L1speak.length;i++){
+    		L1speak[i].addEventListener("click",function(){
+    			const uttr=new SpeechSynthesisUtterance(L1hidden[i].textContent);
+    			uttr.lang=document.getElementById("L1lang").value;
+    			uttr.volume=document.getElementById("volume").value;
+    			speechSynthesis.speak(uttr);
+    		});
+    	}
+		for(let i=0;i<L2speak.length;i++){
+	    	L2speak[i].addEventListener("click",function(){
+    			const uttr=new SpeechSynthesisUtterance(L2hidden[i].textContent);
+    			uttr.lang=document.getElementById("L2lang").value;
+    			uttr.volume=document.getElementById("volume").value;
+	    		speechSynthesis.speak(uttr);
+    		});
+    	}
+    }else{
+    	console.log("false");
+    	$("#speechNotFound").removeClass("displayNone");
+    }
+
+    var sampleL1hidden=$(".sampleL1hidden");
+    var sampleL2hidden=$(".sampleL2hidden");
+    var sampleL1input=$(".sampleL1input");
+    var sampleL2input=$(".sampleL2input");
+    $("#doCreate").on("click",function(){
+
+    	for(let i=0;i<sampleL1hidden.length;i++){
+    		console.log("click");
+    		sampleL1hidden[i].textContent=sampleL1input[i].value;
+    		sampleL2hidden[i].textContent=sampleL2input[i].value;
+    	}
+    });
+
+    if(screen.width<480){
+		$(".menuForSample").toggleClass("displayNone");
+		$("#sampleMenuArea").toggleClass("displayNone");
+		$(".menuForSample").on("click",function(){
+			console.log("a");
+			$("#sampleMenuArea").toggleClass("displayNone");
+		});
+    }
+
 	</script>
 </body>
 </html>

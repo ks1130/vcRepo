@@ -20,49 +20,33 @@
 	<div class="container">
 		<div id="movedTag" class="displayNone tag">movedTag</div>
 		<div class="float-container">
-			<!-- 操作メッセージ -->
-			<div class="message-container">
-				<div th:if="${msg!=null}" class="message">
-					<div th:if="${msg.msgType=='E'}" class="error">
-						<span class="icon E">×</span> <span th:text="${msg.msgText}"></span>
-					</div>
-					<div th:if="${msg.msgType=='W'}" class="warnning">
-						<span class="icon W">!</span><span th:text="${msg.msgText}"></span>
-					</div>
-					<div th:if="${msg.msgType=='I'}" class="information">
-						<span class="icon I">i</span> <span th:text="${msg.msgText}"></span>
-					</div>
-				</div>
-				<div class="message warnning displayNone" id="speechNotFound">
-					<span class="icon W">!</span> <span>お使いのブラウザは音声読み上げに対応していません。</span>
-				</div>
-			</div>
+
 			<div class="menu-container menuBorder">
 				<!-- スクロールで追従する部分 -->
 
 				<div class="menuTab">
 					<div class="operationMenuButton menuButton selected">menu</div>
 					<div class="tagMenuButton menuButton unselected pointer">tag</div>
+					<div class="logMenuButton menuButton unselected pointer">log</div>
+					<div class="float-end"></div>
 				</div>
 				<div class="guide menu">
 					<div class="operationMenu">
-
-
 						<table class="flashCardButton">
 							<tr>
-								<td class="label pointer" id="L1flash">L1</td>
+								<td class="label orange pointer" id="L1flash">L1</td>
 							</tr>
 							<tr>
 								<td class="separator"></td>
 							</tr>
 							<tr>
-								<td class="label pointer" id="L2flash">L2</td>
+								<td class="label orange pointer" id="L2flash">L2</td>
 							</tr>
 						</table>
-						<div id="hint" class="pointer">hint</div>
+						<div id="hint" class="gray pointer">hint</div>
 						<div id="speech-container" class="form frameBorder">
 							<div id="volume-container">
-								<img alt="menu" th:src="@{/images/speaker.png}" class="speaker">
+							<img alt="menu" th:src="@{/images/speaker.png}" class="speaker">
 								<input type="range" min=0 max=1 step=0.1
 									id="volume">
 							</div>
@@ -166,6 +150,25 @@
 								type="hidden" name="draggedTag" id="addedTag">
 						</form>
 					</div>
+					<div class="logMenu displayNone">
+						<!-- 操作メッセージ -->
+						<div class="message-container">
+							<div th:if="${msg!=null}" class="message">
+								<div th:if="${msg.msgType=='E'}" class="error">
+									<span class="icon E">×</span> <span th:text="${msg.msgText}"></span>
+								</div>
+								<div th:if="${msg.msgType=='W'}" class="warnning">
+									<span class="icon W">!</span><span th:text="${msg.msgText}"></span>
+								</div>
+								<div th:if="${msg.msgType=='I'}" class="information">
+									<span class="icon I">i</span> <span th:text="${msg.msgText}"></span>
+								</div>
+							</div>
+							<div class="message warnning displayNone" id="speechNotFound">
+								<span class="icon W">!</span> <span>お使いのブラウザは音声読み上げに対応していません。</span>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -173,6 +176,77 @@
 		<!-- カードの数だけ<div>を生成  タグには検索用フォームと関連付ける-->
 		<div th:each="vc:${cardList}" class="card displayByPage">
 			<div th:text="${vc.id}" class="id"></div>
+
+			<div class="check-delete">
+				<p class="No">
+					<span>100</span>
+				</p>
+				<form th:action="@{/vocabularyCard/__${vc.id}__}" name="edit"
+					method="post">
+					<button class="editButton pointer keep" type="submit">編集</button>
+				</form>
+				<input type="checkbox" th:value="${vc.id}" name="deletedId"
+					class="checkbox" form="checkDelete">
+			</div>
+
+			<section class="wordList">
+				<p class="label">L1</p>
+				<div class="L1">
+					<div class="eachWord">
+						<span th:text="${vc.spelling1}" class="L1hidden correct"
+							id="spelling1"></span> <span
+							class="L1writeIn displayNone writeIn"><input type="text"
+							placeholder=""><span class="L1Length"></span></span>
+						<button class="check L1check">⇔</button>
+						<button class="L1speakButton">再生</button>
+						<br>
+					</div>
+					<div th:unless="${vc.spelling2.isEmpty()}" class="eachWord">
+						<span th:text="${vc.spelling2}" class="L1hidden correct"
+							id="spelling2"></span> <span
+							class="L1writeIn displayNone writeIn"><input type="text"
+							placeholder=""><span class="L1Length"></span> </span>
+						<button class="check L1check">⇔</button>
+						<button class="L1speakButton">再生</button>
+						<br>
+					</div>
+					<div th:unless="${vc.spelling3.isEmpty()}" class="eachWord">
+						<span th:text="${vc.spelling3}" class="L1hidden correct"
+							id="spelling3"></span> <span
+							class="L1writeIn displayNone writeIn"><input type="text"
+							placeholder=""><span class="L1Length"></span> </span>
+						<button class="check L1check">⇔</button>
+						<button class="L1speakButton">再生</button>
+					</div>
+				</div>
+				<p class="label">L2</p>
+				<div class="L2">
+					<div th:unless="${vc.meaning1.isEmpty()}" class="eachWord">
+						<span th:text="${vc.meaning1}" class="L2hidden correct"></span> <span
+							class="L2writeIn displayNone writeIn"><input type="text"
+							placeholder=""><span class="L2Length"></span></span>
+						<button class="check L2check">⇔</button>
+						<button class="L2speakButton">再生</button>
+						<br>
+					</div>
+					<div th:unless="${vc.meaning2.isEmpty()}" class="eachWord">
+						<span th:text="${vc.meaning2}" class="L2hidden correct"></span> <span
+							class="L2writeIn displayNone writeIn"><input type="text"
+							placeholder=""><span class="L2Length"></span></span>
+						<button class="check L2check">⇔</button>
+						<button class="L2speakButton">再生</button>
+						<br>
+					</div>
+					<div th:unless="${vc.meaning3.isEmpty()}" class="eachWord">
+						<span th:text="${vc.meaning3}" class="L2hidden correct"></span> <span
+							class="L2writeIn displayNone writeIn"><input type="text"
+							placeholder=""><span class="L2Length"></span></span>
+						<button class="check L2check">⇔</button>
+						<button class="L2speakButton">再生</button>
+					</div>
+				</div>
+			</section>
+
 			<section class="tags">
 				<button th:if="${vc.tag1!=null && vc.tag1!=''}" type="submit"
 					th:text="${vc.tag1}" class="tag pointer" form="searchTag"></button>
@@ -184,74 +258,8 @@
 					th:text="${vc.tag3}" class="tag pointer" form="searchTag"></button>
 			</section>
 
-			<section class="wordList">
-				<p class="label">L1</p>
-				<div class="L1">
-					<div class="eachWord">
-						<span th:text="${vc.spelling1}" class="L1hidden correct"
-							id="spelling1"></span> <span
-							class="L1writeIn displayNone writeIn"><input type="text"
-							placeholder=""><span class="L1Length"></span></span>
-						<button class="check L1check" draggable="true">⇔</button>
-						<button class="L1speakButton">再生</button>
-						<br>
-					</div>
-					<div th:unless="${vc.spelling2.isEmpty()}" class="eachWord">
-						<span th:text="${vc.spelling2}" class="L1hidden correct"
-							id="spelling2"></span> <span
-							class="L1writeIn displayNone writeIn"><input type="text"
-							placeholder=""><span class="L1Length"></span> </span>
-						<button class="check L1check" draggable="true">⇔</button>
-						<button class="L1speakButton">再生</button>
-						<br>
-					</div>
-					<div th:unless="${vc.spelling3.isEmpty()}" class="eachWord">
-						<span th:text="${vc.spelling3}" class="L1hidden correct"
-							id="spelling3"></span> <span
-							class="L1writeIn displayNone writeIn"><input type="text"
-							placeholder=""><span class="L1Length"></span> </span>
-						<button class="check L1check" draggable="true">⇔</button>
-						<button class="L1speakButton">再生</button>
-					</div>
-				</div>
-				<p class="label">L2</p>
-				<div class="L2">
-					<div th:unless="${vc.meaning1.isEmpty()}" class="eachWord">
-						<span th:text="${vc.meaning1}" class="L2hidden correct"></span> <span
-							class="L2writeIn displayNone writeIn"><input type="text"
-							placeholder=""><span class="L2Length"></span></span>
-						<button class="check L2check" draggable="true">⇔</button>
-						<button class="L2speakButton">再生</button>
-						<br>
-					</div>
-					<div th:unless="${vc.meaning2.isEmpty()}" class="eachWord">
-						<span th:text="${vc.meaning2}" class="L2hidden correct"></span> <span
-							class="L2writeIn displayNone writeIn"><input type="text"
-							placeholder=""><span class="L2Length"></span></span>
-						<button class="check L2check" draggable="true">⇔</button>
-						<button class="L2speakButton">再生</button>
-						<br>
-					</div>
-					<div th:unless="${vc.meaning3.isEmpty()}" class="eachWord">
-						<span th:text="${vc.meaning3}" class="L2hidden correct"></span> <span
-							class="L2writeIn displayNone writeIn"><input type="text"
-							placeholder=""><span class="L2Length"></span></span>
-						<button class="check L2check" draggable="true">⇔</button>
-						<button class="L2speakButton">再生</button>
-					</div>
-				</div>
-			</section>
-			<div class="check-delete">
-				<p class="No">
-					No.<span></span>
-				</p>
-				<form th:action="@{/vocabularyCard/__${vc.id}__}" name="edit"
-					method="post">
-					<button class="editButton pointer keep" type="submit">編集</button>
-				</form>
-				<input type="checkbox" th:value="${vc.id}" name="deletedId"
-					class="checkbox" form="checkDelete">
-			</div>
+
+
 			<div class="float-end"></div>
 		</div>
 		<br>
@@ -261,7 +269,10 @@
 			<li><a th:href="@{/logout}">ログアウト</a></li>
 			<li><a th:href="@{/vocabularyCard/operation}" class="keep">つかいかた</a></li>
 		</ul>
+
 		<ul class="navi">
+		<li id="scrollTop" class="pointer">↑</li>
+		<li id="scrollBottom" class="pointer">↓</li>
 		</ul>
 	</footer>
 
@@ -309,98 +320,113 @@
 	const wordList=document.getElementsByClassName("wordList");
 	const idList=document.getElementsByClassName("id");
 	const form=document.getElementById("addTag");
-if(screen.width>480){
-	let draggedTag;
-	let clickedTag;
-	//全タグボタンにドラッグイベントとクリックイベントを設定、タグ名を取得
-	for(let i=0;i<tag.length;i++){
-		tag[i].addEventListener('dragstart',(event)=>{
-			draggedTag=tag[i].textContent;
-		});
-		tag[i].addEventListener('click',(event)=>{
-			//event.preventDefault();
-			clickedTag=tag[i].textContent;
-			//タグ検索フォームに代入
-			document.getElementById('tagValue').value=clickedTag;
-		});
-		tag[i].addEventListener("drag",(event)=>{
-			console.log("drag");
+	if(screen.width>480){
+		let draggedTag;
+		let clickedTag;
+		//全タグボタンにドラッグイベントとクリックイベントを設定、タグ名を取得
+		for(let i=0;i<tag.length;i++){
+			tag[i].addEventListener('dragstart',(event)=>{
+				draggedTag=tag[i].textContent;
+			});
+			tag[i].addEventListener('click',(event)=>{
+				//event.preventDefault();
+				clickedTag=tag[i].textContent;
+				//タグ検索フォームに代入
+				document.getElementById('tagValue').value=clickedTag;
+			});
+			tag[i].addEventListener("drag",(event)=>{
+				console.log("drag");
+				event.preventDefault();
+			});
+		}
+		let cardId;
+		for(let i=0;i<wordList.length;i++){
+		wordList[i].addEventListener("dragover",(event)=>{
 			event.preventDefault();
 		});
-	}
-	let cardId;
-	for(let i=0;i<wordList.length;i++){
-	wordList[i].addEventListener("dragover",(event)=>{
-		event.preventDefault();
-	});
-	wordList[i].addEventListener("drop",(event)=>{
-		event.preventDefault();
-		cardId=idList[i].textContent;
+		wordList[i].addEventListener("drop",(event)=>{
+			event.preventDefault();
+			cardId=idList[i].textContent;
 
-	document.getElementById("addedCard").value=cardId;
-	document.getElementById("addedTag").value=draggedTag;
-	//スクロール位置の保持
-	keepPosition();
-	form.submit();
-	});
-	}
-}else{
-	//スマホ用のドラッグアンドドロップ
-	let X;
-    let Y;
-    let cardId;
-    var wordListArray=[].slice.call(wordList);
-    var movedTag=document.getElementById("movedTag");
+		document.getElementById("addedCard").value=cardId;
+		document.getElementById("addedTag").value=draggedTag;
+		//スクロール位置の保持
+		keepPosition();
+		form.submit();
+		});
+		}
+	}else{
+		//スマホ用のドラッグアンドドロップ
+		let X;
+	    let Y;
+	    let cardId;
+	    var wordListArray=[].slice.call(wordList);
+	    var movedTag=document.getElementById("movedTag");
 
-	function touchStartEvent(event){
-		event.preventDefault();
-		var touchObject = event.changedTouches[0];
-        X=touchObject.clientX;
-        Y=touchObject.clientY;
-        movedTag.style.position="fixed";
-        movedTag.style.left=X+"px";
-        movedTag.style.top=Y+"px";
-		var touchObject = event.changedTouches[0];
-        movedTag.textContent=event.target.textContent;
-        movedTag.classList.toggle("displayNone");
-        document.getElementById("addedTag").value=event.target.textContent;
+		function touchStartEvent(event){
+			event.preventDefault();
+			var touchObject = event.changedTouches[0];
+	        X=touchObject.clientX;
+	        Y=touchObject.clientY;
+	        movedTag.style.position="fixed";
+	        movedTag.style.left=X+"px";
+	        movedTag.style.top=Y+"px";
+			var touchObject = event.changedTouches[0];
+	        movedTag.textContent=event.target.textContent;
+	        movedTag.classList.toggle("displayNone");
+	        document.getElementById("addedTag").value=event.target.textContent;
+	        $(".menu-container").addClass("opacity");
+	        $(".float-container").css("zIndex","-10");
+		}
+		function touchMoveEvent(event){
+			event.preventDefault();
+			var touchObject = event.changedTouches[0];
+	        X=touchObject.clientX;
+	        Y=touchObject.clientY;
+	        movedTag.style.left=X+"px";
+	        movedTag.style.top=Y+"px";
+	        console.log("X:"+X+",Y:"+Y);
+	        var droppedCard=document.elementFromPoint(X,Y);
+	    	console.log(droppedCard.className);
+		}
+		function touchEndEvent(event){
+			try{
+				event.preventDefault();
+				movedTag.style.position="";
+	        	//elementfromPoint()は最もネストされた要素を取得するため、その親要素がwordListかを判定する
+	        	var droppedElement=document.elementFromPoint(X,Y);
+	        	if(droppedElement.className=="card"){
+
+	        	}else{
+	        		var droppedCard=droppedElement.closest(".wordList");
+	        		if(droppedCard.className=="wordList"){
+		          		var cardNumber=wordListArray.indexOf(droppedCard);
+		          		cardId=idList[cardNumber].textContent;
+		          		document.getElementById("addedCard").value=cardId;
+		          		//スクロール位置の保持
+		      	  		keepPosition();
+		          		form.submit();
+		        	}else{
+		          		cardId=-1;
+		          		console.log("false"+cardId);
+		        	}
+				}
+	      		}catch(error){
+	      			console.log("error");
+				}finally{
+					$(".menu-container").removeClass("opacity");
+
+					$(".float-container").css("zIndex","100");
+					movedTag.style.left=X+"";
+	        		movedTag.style.top=Y+"";
+	        		movedTag.classList.toggle("displayNone");
+				}
 	}
-	function touchMoveEvent(event){
-		event.preventDefault();
-		var touchObject = event.changedTouches[0];
-        X=touchObject.clientX;
-        Y=touchObject.clientY;
-        movedTag.style.left=X+"px";
-        movedTag.style.top=Y+"px";
-        console.log("X:"+X+",Y:"+Y);
-	}
-	function touchEndEvent(event){
-		event.preventDefault();
-        movedTag.style.position="";
-        //elementfromPoint()は最もネストされた要素を取得するため、その親要素がwordListかを判定する
-        var droppedCard=document.elementFromPoint(X,Y).closest(".wordList");
-        movedTag.style.left=X+"";
-        movedTag.style.top=Y+"";
-        movedTag.classList.toggle("displayNone");
-        if(droppedCard.className=="wordList"){
-          var cardNumber=wordListArray.indexOf(droppedCard);
-          console.log(cardNumber);
-          cardId=idList[cardNumber].textContent;
-          document.getElementById("addedCard").value=cardId;
-          console.log("true"+cardId);
-          //スクロール位置の保持
-      	  keepPosition();
-          form.submit();
-        }else{
-          cardId=-1;
-          console.log("false"+cardId);
-        }
-      }
-      for(var i=0;i<tag.length;i++){
-        tag[i].addEventListener("touchstart",touchStartEvent);
+    for(var i=0;i<tag.length;i++){
+       	tag[i].addEventListener("touchstart",touchStartEvent);
         tag[i].addEventListener("touchmove",touchMoveEvent);
         tag[i].addEventListener("touchend",touchEndEvent);
-      }
+    }
 	for(var i=0;i<tag.length;i++){
 		tag[i].addEventListener("touchstart",touchStartEvent,false);
 		tag[i].addEventListener("touchmove",touchMoveEvent,false);
@@ -539,6 +565,8 @@ if(screen.width>480){
 				}
 			}
 			currentL1Switch=1;
+			$("#L1flash").addClass("gray");
+			$("#L1flash").removeClass("orange");
 		}else{
 			for(let i=0;i<L1hidden.length;i++){
 				if(L1hidden[i].classList.contains('displayNone')){
@@ -547,6 +575,8 @@ if(screen.width>480){
 				}
 			}
 			currentL1Switch=0;
+			$("#L1flash").addClass("orange");
+			$("#L1flash").removeClass("gray");
 		}
 	});
 	$("#L2flash").on("click",function(){
@@ -558,6 +588,8 @@ if(screen.width>480){
 				}
 			}
 			currentL2Switch=1;
+			$("#L2flash").addClass("gray");
+			$("#L2flash").removeClass("orange");
 		}else{
 			for(let i=0;i<L2hidden.length;i++){
 				if(L2hidden[i].classList.contains('displayNone')){
@@ -566,6 +598,8 @@ if(screen.width>480){
 				}
 			}
 			currentL2Switch=0;
+			$("#L2flash").addClass("orange");
+			$("#L2flash").removeClass("gray");
 		}
 	});
 	//スペルを一文字ごとに判定する
@@ -630,11 +664,26 @@ if(screen.width>480){
 	let allAnswers=document.querySelectorAll(".writeIn>input");
     let allCorrects=document.querySelectorAll(".correct");
     let hint=document.getElementById("hint");
+    let hintSwitch=0;//0=off,1=on
     hint.addEventListener("click",(event)=>{
-    	for(let i=0;i<allCorrects.length;i++){
-    		let answer=allAnswers[i];
-    		let correct=allCorrects[i];
-    		answer.placeholder=correct.textContent.charAt(0);
+    	if(hintSwitch==0){
+    		for(let i=0;i<allCorrects.length;i++){
+    			let answer=allAnswers[i];
+    			let correct=allCorrects[i];
+    			answer.placeholder=correct.textContent.charAt(0);
+    		}
+    		hintSwitch=1;
+    		hint.classList.add("orange");
+    		hint.classList.remove("gray");
+    	}else{
+    		for(let i=0;i<allCorrects.length;i++){
+    			console.log("a");
+    			let answer=allAnswers[i];
+    			answer.placeholder="";
+    		}
+    		hintSwitch=0;
+    		hint.classList.add("gray");
+    		hint.classList.remove("orange");
     	}
     });
 
@@ -665,34 +714,81 @@ if(screen.width>480){
     }
 
 	//メニューの切り替えを設定
-	let menu=0;
-	function changeMenu(){
-		$(".operationMenu").toggleClass("displayNone");
-		$(".operationMenuButton").toggleClass("selected");
-		$(".operationMenuButton").toggleClass("unselected");
-		$(".operationMenuButton").toggleClass("pointer");
-		$(".tagMenu").toggleClass("displayNone");
-		$(".tagMenuButton").toggleClass("unselected");
-		$(".tagMenuButton").toggleClass("selected");
-		$(".tagMenuButton").toggleClass("pointer");
+	let premenu=0;
+	let postmenu;
+	function changeMenu(pre,post){
+		console.log(pre);
+		console.log(post);
+		//premenuを非表示にする
+		if(pre==0){
+			$(".operationMenu").toggleClass("displayNone");
+			$(".operationMenuButton").toggleClass("selected");
+			$(".operationMenuButton").toggleClass("unselected");
+			$(".operationMenuButton").toggleClass("pointer");
+		}
+		if(pre==1){
+			$(".tagMenu").toggleClass("displayNone");
+			$(".tagMenuButton").toggleClass("unselected");
+			$(".tagMenuButton").toggleClass("selected");
+			$(".tagMenuButton").toggleClass("pointer");
+		}
+		if(pre==2){
+			$(".logMenu").toggleClass("displayNone");
+			$(".logMenuButton").toggleClass("unselected");
+			$(".logMenuButton").toggleClass("selected");
+			$(".logMenuButton").toggleClass("pointer");
+		}
+		//postmenuを表示する
+		if(post==0){
+			$(".operationMenu").toggleClass("displayNone");
+			$(".operationMenuButton").toggleClass("selected");
+			$(".operationMenuButton").toggleClass("unselected");
+			$(".operationMenuButton").toggleClass("pointer");
+		}
+		if(post==1){
+			$(".tagMenu").toggleClass("displayNone");
+			$(".tagMenuButton").toggleClass("unselected");
+			$(".tagMenuButton").toggleClass("selected");
+			$(".tagMenuButton").toggleClass("pointer");
+		}
+		if(post==2){
+			$(".logMenu").toggleClass("displayNone");
+			$(".logMenuButton").toggleClass("unselected");
+			$(".logMenuButton").toggleClass("selected");
+			$(".logMenuButton").toggleClass("pointer");
+		}
 	}
 	var operationMenu=document.querySelectorAll(".operationMenu");
 	$(".operationMenuButton").on("click",function(){
-		if(menu===0){
+		postmenu=0;
+		if(premenu===0){
 			return;
 		}else{
-			changeMenu();
-			menu=0;
+			changeMenu(premenu,postmenu);
 		}
+		premenu=postmenu;
+		console.log("operation:"+premenu+","+postmenu);
 	});
 	var tagMenu=document.querySelectorAll(".tagMenu");
 	$(".tagMenuButton").on("click",function(){
-		if(menu===1){
+		postmenu=1;
+		if(premenu===1){
 			return;
 		}else{
-			changeMenu();
-			menu=1;
+			changeMenu(premenu,postmenu);
 		}
+		premenu=postmenu;
+		console.log("tag:"+premenu+","+postmenu);
+	});
+	$(".logMenuButton").on("click",function(){
+		postmenu=2;
+		if(premenu===2){
+			return;
+		}else{
+			changeMenu(premenu,postmenu);
+		}
+		premenu=postmenu;
+		console.log("log:"+premenu+","+postmenu);
 	});
 
 	//menuの追従、スマホ用の設定
@@ -727,6 +823,18 @@ if(screen.width>480){
 			}
 		});
 	}*/
+
+	$("#scrollTop").on("click",function(){
+		window.scrollTo(0,0);
+	});
+	var container=document.querySelector(".container");
+	var bottom=container.scrollHeight-container.clientHeight;
+	$("#scrollBottom").on("click",function(){
+		console.log(container.scrollHeight);
+		console.log(container.clientHeight);
+		window.scrollTo(0,container.scrollHeight);
+	});
+
 
 	</script>
 </body>

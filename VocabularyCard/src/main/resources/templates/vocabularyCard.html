@@ -162,17 +162,19 @@
 								<div th:if="${msg.msgType=='I'}" class="information">
 									<span class="icon I">i</span> <span th:text="${msg.msgText}"></span>
 								</div>
+
 							</div>
 							<div class="message warnning displayNone" id="speechNotFound">
 								<span class="icon W">!</span> <span>お使いのブラウザは音声読み上げに対応していません。</span>
 							</div>
+
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<!-- カードの数だけ<div>を生成  タグには検索用フォームと関連付ける-->
+		<!-- カードの数だけ<div>を生成  タグには検索用フォームと関連付ける--><div id="speechSetting">a</div>
 		<div th:each="vc:${cardList}" class="card displayByPage">
 			<div th:text="${vc.id}" class="id"></div>
 
@@ -697,6 +699,9 @@
     			uttr.lang=document.getElementById("L1lang").value;
     			uttr.volume=document.getElementById("volume").value;
     			speechSynthesis.speak(uttr);
+    			console.log(uttr);
+    			const a=document.getElementById("speechSetting");
+    			a.textContent=uttr.lang;
     		});
     	}
 		for(let i=0;i<L2speak.length;i++){

@@ -162,6 +162,9 @@ footer{
 	height:auto;
 	border:solid 5px #FF8C00;
 }
+#gifDisplay{
+	float:right;
+}
 .gray{
 	color:#F5F5F5;
 }
@@ -664,6 +667,9 @@ td>input{
 	font-size:10px;
 	width:70vmin;
 	}
+	.form>button{
+	font-size:16px;
+	}
 	.guide{
 	font-size:10px;
 	margin-top:0;
@@ -692,7 +698,7 @@ td>input{
 	font-size:8px;
 	}
 	.label{
-	font-size:6px;
+	font-size:12px;
 	}
 	#lang-container{
 	margin-top:1.5vman;
@@ -744,6 +750,9 @@ td>input{
 	display:inline-block;
 	padding-right: 2vmin;
 	padding-left: 6vmin;
+	font-size:16px;
+	}
+	option{
 	font-size:16px;
 	}
 	.sampleMenu{
@@ -839,5 +848,6 @@ td>input{
 	}
 	.writeIn>input{
 	width:60vmin;
+	height:20px;
 	}
 }

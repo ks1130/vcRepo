@@ -157,6 +157,11 @@ footer{
 	border: solid 3px #000055;
 	box-sizing: border-box;
 }
+.gif{
+	width:70vmax;
+	height:auto;
+	border:solid 5px #FF8C00;
+}
 .gray{
 	color:#F5F5F5;
 }
@@ -515,6 +520,9 @@ td>input{
 	border-radius: 10%/30%;
 	font-family:serif;
 }
+.topic-containerB{
+	font-size:18px;
+}
 .topPage{
 	float:left;
 	margin-top:8vmin;
@@ -802,7 +810,9 @@ td>input{
 	width:90vmin;
 	margin-top:1vmax;
 	font-size:16px;
-
+	}
+	.topic-containerB{
+	font-size:12px;
 	}
 	.topPage{
 	width:90vmin;

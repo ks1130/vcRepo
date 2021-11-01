@@ -11,7 +11,7 @@ import lombok.Data;
 public class TagData{
 	private Integer id;
 	@NotBlank(message="タグを入力してください。")
-	@Size(min=1,max=20)
+	@Size(min=1,max=50)
 	private String name;
 	public Tag toTag(){
 		Tag tag=new Tag();

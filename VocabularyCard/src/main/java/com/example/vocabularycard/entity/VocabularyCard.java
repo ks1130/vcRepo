@@ -32,7 +32,7 @@ public class VocabularyCard {
 	@Column(name="meaning3")
 	private String meaning3;
 	@Column(name="tag1")
-	private String tag1;//とりあえずStringとしておく(あとでTugクラスを作る可能性あり)
+	private String tag1;
 	@Column(name="tag2")
 	private String tag2;
 	@Column(name="tag3")

@@ -24,11 +24,11 @@ public class VocabularyCardData {
 	private String meaning2;
 	@Size(min=0,max=50)
 	private String meaning3;
-	@Size(min=0,max=20)
+	@Size(min=0,max=50)
 	private String tag1;
-	@Size(min=0,max=20)
+	@Size(min=0,max=50)
 	private String tag2;
-	@Size(min=0,max=20)
+	@Size(min=0,max=50)
 	private String tag3;
 
 	//入力された値からカードを生成するメソッド

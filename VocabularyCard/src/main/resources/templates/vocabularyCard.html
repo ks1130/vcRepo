@@ -77,7 +77,7 @@
 									type="text" th:value="*{searchMeaning}" name="searchMeaning"
 									class="searchForm menuInput" maxlength="50"
 									placeholder="LANGUAGE2" autocomplete="off">
-								<button id="doSearch" class="reset">検索</button>
+								<button id="doSearch" class="reset submitButton">検索</button>
 							</div>
 						</form>
 						<!-- 追加用form -->
@@ -103,7 +103,7 @@
 									type="text" name="meaning3" th:value="*{meaning3}"
 									placeholder="word 3" class="createForm menuInput"
 									maxlength="50" autocomplete="off">
-								<button type="submit" id="doCreate" class="keep">カード追加</button>
+								<button type="submit" id="doCreate" class="keep submitButton">カード作成</button>
 							</div>
 						</form>
 
@@ -113,15 +113,15 @@
 							<div class="frameBorder">
 								<input type="text" name="name" th:value="*{name}"
 									placeholder="tag" class="createTagForm menuInput"
-									maxlength="30" autocomplete="off">
+									maxlength="50" autocomplete="off">
 								<div class="error" th:if="${#fields.hasErrors('name')}"
 									th:errors="*{name}" th:errorclass="red"></div>
-								<button type="submit" id="doCreateTag" class="keep">タグ追加</button>
+								<button type="submit" id="doCreateTag" class="keep submitButton">タグ作成</button>
 							</div>
 						</form>
 
 						<!-- 削除ボタン -->
-						<button type="submit" form="checkDelete" id="deleteButton">チェックした項目を削除</button>
+						<button type="submit" form="checkDelete" id="deleteButton" class="submitButton">チェックした項目を削除</button>
 					</div>
 
 					<form method="post" th:action="@{/vocabularyCard/search}"
@@ -167,14 +167,14 @@
 							<div class="message warnning displayNone" id="speechNotFound">
 								<span class="icon W">!</span> <span>お使いのブラウザは音声読み上げに対応していません。</span>
 							</div>
-
+							<div id="voice">voice</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<!-- カードの数だけ<div>を生成  タグには検索用フォームと関連付ける--><div id="speechSetting">a</div>
+		<!-- カードの数だけ<div>を生成  タグには検索用フォームと関連付ける-->
 		<div th:each="vc:${cardList}" class="card displayByPage">
 			<div th:text="${vc.id}" class="id"></div>
 
@@ -689,6 +689,11 @@
     });
 
     //読みあげ機能
+    let voice=window.speechSynthesis.getVoices();console.log(voice.length);
+    for(let i=0;i<voice.length;i++){
+
+    	document.getElementById("voice").textContent+=voice[i];
+    }
     if("speechSynthesis" in window){
     	console.log("true");
    	 	var L1speak=document.getElementsByClassName("L1speakButton");
@@ -700,8 +705,6 @@
     			uttr.volume=document.getElementById("volume").value;
     			speechSynthesis.speak(uttr);
     			console.log(uttr);
-    			const a=document.getElementById("speechSetting");
-    			a.textContent=uttr.lang;
     		});
     	}
 		for(let i=0;i<L2speak.length;i++){

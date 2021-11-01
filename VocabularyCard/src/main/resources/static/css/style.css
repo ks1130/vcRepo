@@ -9,6 +9,10 @@
 a{
 	display:inline;
 }
+.bold{
+	font-weight: bold;
+	color:#FF8C00;
+}
 .card{
 	/*１枚目のカードの下に空白ができるのを防ぐため。
 	floatした親要素(.wordの親要素)の高さが未確定になるため、空白が生じる。*/
@@ -16,8 +20,8 @@ a{
 	margin-left:30vmax;
 }
 .checkbox{
-	height:16px;
-	width:16px;
+	height:18px;
+	width:18px;
 }
 .check-delete{
 	float:left;
@@ -158,12 +162,34 @@ footer{
 	box-sizing: border-box;
 }
 .gif{
-	width:70vmax;
+	margin-top:3vmin;
+	width:50vmax;
 	height:auto;
 	border:solid 5px #FF8C00;
 }
 #gifDisplay{
+	padding:5vmin 5vmax 5vmin 5vmax;
+	margin:5vmin 5vmax 0px 0px;
 	float:right;
+	width:60vmax;
+	height:80vmin;
+	font-size:16px;
+	background-color:#F5F5F5;
+	border:solid 3px black;
+}
+.gifSpace>ol{
+	list-style-type: none;
+}
+.gifSpace>ol>li{
+	padding-top:1vmin;
+	padding-bottom:1vmin;
+}
+.gifSpace>ul{
+	list-style-type:none;
+}
+.gifSpace>ul>li{
+	padding-top:1vmin;
+	padding-bottom:1vmin;
 }
 .gray{
 	color:#F5F5F5;
@@ -215,6 +241,9 @@ h3{
 .id{
 	display:none;
 }
+.img-container{
+	text-align:center;
+}
 .information{
 	background-color:rgb(164, 165, 219);
 	border-radius:40px;
@@ -232,6 +261,9 @@ input{
 }
 .L2hidden{
 	text-decoration: underline 1px #000055;
+}
+#L1lang{
+	margin-bottom:2vmin;
 }
 .L1Length{
 	font-size:12px;
@@ -348,6 +380,17 @@ input{
 .opacity{
 	opacity:0.1;
 }
+#operation-container{
+	float:left;
+	margin:5vmin 5vmax 5vmin 5vmax;
+	background-color:#F5F5F5;
+	color:#000055;
+	font-size:20px;
+	width:25vmax;
+}
+#operation-container>h3{
+	padding:1vmin 1vmax 1vmin 1vmax;
+}
 .operationMenu>a{
 	margin-top:4vmin;
 	margin-left:1.5vmax;
@@ -403,6 +446,9 @@ input{
 	margin-top: 2vmin;
 	z-index:90;
 }
+select{
+	font-size:16px;
+}
 .selected{
 	background-color: #F5F5F5;
 }
@@ -417,6 +463,9 @@ input{
 }
 #speech-container{
 	margin-top:1vmin;
+}
+.submitButton{
+	font-size:18px;
 }
 table{
 	background-color: #000055;
@@ -602,7 +651,9 @@ td>input{
 
 @media screen and (max-width:480px){
 	button{
-	font-size:10px;
+	font-size:12px;
+	-webkit-appearance:none;
+	border-radius:0;
 	}
 	.card{
 	padding-right:0px;
@@ -613,14 +664,14 @@ td>input{
 	width:6vmin;
 	}
 	.check-delete{
-	width:10vmin;
+	width:13vmin;
 	}
 	.container{
 	min-height:100vmax;
 	padding-bottom:50vmax;
 	}
 	.editButton{
-	font-size:8px;
+	font-size:16px;
 	}
 	.editedTag{
 	height:5.5vmax;
@@ -661,21 +712,53 @@ td>input{
 	padding-top:-3vmax;
 	}
 	.footerMenu{
-	font-size:10px;
+	font-size:16px;
+	float:left;
+	}
+	.footerMenu>li{
+	display:inline-block;
+	padding-bottom:1vmax;
 	}
 	.form{
 	font-size:10px;
 	width:70vmin;
 	}
-	.form>button{
+	.gif{
+	margin-top:2vmax;
+	width:90vmin;
+	height:auto;
+	border:solid 5px #FF8C00;
+}
+#gifDisplay{
+	padding:0vmax 0vmin 5vmax 0vmin;
+	margin:0vmax auto 0vmax auto;
+	float:none;
+	width:95vmin;
+	height:auto;
 	font-size:16px;
-	}
+	background-color:#F5F5F5;
+	border:solid 3px black;
+}
+.gifSpace>ul{
+	padding-left:4vmin;
+}
+.gifSpace>ul>li{
+	padding-top:1vmax;
+	padding-bottom:1vmax;
+}
+.gifSpace>ol{
+	padding-left:4vmin;
+}
+.gifSpace>ol>li{
+	padding-top:1vmax;
+	padding-bottom:1vmax;
+}
 	.guide{
 	font-size:10px;
 	margin-top:0;
 	}
 	h3{
-	font-size:12px;
+	font-size:18px;
 	}
 	#heading{
 	margin-right:0px;
@@ -690,6 +773,9 @@ td>input{
 	}
 	#L2flash{
 	font-size:15px;
+	}
+	#L1lang{
+	margin-bottom:3vmax;
 	}
 	.L1Length{
 	font-size:8px;
@@ -723,13 +809,14 @@ td>input{
 	.menuButton{
 	font-size:16px;
 	height:4.5vh;
-	width:26vmin;
+	width:25.8vmin;
 	}
 	.menu-container{
 	margin-top:0px;
 	}
 	.menuInput{
 	width:65vmin;
+	height:24px;
 	}
 	.menuForMobile{
 		height:inherit;
@@ -750,11 +837,19 @@ td>input{
 	display:inline-block;
 	padding-right: 2vmin;
 	padding-left: 6vmin;
-	font-size:16px;
+	font-size:20px;
 	}
-	option{
-	font-size:16px;
-	}
+	#operation-container{
+	float:none;
+	margin:2vmax 5vmin 2vmax 5vmin;
+	background-color:#F5F5F5;
+	color:#000055;
+	font-size:20px;
+	width:70vmin;
+}
+#operation-container>h3{
+	padding:1vmin 1vmax 1vmin 1vmax;
+}
 	.sampleMenu{
 	min-height:auto;
 	margin-right:0px;
@@ -773,14 +868,20 @@ td>input{
 	margin-top: 2vmax;
 	z-index:90;
 	}
+	select{
+	font-size:16px;
+	}
 	.speaker{
 	width:5vmax;
 	}
+	.submitButton{
+	font-size:16px;
+	}
 	.tag{
 	height:5.5vmax;
-	width:30vmin;
+	width:45vmin;
 	margin-bottom:0.3vmax;
-	font-size:12px;
+	font-size:16px;
 	}
 	.tagList{
 	margin-bottom:2vmax;
@@ -791,7 +892,7 @@ td>input{
 	.tags{
 		width:24vmin;
 		padding-top:0px;
-		margin-left:10vmin;/*check-deleteの幅に合わせている*/
+		margin-left:13vmin;/*check-deleteの幅に合わせている*/
 	}
 	td>input{
 	width:70vmin;
@@ -825,6 +926,8 @@ td>input{
 	}
 	.topPage{
 	width:90vmin;
+	padding-bottom:5vmax;
+	margin-bottom:5vmax;
 	}
 	.toptext{
 	width:90vmin;
@@ -836,18 +939,17 @@ td>input{
 	width:40vmin;
 	}
 	.wordForm{
-	width:80vmin;
+	width:85vmin;
 	margin-right:auto;
 	margin-left:2vmin;
 	margin-bottom:0px;
 	}
 	.wordList{
-	width:85vmin;
+	width:80vmin;
 	margin-bottom:0px;
 	font-size:16px;
 	}
 	.writeIn>input{
-	width:60vmin;
-	height:20px;
+	width:50vmin;
 	}
 }

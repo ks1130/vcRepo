@@ -692,7 +692,7 @@
     let voice=window.speechSynthesis.getVoices();console.log(voice.length);
     for(let i=0;i<voice.length;i++){
 
-    	document.getElementById("voice").textContent+=voice[i];
+    	document.getElementById("voice").textContent+=voice[i].name;
     }
     if("speechSynthesis" in window){
     	console.log("true");

@@ -111,7 +111,7 @@ public class LoginController {
 			account.setPassword(pass);
 			accountRepository.saveAndFlush(account);
 			String msg=messageSource.getMessage("msg.i.account_created",
-					new Object[] {account.getLoginId(),account.getName()},
+					new Object[] {account.getLoginId()},
 					locale);
 			redirectAttributes.addFlashAttribute("msg",new OpMsg("I",msg));
 		}else {

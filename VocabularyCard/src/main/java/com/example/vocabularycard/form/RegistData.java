@@ -12,9 +12,9 @@ import lombok.Data;
 @Data
 public class RegistData {
 	@NotBlank
-	private String name;
+	/*private String name;
 	@NotBlank
-	@Length(max=16,message="16 文字以内で入力してください。")
+	@Length(max=16,message="16 文字以内で入力してください。")*/
 	private String loginId;
 	@NotBlank
 	@Length(min=8,max=16,message="8 文字以上、16 文字以内で入力してください。")
@@ -26,7 +26,7 @@ public class RegistData {
 	private String passwordForCheck;
 
 	public Account toAccount() {
-		Account account=new Account(null,this.loginId,this.name,this.password,"ROLE_USER",true);
+		Account account=new Account(null,this.loginId,/*this.name,*/this.password,"ROLE_USER",true);
 		return account;
 	}
 

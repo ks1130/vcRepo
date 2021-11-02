@@ -265,6 +265,9 @@ input{
 #L1lang{
 	margin-bottom:2vmin;
 }
+#L2lang{
+	margin-bottom:2vmin;
+}
 .L1Length{
 	font-size:12px;
 	border-bottom: none;
@@ -285,6 +288,7 @@ input{
 	margin-top:2vmin;
 }
 #lang-container>select{
+	width:14vmax;
 	border-top:none;
 	border-right:none;
 	border-left:none;
@@ -720,7 +724,7 @@ td>input{
 	padding-bottom:1vmax;
 	}
 	.form{
-	font-size:10px;
+	font-size:16px;
 	width:70vmin;
 	}
 	.gif{
@@ -754,7 +758,6 @@ td>input{
 	padding-bottom:1vmax;
 }
 	.guide{
-	font-size:10px;
 	margin-top:0;
 	}
 	h3{
@@ -777,6 +780,9 @@ td>input{
 	#L1lang{
 	margin-bottom:3vmax;
 	}
+	#L2lang{
+	margin-bottom:3vmax;
+	}
 	.L1Length{
 	font-size:8px;
 	}
@@ -788,6 +794,9 @@ td>input{
 	}
 	#lang-container{
 	margin-top:1.5vman;
+	}
+	#lang-container>select{
+	width:65vmin;
 	}
 	.login{
 	margin-left:1vmin;
@@ -846,10 +855,13 @@ td>input{
 	color:#000055;
 	font-size:20px;
 	width:70vmin;
-}
-#operation-container>h3{
-	padding:1vmin 1vmax 1vmin 1vmax;
-}
+	}
+	#operation-container>h3{
+		padding:1vmin 1vmax 1vmin 1vmax;
+	}
+	option{
+		font-size:12px;
+	}
 	.sampleMenu{
 	min-height:auto;
 	margin-right:0px;

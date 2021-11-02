@@ -25,8 +25,8 @@ public class Account {
 	@Column(name="login_id")
 	private String loginId;
 
-	@Column(name="name")
-	private String name;
+	//@Column(name="name")
+	//private String name;
 
 	@Column(name="password")
 	private String password;

@@ -36,4 +36,14 @@ public class Account {
 
 	@Column(name="enabled")
 	private Boolean enabled;
+
+	@Column(name="lang1")
+	private String lang1;
+
+	@Column(name="lang2")
+	private String lang2;
+
+	@Column(name="voicename")
+	private String voicename;
+
 }

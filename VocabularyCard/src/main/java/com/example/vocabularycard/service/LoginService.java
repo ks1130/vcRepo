@@ -91,7 +91,9 @@ public class LoginService implements UserDetailsService{
 
 		AccountUserDetails user=new AccountUserDetails(account,authorities);
 		session.setAttribute("accountId", account.getId());
-
+		session.setAttribute("lang1", account.getLang1());
+		session.setAttribute("lang2", account.getLang2());
+		session.setAttribute("preVoicename", account.getVoicename());
 		return user;
 
 	}

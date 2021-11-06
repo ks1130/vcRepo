@@ -26,7 +26,7 @@ public class RegistData {
 	private String passwordForCheck;
 
 	public Account toAccount() {
-		Account account=new Account(null,this.loginId,/*this.name,*/this.password,"ROLE_USER",true);
+		Account account=new Account(null,this.loginId,/*this.name,*/this.password,"ROLE_USER",true,null,null,null);
 		return account;
 	}
 

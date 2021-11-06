@@ -52,13 +52,13 @@
 							</div>
 							<div id="lang-container">
 								<div>読み上げ設定</div>
-								<span class="label">L1</span> <select id="L1lang">
+								<span class="label">L1</span> <select id="lang1">
 									<option value="en-US">英語(アメリカ)</option>
 									<option value="en-GB">英語(イギリス)</option>
 									<option value="zh-CN">中国語</option>
 									<option value="ko-KR">韓国語</option>
 									<option value="jp-JP">日本語</option>
-								</select> <br> <span class="label">L2</span> <select id="L2lang">
+								</select> <br> <span class="label">L2</span> <select id="lang2">
 									<option value="en-US">英語(アメリカ)</option>
 									<option value="en-GB">英語(イギリス)</option>
 									<option value="zh-CN">中国語</option>
@@ -262,12 +262,16 @@
 					th:text="${vc.tag3}" class="tag pointer" form="searchTag"></button>
 			</section>
 
-
-
 			<div class="float-end"></div>
 		</div>
 		<br>
 	</div>
+	<!-- 言語設定を保存するためのフォーム -->
+	<form th:action="@{/vocabularyCard/setLang}" method="post" id="setLang" class="displayNone">
+		<input name="lang1"><div th:text="${lang1}" id="preLang1"></div><input
+			name="lang2"><div th:text="${lang2}" id="preLang2"></div><input name="voicename">
+			<div th:text="${preVoicename}" id="preVoicename"></div>
+	</form>
 	<footer>
 		<ul class="footerMenu">
 			<li><a th:href="@{/logout}">ログアウト</a></li>
@@ -282,4 +286,6 @@
 
 	<script th:src="@{/js/vocabularyCard.js}"></script>
 </body>
+<meta th:name="_csrf" th:content="${_csrf.token}">
+<meta th:name="_csrf_header" th:content="${_csrf.headerName}">
 </html>

@@ -409,40 +409,90 @@ hint.addEventListener("click",()=>{
 
 //読みあげ機能
 let voice=window.speechSynthesis.getVoices();
-voice=window.speechSynthesis.getVoices();
-console.log(voice.length);
 let voiceSelect=document.getElementById("voiceSelect");
 let selectedVoice;
-
+let json;
+let jsonString;
+let preLang1=$("#preLang1").text();
+let preLang2=$("#preLang2").text();
+let preVoicename=$("#preVoicename").text();
+//sessionから取得したlang1とlang2にselectedを付与
+let lang1Array=document.querySelectorAll("#lang1>option");
+let lang2Array=document.querySelectorAll("#lang2>option");
+for(let i=0;i<lang1Array.length;i++){
+	if(lang1Array[i].value==preLang1){
+		lang1Array[i].selected=true;
+	}
+}
+for(let i=0;i<lang2Array.length;i++){
+	if(lang2Array[i].value==preLang2){
+		lang2Array[i].selected=true;
+	}
+}
+//voiceのoptionを作成、デバイス、ブラウザごとに異なる
 for(let i=0;i<voice.length;i++){
-	let option='<option value="'+voice[i].name+'">'+voice[i].name+'</option>' ;
+	let option;
+	//sessionから取得したvoicenameにはselectedを付与
+	if(voice[i].name==preVoicename){
+		option='<option value="'+voice[i].name+'" selected>'+voice[i].name+'('+voice[i].lang+')</option>' ;
+	}else{
+		option='<option value="'+voice[i].name+'">'+voice[i].name+'('+voice[i].lang+')</option>' ;
+	}
 	voiceSelect.insertAdjacentHTML("beforeend",option);
 	document.getElementById("voice").textContent+=voice[i].name;
 }
 if("speechSynthesis" in window){
-	console.log("true");
  	var L1speak=document.getElementsByClassName("L1speakButton");
 	var L2speak=document.getElementsByClassName("L2speakButton");
 	for(let i=0;i<L1speak.length;i++){
 		L1speak[i].addEventListener("click",function(){
+			let lang1=$("#lang1").val();
+			let lang2=$("#lang2").val();
 			const uttr=new SpeechSynthesisUtterance(L1hidden[i].textContent);
-			uttr.lang=document.getElementById("L1lang").value;
+			uttr.lang=document.getElementById("lang1").value;
 			uttr.volume=document.getElementById("volume").value;
-			let voiceName=voiceSelect.value;console.log(voiceName);
+			let currentVoicename=voiceSelect.value; console.log(currentVoicename);
 			voice.forEach(function(v){
-				if(v.name==voiceName){
+				if(v.name==currentVoicename){
 					uttr.voice=v;
 				}
 			})
+			//sessionから取得した言語設定と比較し、内容が変わっていたなら非同期で更新
+			if(lang1!=preLang1||currentVoicename!=preVoicename){
+				json={
+					"lang1":lang1,
+					"lang2":lang2,
+					"voicename":currentVoicename
+					}
+				jsonString=JSON.stringify(json);
+				$("#setLang").submit();
+				}
 			speechSynthesis.speak(uttr);
 			console.log(uttr);
+
 		});
 	}
 	for(let i=0;i<L2speak.length;i++){
     	L2speak[i].addEventListener("click",function(){
+			let lang1=$("#lang1").val();
+			let lang2=$("#lang2").val();
 			const uttr=new SpeechSynthesisUtterance(L2hidden[i].textContent);
-			uttr.lang=document.getElementById("L2lang").value;
+			uttr.lang=document.getElementById("lang2").value;
 			uttr.volume=document.getElementById("volume").value;
+			let currentVoicename=voiceSelect.value;
+			voice.forEach(function(v){
+				if(v.name==currentVoicename)
+				uttr.voice=v;
+			})
+			if(lang2!=preLang2||currentVoicename!=preVoicename){
+				json={
+					"lang1":lang1,
+					"lang2":lang2,
+					"voicename":currentVoicename
+					}
+				jsonString=JSON.stringify(json);
+				$("#setLang").submit();
+			}
     		speechSynthesis.speak(uttr);
 		});
 	}
@@ -450,6 +500,25 @@ if("speechSynthesis" in window){
 	console.log("false");
 	$("#speechNotFound").removeClass("displayNone");
 }
+
+$(function(){
+	let token=$("meta[name='_csrf']").attr("content");
+	let header=$("meta[name='_csrf_header']").attr("content");
+	$(document).ajaxSend(function(e,xhr,options){
+		xhr.setRequestHeader(header,token);
+	});
+	$("#setLang").on("submit",function(e){
+		e.preventDefault();
+
+		$.ajax({
+			url:$(this).attr("action"),
+			type:"POST",
+			data:jsonString,
+			dataType:"json",
+			contentType:"application/json"
+		})
+	})
+})
 
 //メニューの切り替えを設定
 let premenu=0;
@@ -577,3 +646,4 @@ $("#scrollBottom").on("click",function(){
 	console.log(container.clientHeight);
 	window.scrollTo(0,container.scrollHeight);
 });
+

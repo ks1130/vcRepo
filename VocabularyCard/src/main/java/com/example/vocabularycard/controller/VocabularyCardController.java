@@ -1,8 +1,10 @@
 package com.example.vocabularycard.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
@@ -19,12 +21,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.vocabularycard.common.OpMsg;
 import com.example.vocabularycard.dao.VocabularyCardDaoImpl;
+import com.example.vocabularycard.entity.Account;
 import com.example.vocabularycard.entity.Tag;
 import com.example.vocabularycard.entity.VocabularyCard;
 import com.example.vocabularycard.form.LoginData;
@@ -32,9 +37,11 @@ import com.example.vocabularycard.form.TagData;
 import com.example.vocabularycard.form.TagQuery;
 import com.example.vocabularycard.form.VocabularyCardData;
 import com.example.vocabularycard.form.VocabularyCardQuery;
+import com.example.vocabularycard.repository.AccountRepository;
 import com.example.vocabularycard.repository.TagRepository;
 import com.example.vocabularycard.repository.VocabularyCardRepository;
 import com.example.vocabularycard.service.VocabularyCardService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 @Controller
@@ -45,6 +52,8 @@ public class VocabularyCardController {
 	private final VocabularyCardService vocabularyCardService;
 	private final HttpSession session;
 	private final MessageSource messageSource;
+	private final ObjectMapper objectMapper;
+	private final AccountRepository accountRepository;
 	@PersistenceContext
 	private EntityManager entityManager;
 	VocabularyCardDaoImpl vocabularyCardDaoImpl;
@@ -83,6 +92,12 @@ public class VocabularyCardController {
 		//検索用フォームのvocabularyCardQueryをバインド
 		mv.addObject("vocabularyCardQuery", new VocabularyCardQuery());
 		mv.addObject("tagQuery", new TagQuery());
+		Map<String,String> modelMap=new HashMap<>();
+		modelMap.put("lang1", session.getAttribute("lang1").toString());
+		System.out.println(session.getAttribute("lang1").toString());
+		modelMap.put("lang2", session.getAttribute("lang2").toString());
+		modelMap.put("preVoicename", session.getAttribute("preVoicename").toString());
+		mv.addAllObjects(modelMap);
 		return mv;
 	}
 
@@ -90,6 +105,21 @@ public class VocabularyCardController {
 	@GetMapping("/vocabularyCard/operation")
 	public String guideOperation() {
 		return "operation";
+	}
+
+	//言語設定
+	@ResponseBody
+	@PostMapping("/vocabularyCard/setLang")
+	public void setLang(@RequestBody Map<String,Object> json) {
+		//accountに言語設定を更新
+		Account account=accountRepository.findById((Integer)session.getAttribute("accountId")).get();
+		account.setLang1(json.get("lang1").toString());
+		account.setLang2(json.get("lang2").toString());
+		account.setVoicename(json.get("voicename").toString());
+		accountRepository.saveAndFlush(account);
+		session.setAttribute("lang1", account.getLang1());
+		session.setAttribute("lang2", account.getLang2());
+		session.setAttribute("preVoicename", account.getVoicename());
 	}
 
 	//検索フォーム送信時、タグ検索時

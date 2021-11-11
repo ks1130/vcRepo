@@ -85,6 +85,7 @@ if(screen.width>480){
     var movedTag=document.getElementById("movedTag");
 	//タグ追加、検索フォームに価を設定
 	function touchStartEvent(event){
+		console.log("touchstart");
 		event.preventDefault();
 		var touchObject = event.changedTouches[0];
         movedTag.style.position="fixed";

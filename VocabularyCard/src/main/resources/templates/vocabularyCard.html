@@ -97,10 +97,10 @@
 							<div class="form frameBorder">
 								<input type="text" th:value="*{searchSpelling}"
 									name="searchSpelling" class="searchForm menuInput"
-									maxlength="50" placeholder="LANGUAGE1" autocomplete="off"> <input
+									maxlength="50" placeholder="LANGUAGE1" autocomplete="off" autocapitalize="off"> <input
 									type="text" th:value="*{searchMeaning}" name="searchMeaning"
 									class="searchForm menuInput" maxlength="50"
-									placeholder="LANGUAGE2" autocomplete="off">
+									placeholder="LANGUAGE2" autocomplete="off" autocapitalize="off">
 								<button id="doSearch" class="reset submitButton">検索</button>
 							</div>
 						</form>
@@ -111,22 +111,22 @@
 								<p class="label">LANGUAGE1</p>
 								<input type="text" name="spelling1" th:value="*{spelling1}"
 									placeholder="word 1(必須)" class="createForm menuInput"
-									maxlength="50" autocomplete="off">
+									maxlength="50" autocomplete="off" autocapitalize="off">
 								<div class="error" th:errors="*{spelling1}" th:errorclass="red"></div>
 								<input type="text" name="spelling2" th:value="*{spelling2}"
-									placeholder="word 2" class="createForm menuInput" max="50" autocomplete="off">
+									placeholder="word 2" class="createForm menuInput" max="50" autocomplete="off" autocapitalize="off">
 								<input type="text" name="spelling3" th:value="*{spelling3}"
 									placeholder="word 3" class="createForm menuInput"
-									maxlength="50" autocomplete="off">
+									maxlength="50" autocomplete="off" autocapitalize="off">
 								<p class="label">LANGUAGE2</p>
 								<input type="text" name="meaning1" th:value="*{meaning1}"
 									placeholder="word 1" class="createForm menuInput"
-									maxlength="50" autocomplete="off"> <input type="text" name="meaning2"
+									maxlength="50" autocomplete="off" autocapitalize="off"> <input type="text" name="meaning2"
 									th:value="*{meaning2}" placeholder="word 2"
-									class="createForm menuInput" maxlength="50" autocomplete="off"> <input
+									class="createForm menuInput" maxlength="50" autocomplete="off" autocapitalize="off"> <input
 									type="text" name="meaning3" th:value="*{meaning3}"
 									placeholder="word 3" class="createForm menuInput"
-									maxlength="50" autocomplete="off">
+									maxlength="50" autocomplete="off" autocapitalize="off">
 								<button type="submit" id="doCreate" class="keep submitButton">カード作成</button>
 							</div>
 						</form>
@@ -137,7 +137,7 @@
 							<div class="frameBorder">
 								<input type="text" name="name" th:value="*{name}"
 									placeholder="tag" class="createTagForm menuInput"
-									maxlength="50" autocomplete="off">
+									maxlength="50" autocomplete="off" autocapitalize="off">
 								<div class="error" th:if="${#fields.hasErrors('name')}"
 									th:errors="*{name}" th:errorclass="red"></div>
 								<button type="submit" id="doCreateTag" class="keep submitButton">タグ作成</button>
@@ -221,7 +221,7 @@
 						<span th:text="${vc.spelling1}" class="L1hidden correct"
 							id="spelling1"></span> <span
 							class="L1writeIn displayNone writeIn"><input type="text"
-							placeholder=""><span class="L1Length"></span></span>
+							placeholder="" autocomplete="off" autocapitalize="off"><span class="L1Length"></span></span>
 						<button class="check L1check">⇔</button>
 						<button class="L1speakButton">再生</button>
 						<br>
@@ -230,7 +230,7 @@
 						<span th:text="${vc.spelling2}" class="L1hidden correct"
 							id="spelling2"></span> <span
 							class="L1writeIn displayNone writeIn"><input type="text"
-							placeholder=""><span class="L1Length"></span> </span>
+							placeholder="" autocomplete="off" autocapitalize="off"><span class="L1Length"></span></span>
 						<button class="check L1check">⇔</button>
 						<button class="L1speakButton">再生</button>
 						<br>
@@ -239,7 +239,7 @@
 						<span th:text="${vc.spelling3}" class="L1hidden correct"
 							id="spelling3"></span> <span
 							class="L1writeIn displayNone writeIn"><input type="text"
-							placeholder=""><span class="L1Length"></span> </span>
+							placeholder="" autocomplete="off" autocapitalize="off"><span class="L1Length"></span></span>
 						<button class="check L1check">⇔</button>
 						<button class="L1speakButton">再生</button>
 					</div>
@@ -249,7 +249,7 @@
 					<div th:unless="${vc.meaning1.isEmpty()}" class="eachWord">
 						<span th:text="${vc.meaning1}" class="L2hidden correct"></span> <span
 							class="L2writeIn displayNone writeIn"><input type="text"
-							placeholder=""><span class="L2Length"></span></span>
+							placeholder="" autocomplete="off" autocapitalize="off"><span class="L2Length"></span></span>
 						<button class="check L2check">⇔</button>
 						<button class="L2speakButton">再生</button>
 						<br>
@@ -257,7 +257,7 @@
 					<div th:unless="${vc.meaning2.isEmpty()}" class="eachWord">
 						<span th:text="${vc.meaning2}" class="L2hidden correct"></span> <span
 							class="L2writeIn displayNone writeIn"><input type="text"
-							placeholder=""><span class="L2Length"></span></span>
+							placeholder="" autocomplete="off" autocapitalize="off"><span class="L2Length"></span></span>
 						<button class="check L2check">⇔</button>
 						<button class="L2speakButton">再生</button>
 						<br>
@@ -265,7 +265,7 @@
 					<div th:unless="${vc.meaning3.isEmpty()}" class="eachWord">
 						<span th:text="${vc.meaning3}" class="L2hidden correct"></span> <span
 							class="L2writeIn displayNone writeIn"><input type="text"
-							placeholder=""><span class="L2Length"></span></span>
+							placeholder="" autocomplete="off" autocapitalize="off"><span class="L2Length"></span></span>
 						<button class="check L2check">⇔</button>
 						<button class="L2speakButton">再生</button>
 					</div>

@@ -7,12 +7,13 @@
 <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
-	<div class="login-container">
+
 		<header>
 			<h1 class="title-container">
 				<span class="title">Vocabulary Card</span>
 			</h1>
 		</header>
+		<div class="login-container">
 		<div th:if="${msg!=null}">
 			<div th:if="${msg.msgType=='E'}" class="error">
 				<span class="icon E">×</span> <span th:text="${msg.msgText}"

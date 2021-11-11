@@ -21,6 +21,7 @@
 		<h3 class="pointer">カード、タグの削除</h3>
 		<h3 class="pointer">カードの検索</h3>
 		<h3 class="pointer">テスト機能</h3>
+		<h3 class="pointer">読みあげ設定</h3>
 		<a th:href="@{/vocabularyCard}">⇦戻る</a>
 	</div>
 
@@ -71,7 +72,16 @@
 				<img alt="test" th:src="@{/images/test.gif}" class="gif freezeframe pointer">
 			</div>
 		</div>
+		<div id="langGif" class="gifSpace displayNone">
+		<div class="bold">言語、voice について</div>
+			<ul>
+				<li> 最後に読みあげた言語および voice の設定が保存されます。</li>
+				<li> ブラウザによって対応している言語、voice の種類が異なります。</li>
+				<li> 前回にログインしたブラウザとは異なるブラウザでログインした場合、読みあげ設定の保存内容がリセットされます。</li>
+			</ul>
+		</div>
 	</div>
+	<div class="copyright">© 2021 KMTS</div>
 
 	<script>
 		'use strict'

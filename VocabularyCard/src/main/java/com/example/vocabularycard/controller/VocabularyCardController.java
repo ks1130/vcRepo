@@ -126,6 +126,8 @@ public class VocabularyCardController {
 	@PostMapping("/vocabularyCard/search")
 	public ModelAndView showCard(@ModelAttribute VocabularyCardQuery vocabularyCardQuery,
 			ModelAndView mv,Locale locale) {
+		System.out.println(vocabularyCardQuery.getSearchTag());
+		System.out.println(vocabularyCardQuery.getSearchSpelling());
 		Integer accountId=(Integer)session.getAttribute("accountId");
 		//vocabularyCard.htmlへ送る
 		mv.setViewName("vocabularyCard");

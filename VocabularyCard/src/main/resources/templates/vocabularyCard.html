@@ -19,9 +19,7 @@
 	</header>
 
 	<div class="container">
-		<div id="movedTag" class="displayNone tag">movedTag</div>
 		<div class="float-container">
-
 			<div class="menu-container menuBorder">
 				<!-- スクロールで追従する部分 -->
 				<div class="menuTab">
@@ -289,6 +287,7 @@
 		</div>
 		<br>
 	</div>
+	<div id="movedTag" class="displayNone tag">movedTag</div>
 	<!-- 言語設定を保存するためのフォーム -->
 	<form th:action="@{/vocabularyCard/setLang}" method="post" id="setLang" class="displayNone">
 		<input name="lang1"><div th:text="${lang1}" id="preLang1"></div><input

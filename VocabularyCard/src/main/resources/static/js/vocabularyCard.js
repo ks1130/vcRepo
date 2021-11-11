@@ -89,23 +89,23 @@ if(screen.width>480){
 		event.preventDefault();
 		var touchObject = event.changedTouches[0];
         movedTag.style.position="fixed";
-        X=touchObject.clientX-60;
-        Y=touchObject.clientY-15;
-        movedTag.style.left=X+"px";
-        movedTag.style.top=Y+"px";
+        X=touchObject.clientX;
+        Y=touchObject.clientY;
+        movedTag.style.left=X-60+"px";
+        movedTag.style.top=Y-15+"px";
         movedTag.textContent=event.target.textContent;
         document.getElementById("addedTag").value=event.target.textContent;
 		//350msでドラッグに移行、その後movedTagが上に来るので検索はできなくなる
-		setTimeout(()=>{movedTag.classList.toggle("displayNone")},350);
+		setTimeout(()=>{movedTag.classList.remove("displayNone")},350);
 	}
 	//指がタグから外れた場合はドラッグ、タグの上でそのままtouchEndが発火したらタップとみなし検索
 	function touchMoveEvent(event){
 		event.preventDefault();
 		var touchObject = event.changedTouches[0];
-        X=touchObject.clientX-60;
-        Y=touchObject.clientY-15;
-        movedTag.style.left=X+"px";
-        movedTag.style.top=Y+"px";
+        X=touchObject.clientX;
+        Y=touchObject.clientY;
+        movedTag.style.left=X-60+"px";
+        movedTag.style.top=Y-15+"px";
         console.log("X:"+X+",Y:"+Y);
         var droppedElement=document.elementFromPoint(X,Y);
     	console.log(droppedElement.className);
@@ -115,6 +115,7 @@ if(screen.width>480){
 		}
 	}
 	function touchEndEvent(event){
+		console.log("touchend");
 			movedTag.classList.add("displayNone");
 			var droppedElement=document.elementFromPoint(X,Y);
 			if(droppedElement==event.target){
@@ -122,7 +123,6 @@ if(screen.width>480){
 					document.getElementById("searchTag").submit();
 				}else{
 					try{
-					console.log("touchend");
 					event.preventDefault();
 					movedTag.style.position="";
 		        	//elementfromPoint()は最もネストされた要素を取得するため、その親要素がwordListかを判定する

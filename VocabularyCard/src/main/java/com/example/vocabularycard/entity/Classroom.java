@@ -12,29 +12,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="account")
+@Table(name="classroom")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Account {
+public class Classroom {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column
+	@Column(name="id")
 	private Integer id;
-	@Column(name="login_id")
-	private String loginId;
+	@Column(name="name")
+	private String name;
 	@Column(name="password")
 	private String password;
-	@Column(name="role")
-	private String role;
-	@Column(name="enabled")
-	private Boolean enabled;
-	@Column(name="lang1")
-	private String lang1;
-	@Column(name="lang2")
-	private String lang2;
-	@Column(name="voicename")
-	private String voicename;
-	@Column(name="classroom_id")
-	private Integer classroomId;
 }

@@ -22,11 +22,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Override
 	public void configure(WebSecurity web) {
-		web.ignoring().antMatchers("/css/**","/js/**","/images/**");
+		web.ignoring().antMatchers("/css/**","/js/**","/images/**","/favicon.ico");
 	}
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
-		http.authorizeRequests().antMatchers("/","/login/**","/regist","/regist/**").permitAll().antMatchers("/vocabularyCard/**").hasRole("USER").anyRequest().authenticated()
+		http.authorizeRequests().antMatchers("/","/index","/login","/login/**","/regist","/regist/**").permitAll().antMatchers("/vocabularyCard/**").hasAnyRole("USER","OWNER").anyRequest().authenticated()
 		.and().formLogin().loginPage("/login").usernameParameter("loginId").passwordParameter("password").loginProcessingUrl("/login/do").defaultSuccessUrl("/vocabularyCard").failureUrl("/login/failure").permitAll()
 		.and().logout().permitAll();
 
@@ -38,7 +38,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	public void configure(AuthenticationManagerBuilder auth) throws Exception{
 		auth.userDetailsService(loginService).passwordEncoder(passwordEncoder());
 	}
-
 	@Bean
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();

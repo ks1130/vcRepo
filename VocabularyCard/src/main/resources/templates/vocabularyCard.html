@@ -25,7 +25,7 @@
 				<div class="menuTab">
 					<div class="operationMenuButton menuButton selected">menu</div>
 					<div class="tagMenuButton menuButton unselected pointer">tag</div>
-					<div class="logMenuButton menuButton unselected pointer">log</div>
+					<div class="classMenuButton menuButton unselected pointer">class</div>
 					<div class="float-end"></div>
 				</div>
 				<div class="guide menu">
@@ -162,7 +162,7 @@
 							<button th:text="${tag.name}" class="tag pointer"
 								draggable="true" form="searchTag"></button>
 							<input type="checkbox" class="check-delete-tag checkbox"
-								name="deletedTagId" th:value="${tag.id}" form="checkDelete">
+								name="tagId" th:value="${tag.id}" form="checkDelete">
 						</div>
 
 						<!-- ドラッグアンドドロップで使用するカードid、タグ名送信用のフォーム -->
@@ -173,7 +173,7 @@
 								type="hidden" name="draggedTag" id="addedTag">
 						</form>
 					</div>
-					<div class="logMenu displayNone">
+					<div class="classMenu displayNone">
 						<!-- 操作メッセージ -->
 						<div class="message-container">
 							<div th:if="${msg!=null}" class="message">
@@ -186,7 +186,60 @@
 								<div th:if="${msg.msgType=='I'}" class="information">
 									<span class="icon I">i</span> <span th:text="${msg.msgText}"></span>
 								</div>
-
+							</div>
+							<div>
+								<div th:if="${role=='TEACHER'}" class="frameBorder form">
+									<form th:action="@{/vocabularyCard/createClassroom}" method="post" th:object="${classroomData}">
+										<div class="label">新しいクラス名</div>
+										<input name="name" th:value="*{name}" th:type="text" class="menuInput">
+										<div class="label">パスワード(任意)</div>
+										<input name="password" th:value="*{password}" type="password"  class="menuInput">
+										<button>クラス作成</button>
+									</form>
+								</div>
+								<div th:if="${role=='USER'}" class="frameBorder form">
+									<form th:action="@{/vocabularyCard/Classroom}" method="post" th:object="${classroomData}">
+										<div class="label">新しいクラス名</div>
+										<input name="name" th:value="*{name}" th:type="text" class="menuInput">
+										<div class="label">パスワード(任意)</div>
+										<input name="password" th:value="*{password}" type="password"  class="menuInput">
+										<button>クラス作成</button>
+									</form>
+								</div>
+								<div class="label">クラス一覧</div>
+								<div th:each="cl:${classroomList}">
+								<div th:text="${cl.name}"></div>
+								<div th:if="${classroomList.size()==0}">
+									<form>
+										<div>クラスを登録する</div>
+										<div class="label">クラス名</div>
+										<input  class="menuInput">
+										<div class="label">パスワード</div>
+										<input  class="menuInput">
+									</form>
+								</div>
+								<div th:unless="${classroomList.size()==0}">
+									<form th:action="@{/vocabularyCard/leaveClassroom}">
+										<button>クラスを出る</button>
+									</form>
+								</div>
+								</div>
+								<form th:action="@{/vocabularyCard/createHolder}" method="post" th:obect="${holderData}" class="frameBorder form">
+									<input th:value="*{name}" name="name"  class="menuInput">
+									<input type="checkbox" name="isShared"  class="menuInput">
+									<button>単語帳を作成</button>
+								</form>
+								<form th:action="@{/vocabularyCard/storeCards}" method="post" id="storeCards">
+								<div th:each="hl:${holderList}">
+								<!-- cardIdの取得はjsで行う -->
+									<div>単語帳</div>
+									<div class="holder">
+										<div th:text="${hl.name}" class="holderName"></div>
+										<input th:value="${hl.id}" type="hidden" name="holderId"  class="menuInput">
+										<button>+</button>
+									</div>
+								</div>
+								</form>
 							</div>
 							<div class="message warnning displayNone" id="speechNotFound">
 								<span class="icon W">!</span> <span>お使いのブラウザは音声読み上げに対応していません。</span>
@@ -210,8 +263,8 @@
 					method="post">
 					<button class="editButton pointer keep" type="submit">編集</button>
 				</form>
-				<input type="checkbox" th:value="${vc.id}" name="deletedId"
-					class="checkbox" form="checkDelete">
+				<input type="checkbox" th:value="${vc.id}" name="id"
+					class="checkbox ids" form="checkDelete">
 			</div>
 
 			<section class="wordList">

@@ -572,10 +572,10 @@ function changeMenu(pre,post){
 		$(".tagMenuButton").toggleClass("pointer");
 	}
 	if(pre==2){
-		$(".logMenu").toggleClass("displayNone");
-		$(".logMenuButton").toggleClass("unselected");
-		$(".logMenuButton").toggleClass("selected");
-		$(".logMenuButton").toggleClass("pointer");
+		$(".classMenu").toggleClass("displayNone");
+		$(".classMenuButton").toggleClass("unselected");
+		$(".classMenuButton").toggleClass("selected");
+		$(".classMenuButton").toggleClass("pointer");
 	}
 	//postmenuを表示する
 	if(post==0){
@@ -591,13 +591,13 @@ function changeMenu(pre,post){
 		$(".tagMenuButton").toggleClass("pointer");
 	}
 	if(post==2){
-		$(".logMenu").toggleClass("displayNone");
-		$(".logMenuButton").toggleClass("unselected");
-		$(".logMenuButton").toggleClass("selected");
-		$(".logMenuButton").toggleClass("pointer");
+		$(".classMenu").toggleClass("displayNone");
+		$(".classMenuButton").toggleClass("unselected");
+		$(".classMenuButton").toggleClass("selected");
+		$(".classMenuButton").toggleClass("pointer");
 	}
 }
-var operationMenu=document.querySelectorAll(".operationMenu");
+//var operationMenu=document.querySelectorAll(".operationMenu");
 $(".operationMenuButton").on("click",function(){
 	postmenu=0;
 	if(premenu===0){
@@ -608,7 +608,7 @@ $(".operationMenuButton").on("click",function(){
 	premenu=postmenu;
 	console.log("operation:"+premenu+","+postmenu);
 });
-var tagMenu=document.querySelectorAll(".tagMenu");
+//var tagMenu=document.querySelectorAll(".tagMenu");
 $(".tagMenuButton").on("click",function(){
 	postmenu=1;
 	if(premenu===1){
@@ -619,7 +619,7 @@ $(".tagMenuButton").on("click",function(){
 	premenu=postmenu;
 	console.log("tag:"+premenu+","+postmenu);
 });
-$(".logMenuButton").on("click",function(){
+$(".classMenuButton").on("click",function(){
 	postmenu=2;
 	if(premenu===2){
 		return;
@@ -643,31 +643,6 @@ function adjustMenu(){
 }
 window.addEventListener("load",adjustMenu);
 
-/*else{
-	//css の position: sticky が反映されないため、javascript で実装
-	//画面全体の高さを取得し、その15%の高さに設定する。操作メッセージも考慮し、15%をstickyの境界にする
-	//menuの最初の位置の高さを設定
-	let firstHeight=screen.availHeight*0.15;
-	console.log(firstHeight);
-	$('.menu-container').css('position',firstHeight+"px");
-	var menuContainer=document.querySelector(".menu-container");
-	menuContainer.style.top=firstHeight+"px";
-	console.log($('.menu-container').offset().top);
-	$(window).on('scroll',function(){
-		let secondHeight=$('.menu-container').offset().top;
-		//スクロール量を取得
-		let scroll=$(window).scrollTop();
-		//スクロール量がmenuの高さを上回ったらstickyを追加、下回ったら削除
-		if(scroll>firstHeight){
-			menuContainer.style.position="fixed";
-			//$(".menu-container").addClass('sticky');
-		}else{
-			//$(".menu-container").removeClass('sticky');
-			menuContainer.style.position="";
-		}
-	});
-}*/
-
 $("#scrollTop").on("click",function(){
 	window.scrollTo(0,0);
 });
@@ -678,3 +653,18 @@ $("#scrollBottom").on("click",function(){
 	console.log(container.clientHeight);
 	window.scrollTo(0,container.scrollHeight);
 });
+//storeCard用のcardId設定
+let holder=document.getElementsByClassName("holder");
+for(let item of holder){
+	let storeButton=item.querySelector("button");
+	storeButton.addEventListener("click",function(event){
+		event.preventDefault();
+		const idsIntoHolder=document.querySelectorAll(".ids");
+		for(let id of idsIntoHolder){
+			if(id.checked==true){
+				id.setAttribute("form","storeCards");
+			}
+	}
+	$("#storeCards").submit();
+	})
+}

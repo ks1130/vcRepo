@@ -13,11 +13,18 @@ a{
 	color:#FF8C00;
 	font-weight: bold;
 }
+button{
+	border:none;
+	border-radius:10px;
+}
 .card{
 	margin-left:30vmax;
 	/*１枚目のカードの下に空白ができるのを防ぐため。
 	floatした親要素(.wordの親要素)の高さが未確定になるため、空白が生じる。*/
 	overflow: hidden;
+}
+.center{
+	text-align:center;
 }
 .checkbox{
 	height:18px;
@@ -162,6 +169,13 @@ footer{
 	margin-left:auto;
 	width:15vmax;
 }
+.formTitle{
+	color:#FF8C00;
+	font-size:30px;
+	text-align:center;
+	margin-bottom:20px;
+	margin-top:100px;
+}
 .frameBorder{
 	border: solid 3px #000055;
 	box-sizing: border-box;
@@ -299,27 +313,44 @@ input{
 	border-top:none;
 	width:14vmax;
 }
+.indexButton{
+	background-color:#c4d7e7;
+	border:none;
+	border-radius:10px;
+	color:black;
+	font-size:12px;
+	height:8vmin;
+	padding:5px;
+	text-decoration:none;
+
+}
 .login{
 	font-size:15px;
 	margin-left:2vmax;
 }
 .loginButton{
-	display:inline;
-}
-.login-container{
 	margin-left:auto;
 	margin-right:auto;
-	width:90vmax;
+	width:40vmax;
+	display:block;
 }
-#loginFloat{
-	float:right;
+.loginForm{
+	margin-left:auto;
+	margin-right:auto;
 }
 .loginInput{
-	width:20vmax;
+	font-size:12px;
+	height:10vmin;
+	width:40Vmax;
+
 }
-.logMenuButton{
+.classMenuButton{
 	float:right;
 
+}
+.marginAuto{
+	margin-left:auto;
+	margin-right:auto;
 }
 .menu{
 	box-sizing: border-box;
@@ -489,7 +520,6 @@ select{
 	font-size:18px;
 }
 table{
-	background-color: #000055;
 	color:#FF8C00;
 	font-size:15px;
 	margin-top:1vmin;
@@ -539,6 +569,7 @@ td>input{
 }
 #terms-container{
 	padding:4vmin 5vmax 4vmin 5vmax;
+
 }
 #terms-container>ol{
 	margin-left:3vmax;
@@ -548,6 +579,7 @@ td>input{
 }
 #termsOfService{
 	background-color:#F5F5F5;
+	margin-left:auto;
 	margin-right:auto;
 	width:70vmax;
 }
@@ -556,18 +588,13 @@ td>input{
 	height:16px;
 }
 .title{
-	color:#FF8C00;
-	display:table-cell;
+	color:white;
 	font-size:20px;
-	text-align:center;
-	text-decoration: none;
-	text-shadow:white 1px 1px 0px,white -1px -1px 0px,white -1px 1px 0px,white 1px -1px 0px,white 0px 1px 0px,white 0px -1px 0px,white -1px 0px 0px,white 1px 0px 0px;
-	vertical-align: middle;
 }
 .title-container{
-	background-color:#000055;
+	background: linear-gradient(#000055,#ffffff);
 	display:table;
-	height:8vmin;
+	height:60vmin;
 	width:100%;
 }
 .titleST{
@@ -584,6 +611,11 @@ td>input{
 	display:table;
 	height:8vmin;
 	width:100%;
+}
+.titleText{
+	color:white;
+	font-size:24px;
+	padding:10vmax;
 }
 .topic{
 	color:#000055;

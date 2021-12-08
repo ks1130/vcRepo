@@ -39,8 +39,13 @@ public class LoginController {
 
 	@GetMapping("/")
 	public ModelAndView showLogin(ModelAndView mv) {
-		mv.setViewName("loginForm");
+		mv.setViewName("index");
 		mv.addObject("loginData", new LoginData());
+		return mv;
+	}
+	@GetMapping("/index")
+	public ModelAndView index(ModelAndView mv) {
+		mv.setViewName("index");
 		return mv;
 	}
 	@GetMapping("/login")
@@ -50,7 +55,6 @@ public class LoginController {
 		mv.addObject("loginData", new LoginData());
 		return mv;
 	}
-	/*
 	@PostMapping("/login/do")
 	public String login(@ModelAttribute @Validated LoginData loginData,
 			BindingResult result,
@@ -63,16 +67,13 @@ public class LoginController {
 			model.addAttribute("msg",new OpMsg("E",msg));
 			return "loginForm";
 		}
-
 		Account account=accountRepository.findByLoginId(loginData.getLoginId()).get();
-
 		String msg=messageSource.getMessage("msg.i.login_success",
-				new Object[] {account.getLoginId(),account.getName()},
+				new Object[] {account.getLoginId()},
 				locale);
 		redirectAttributes.addFlashAttribute("msg", new OpMsg("I",msg));
 		return "redirect:/vocabularyCard";
 	}
-	*/
 
 	@GetMapping("/logout")
 	public String logout(RedirectAttributes redirectAttributes,Locale locale) {
@@ -87,7 +88,7 @@ public class LoginController {
 	public String loginFailure(RedirectAttributes redirectAttributes,Locale locale) {
 		String msg=messageSource.getMessage("msg.e.loginId_failure",null, locale);
 		redirectAttributes.addFlashAttribute("msg", new OpMsg("E",msg));
-		return "redirect:/";
+		return "redirect:/login";
 	}
 
 	@GetMapping("/regist")
@@ -122,7 +123,6 @@ public class LoginController {
 		}
 		return "redirect:/";
 	}
-
 
 	@GetMapping("/regist/cancel")
 	public String cancel() {

@@ -20,6 +20,7 @@ import org.springframework.validation.FieldError;
 
 import com.example.vocabularycard.config.AccountUserDetails;
 import com.example.vocabularycard.entity.Account;
+import com.example.vocabularycard.form.LoginData;
 import com.example.vocabularycard.form.RegistData;
 import com.example.vocabularycard.repository.AccountRepository;
 
@@ -33,7 +34,6 @@ public class LoginService implements UserDetailsService{
 	private final AccountRepository accountRepository;
 	private final HttpSession session;
 
-	/*
 	public boolean isValid(LoginData loginData,BindingResult result,Locale locale) {
 		Optional<Account> account=accountRepository.findByLoginId(loginData.getLoginId());
 		System.out.println(account);
@@ -55,7 +55,6 @@ public class LoginService implements UserDetailsService{
 		}
 		return true;
 	}
-	*/
 
 	public boolean isValid(RegistData registData,BindingResult result,Locale locale) {
 		Optional<Account> account=accountRepository.findByLoginId(registData.getLoginId());
@@ -88,9 +87,10 @@ public class LoginService implements UserDetailsService{
 		}
 		Collection<GrantedAuthority> authorities=new ArrayList<>();
 		authorities.add(new SimpleGrantedAuthority(account.getRole()));
-
 		AccountUserDetails user=new AccountUserDetails(account,authorities);
 		session.setAttribute("accountId", account.getId());
+		session.setAttribute("classroomId", account.getClassroomId());
+		session.setAttribute("role", account.getRole());
 		session.setAttribute("lang1", account.getLang1());
 		session.setAttribute("lang2", account.getLang2());
 		session.setAttribute("preVoicename", account.getVoicename());

@@ -7,34 +7,30 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.TypeDef;
+
+import com.vladmihalcea.hibernate.type.array.IntArrayType;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name="account")
+@Table(name="holder")
 @Data
+@TypeDef(name="int-array",
+		typeClass=IntArrayType.class)
 @AllArgsConstructor
 @NoArgsConstructor
-public class Account {
+public class Holder {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column
+	@Column(name="id")
 	private Integer id;
-	@Column(name="login_id")
-	private String loginId;
-	@Column(name="password")
-	private String password;
-	@Column(name="role")
-	private String role;
-	@Column(name="enabled")
-	private Boolean enabled;
-	@Column(name="lang1")
-	private String lang1;
-	@Column(name="lang2")
-	private String lang2;
-	@Column(name="voicename")
-	private String voicename;
-	@Column(name="classroom_id")
-	private Integer classroomId;
+	@Column(name="owner_id")
+	private Integer ownerId;
+	@Column(name="classroomId")
+	private Integer classroomId;//classroomで共有する場合に必要になる
+	@Column(name="name")
+	private String name;
 }

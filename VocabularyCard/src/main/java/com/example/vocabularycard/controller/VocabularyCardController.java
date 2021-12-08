@@ -13,6 +13,8 @@ import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.context.MessageSource;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,14 +32,22 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.vocabularycard.common.OpMsg;
 import com.example.vocabularycard.dao.VocabularyCardDaoImpl;
 import com.example.vocabularycard.entity.Account;
+import com.example.vocabularycard.entity.CardsInHolder;
+import com.example.vocabularycard.entity.Classroom;
+import com.example.vocabularycard.entity.Holder;
 import com.example.vocabularycard.entity.Tag;
 import com.example.vocabularycard.entity.VocabularyCard;
+import com.example.vocabularycard.form.ClassroomData;
+import com.example.vocabularycard.form.HolderData;
 import com.example.vocabularycard.form.LoginData;
 import com.example.vocabularycard.form.TagData;
 import com.example.vocabularycard.form.TagQuery;
 import com.example.vocabularycard.form.VocabularyCardData;
 import com.example.vocabularycard.form.VocabularyCardQuery;
 import com.example.vocabularycard.repository.AccountRepository;
+import com.example.vocabularycard.repository.CardsInHolderRepository;
+import com.example.vocabularycard.repository.ClassroomRepository;
+import com.example.vocabularycard.repository.HolderRepository;
 import com.example.vocabularycard.repository.TagRepository;
 import com.example.vocabularycard.repository.VocabularyCardRepository;
 import com.example.vocabularycard.service.VocabularyCardService;
@@ -54,9 +64,13 @@ public class VocabularyCardController {
 	private final MessageSource messageSource;
 	private final ObjectMapper objectMapper;
 	private final AccountRepository accountRepository;
+	private final ClassroomRepository classroomRepository;
+	private final HolderRepository holderRepository;
+	private final CardsInHolderRepository cardsInHolderRepository;
 	@PersistenceContext
 	private EntityManager entityManager;
 	VocabularyCardDaoImpl vocabularyCardDaoImpl;
+	PasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
 
 	@PostConstruct
 	public void init() {
@@ -73,12 +87,12 @@ public class VocabularyCardController {
 			mv.addObject("loginData", new LoginData());
 			return mv;
 		}
-
+		//sessionからroleをバインド
+		mv.addObject("role", session.getAttribute("role").toString());System.out.println(session.getAttribute("role").toString());
 		//全カードをデータベースから取得、Listに格納
 		List<VocabularyCard> cardList=vocabularyCardRepository.findByUserIdOrderByIdDesc(accountId);
 		//vocabularyCard.htmlへ送る
 		mv.setViewName("vocabularyCard");
-
 		//cardListをバインド
 		mv.addObject("cardList", cardList);
 		//タグリストをデータベースから取得
@@ -92,6 +106,15 @@ public class VocabularyCardController {
 		//検索用フォームのvocabularyCardQueryをバインド
 		mv.addObject("vocabularyCardQuery", new VocabularyCardQuery());
 		mv.addObject("tagQuery", new TagQuery());
+		mv.addObject("classroomData", new ClassroomData());
+		//
+		mv.addObject("holderData", new HolderData());
+		List<Holder> holderList=holderRepository.findByOwnerId(accountId);
+		mv.addObject("holderList", holderList);
+		//クラスルーム
+		List<Classroom> classroomList=classroomRepository.findAllById((Integer)session.getAttribute("classroomId"));
+		mv.addObject("classroomList", classroomList);
+		//ajax用言語設定データ
 		Map<String,String> modelMap=new HashMap<>();
 		modelMap.put("lang1", session.getAttribute("lang1").toString());
 		System.out.println(session.getAttribute("lang1").toString());
@@ -200,10 +223,10 @@ public class VocabularyCardController {
 	}
 
 	@PostMapping("/vocabularyCard/delete")
-	public String deleteCard(
-			@ModelAttribute VocabularyCard vocabularyCard,
-			@RequestParam(name="deletedId",required=false) ArrayList<Integer> deletedId,
-			@RequestParam(name="deletedTagId",required=false) ArrayList<Integer> deletedTagId,
+	public String delete(
+			//@ModelAttribute VocabularyCard vocabularyCard,
+			@RequestParam(name="id",required=false) ArrayList<Integer> deletedId,
+			@RequestParam(name="tagId",required=false) ArrayList<Integer> deletedTagId,
 			Model model) {
 		System.out.println("card:"+deletedId+"tag:"+deletedTagId);
 		if(deletedId!=null) {
@@ -271,7 +294,6 @@ public class VocabularyCardController {
 			model.addAttribute("msg", new OpMsg("E",msg));
 			return "editForm";
 		}
-
 	}
 
 	@PostMapping("/vocabularyCard/cancel")
@@ -300,5 +322,65 @@ public class VocabularyCardController {
 		mv.setViewName("loginForm");
 		String msg=messageSource.getMessage("msg.e.operation_error",null,locale);
 		redirectAttributes.addFlashAttribute("msg", new OpMsg("E",msg));
+	}
+	@PostMapping("/vocabularyCard/createClassroom")
+	public String createClassroom(@ModelAttribute ClassroomData classroomData) {
+		System.out.println(classroomData.getName());
+		System.out.println(classroomData.getPassword());
+		Classroom classroom=classroomData.toClassroom();
+		String pass=passwordEncoder.encode(classroom.getPassword());
+		List<Classroom> list=classroomRepository.findByName(classroomData.getName());
+		for(Classroom item:list) {
+			if(item.getPassword()==pass) {
+				return "redirect:/vocabularyCard";
+			}
+		}
+		classroom.setPassword(pass);
+		classroomRepository.saveAndFlush(classroom);
+		//accountと作製したclassroomを関連付ける
+		Account account=accountRepository.getById((Integer)session.getAttribute("accountId"));
+		account.setClassroomId(classroom.getId());
+		accountRepository.saveAndFlush(account);
+		return "redirect:/vocabularyCard";
+	}
+	@PostMapping("/vocabularyCard/createHolder")
+	public String createHolder(@ModelAttribute HolderData holderData) {
+		Holder holder=holderData.toHolder();
+		holder.setOwnerId((Integer)session.getAttribute("accountId"));
+		holderRepository.saveAndFlush(holder);
+		return "redirect:/vocabularyCard";
+	}
+	@PostMapping("/vocabularyCard/storeCards")
+	public String storeCards(
+			@RequestParam(name="id",required=false) ArrayList<Integer> id,
+			@RequestParam(name="holderId",required=false) Integer holderId) {
+		System.out.println("id:"+id+"holderid"+holderId);
+		List<CardsInHolder> list=new ArrayList<>();
+		for(Integer cardId:id) {
+			CardsInHolder cardsInHolder=new CardsInHolder();
+			cardsInHolder.setCardId(cardId);
+			cardsInHolder.setHolderId(holderId);
+			list.add(cardsInHolder);
+		}
+		cardsInHolderRepository.saveAllAndFlush(list);
+		return "redirect:/vocabularyCard";
+	}
+	@PostMapping("/vocabularyCard/enterClassroom")
+	public String enterClassroom(@ModelAttribute ClassroomData classroomData) {
+		List<Classroom> classroomList=classroomRepository.findByName(classroomData.getName());
+		for(Classroom item:classroomList) {
+			if(item.getPassword()==passwordEncoder.encode(classroomData.getPassword())){
+				Account account=accountRepository.getById((Integer)session.getAttribute("accountId"));
+				account.setClassroomId(item.getId());
+				break;
+			}
+		}
+		return "redirect:/vocabularyCard";
+	}
+	@PostMapping("/vocabularyCard/leaveClassroom")
+	public String leaveClassroom() {
+		Account account=accountRepository.getById((Integer)session.getAttribute("accountId"));
+		account.setClassroomId(null);
+		return "redirect:/vocabularyCard";
 	}
 }

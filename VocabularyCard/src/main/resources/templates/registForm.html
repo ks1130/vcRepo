@@ -7,61 +7,48 @@
 <link th:href="@{/css/style.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
-
-		<header>
-			<h1 class="title-container">
-				<span class="title">Vocabulary Card</span>
-			</h1>
-		</header>
-		<div class="login-container">
-		<div th:if="${msg!=null}">
-			<div th:if="${msg.msgType=='E'}" class="error">
-				<span class="icon E">×</span> <span th:text="${msg.msgText}"
-					class="errorMsg"></span>
-			</div>
-			<div th:if="${msg.msgType=='I'}" class="information">
-				<span class="icon I">×</span> <span th:text="${msg.msgText}"
-					class="errorMsg"></span>
-			</div>
+	<script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
+	<div class="formTitle">Vocabulary Card</div>
+	<div th:if="${msg!=null}">
+		<div th:if="${msg.msgType=='E'}" class="error marginAuto">
+			<span class="icon E">×</span> <span th:text="${msg.msgText}"
+				class="errorMsg"></span>
 		</div>
-		<div class="login">
-			<form th:action="@{/regist/do}" th:object="${registData}"
-				method="post">
-				<table>
-					<tr>
-						<th class="valign">ログインID</th>
-					</tr>
-					<tr>
-						<td><input type="password" name="loginId"
-							th:value="*{loginId}" class="loginInput">
-							<div th:if="${#fields.hasErrors('loginId')}"
-								th:errors="*{loginId}" class="errorMsg"></div></td>
-					</tr>
-					<tr>
-						<th class="valign">パスワード</th>
-					</tr>
-					<tr>
-						<td><input type="password" name="password"
-							th:value="*{password}" class="loginInput">
-							<div th:if="${#fields.hasErrors('password')}"
-								th:errors="*{password}" class="errorMsg"></div></td>
-					</tr>
-					<tr>
-						<th class="valign">パスワード(確認用)</th>
-					</tr>
-					<tr>
-						<td><input type="password" name="passwordForCheck"
-							th:value="*{passwordForCheck}" class="loginInput">
-							<div th:if="${#fields.hasErrors('passwordForCheck')}"
-								th:errors="*{passwordForCheck}" class="errorMsg"></div></td>
+		<div th:if="${msg.msgType=='I'}" class="information marginAuto">
+			<span class="icon I">×</span> <span th:text="${msg.msgText}"
+				class="errorMsg"></span>
+		</div>
+	</div>
+	<div class="login">
+		<form th:action="@{/regist/do}" th:object="${registData}"
+			method="post">
+			<table class="loginForm">
+				<tr>
+					<td><input type="password" name="loginId"
+						th:value="*{loginId}" class="loginInput" placeholder="ログインID">
+
+						<div th:if="${#fields.hasErrors('loginId')}"
+							th:errors="*{loginId}" class="errorMsg"></div></td>
+				</tr>
+				<tr>
+					<td><input type="password" name="password"
+						th:value="*{password}" class="loginInput" placeholder="パスワード">
+						<div th:if="${#fields.hasErrors('password')}"
+							th:errors="*{password}" class="errorMsg"></div></td>
+				</tr>
+				<tr>
+					<td><input type="password" name="passwordForCheck"
+						th:value="*{passwordForCheck}" class="loginInput" placeholder="パスワード(確認用)">
+						<div th:if="${#fields.hasErrors('passwordForCheck')}"
+						th:errors="*{passwordForCheck}" class="errorMsg"></div></td>
 					</tr>
 				</table>
+				<button class="indexButton loginButton pointer" id="create" disabled="true">アカウント作成</button>
+				<p class="center">利用規約に同意する<input type="checkbox" id="agreement"></p>
 
-				<p>利用規約に同意する<input type="checkbox" id="agreement"></p>
-				<button id="create">アカウント作成</button>
 			</form>
-			<a th:href="@{/regist/cancel}">キャンセル</a>
-			<div id="termsOfService">
+			<p class="terms pointer center">利用規約</p>
+			<div id="termsOfService" class="displayNone">
 				<div id="terms-container">
 					<h2>利用規約</h2>
 					<p>　この利用規約（以下，「本規約」といいます。）は，当ウェブサイトを利用する上での利用条件を定めるものです。登録ユーザーの皆さま（以下，「ユーザー」といいます。）には，本規約に従って，本サービスをご利用いただきます。</p>
@@ -80,14 +67,12 @@
 
 					以上
 				</div>
-			</div>
 		</div>
 	</div>
 	<script>
 	'use strict'
 	const agreement=document.getElementById("agreement");
 	const create=document.getElementById("create");
-	create.disabled=true;
 	agreement.addEventListener("change",(event)=>{
 		if(agreement.checked==true){
 			create.disabled=false;
@@ -95,6 +80,9 @@
 			create.disabled=true;
 		}
 	});
+	$(".terms").on("click",function(){
+		$("#termsOfService").toggleClass("displayNone");
+	})
 	</script>
 </body>
 </html>

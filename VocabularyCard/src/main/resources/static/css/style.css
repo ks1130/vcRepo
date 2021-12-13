@@ -17,7 +17,12 @@ button{
 	border:none;
 	border-radius:10px;
 }
+#cardList{
+	margin-top:200px;;
+	margin-bottom:30px;
+}
 .card{
+	margin-bottom:100px;
 	margin-left:30vmax;
 	/*１枚目のカードの下に空白ができるのを防ぐため。
 	floatした親要素(.wordの親要素)の高さが未確定になるため、空白が生じる。*/
@@ -26,12 +31,16 @@ button{
 .center{
 	text-align:center;
 }
+.check{
+	background-color:#c4d7e7;
+	padding:5px;
+}
 .checkbox{
 	height:18px;
+	margin-right:5px;
 	width:18px;
 }
 .check-delete{
-	float:left;
 	margin-top:2vmin;
 	text-align: right;
 }
@@ -77,18 +86,29 @@ button{
 	padding-top: 2vmin;
 }
 .editButton{
+	display:inline-block;
 	font-size:12px;
+	width:40px;
+	height:40px;
+}
+.edit-container{
+	margin-top:10vh;
+}
+.editForm{
+	display:inline;
 }
 .editedTag{
 	background-color: #FF8C00;
+	border-radius:20px;
 	font-size:16px;
 	height:5vmin;
+	margin-bottom:10px;
+	margin-left:3vmax;
 	overflow-wrap:break-word;
 	text-align:center;
 	width:18vmax;
 }
 .editedTags{
-	float:left;
 	margin-top:2vmin;
 	width:18vmax;
 }
@@ -97,6 +117,10 @@ button{
 	left:0;
 	margin-left:3vmax;
 	width:50vmax;
+}
+.editMenu>button{
+	background-color:#c4d7e7;
+	padding:5px;
 }
 .error{
 	background-color:rgb(255, 181, 218);
@@ -133,7 +157,6 @@ button{
 }
 .float-container{
 	float:left;
-	margin-left:2vmax;
 	width:18vmax;
 	z-index:100;
 }
@@ -141,11 +164,10 @@ button{
 	clear:both;
 }
 footer{
-	background-color:#000055;
+	background-color:white;
 	bottom:0;
 	color:#FF8C00;
 	height: 6vmin;
-	text-shadow:white 1px 1px 0px,white -1px -1px 0px,white -1px 1px 0px,white 1px -1px 0px,white 0px 1px 0px,white 0px -1px 0px,white -1px 0px 0px,white 1px 0px 0px;
 	padding-top:-3vmin;position:fixed;width:100%;
 }
 .footerMenu{
@@ -223,6 +245,32 @@ h3{
 	color:black;
 	font-size:20px;
 }
+#header{
+	background-color:white;
+	position:fixed;
+	height:10vmin;
+	width:100%;
+	z-index:100;
+}
+.headerButton{
+	background-color:#c4d7e7;
+	border:none;
+	border-radius:10px;
+	font-size:12px;
+	height:4vmin;
+	padding:5px;
+	text-align:center;
+	text-decoration:none;
+	width:10vmax;
+}
+.headerMenu{
+	text-align:center;
+	width:100%;
+}
+.headerMenuInner{
+	height:10vmin;
+	width:100%;
+}
 #heading{
 	color:#000055;
 	font-size:16px;
@@ -233,15 +281,10 @@ h3{
 	color: #F5F5F5;
 	text-decoration: underline 0px;
 }
-#hint{
-	background-color:#000055;
-	border:solid 3px #000055;
-	border-radius:10px;
-	font-size:20px;
-	margin-left:1.5vmax;
-	margin-right:auto;
-	margin-top:4vmin;
-	text-align: center;width:5vmax;
+.holderName{
+	display:inline-block;
+	margin-bottom:5px;
+	padding:5px;
 }
 .I{
 	background-color:#000055;
@@ -262,6 +305,16 @@ h3{
 .img-container{
 	text-align:center;
 }
+.indexButton{
+	background-color:#c4d7e7;
+	border:none;
+	border-radius:10px;
+	color:black;
+	font-size:12px;
+	height:8vmin;
+	padding:5px;
+	text-decoration:none;
+}
 .information{
 	background-color:rgb(164, 165, 219);
 	border-radius:40px;
@@ -273,6 +326,11 @@ input{
 	border-left:none;
 	border-right:none;
 	border-top:none;
+}
+.intoHolder{
+	display:inline;
+	padding:5px;
+	background-color:#c4d7e7;
 }
 .L1hidden{
 	text-decoration: underline 1px #000055;
@@ -312,17 +370,6 @@ input{
 	border-right:none;
 	border-top:none;
 	width:14vmax;
-}
-.indexButton{
-	background-color:#c4d7e7;
-	border:none;
-	border-radius:10px;
-	color:black;
-	font-size:12px;
-	height:8vmin;
-	padding:5px;
-	text-decoration:none;
-
 }
 .login{
 	font-size:15px;
@@ -376,10 +423,17 @@ input{
 .menu-container{
 	background-color: #F5F5F5;
 	box-sizing: border-box;
-	margin-top:2vmin;
+	margin-top:10vmin;
 	position:fixed;
 	width:inherit;
 	z-index:110;
+}
+.menuIcon{
+	border-radius:50%;
+	display:block;
+	height:56px;
+	margin-top:15px;
+	width:56px;
 }
 .menuInput{
 	width:13vmax;
@@ -408,6 +462,9 @@ input{
 	display:inline-block;
 	padding-left: 1vmax;
 	padding-right: 1vmax;
+}
+.navy{
+	color:#000055;
 }
 .No{
 	color:#000055;
@@ -511,6 +568,7 @@ select{
 }
 .speaker{
 	display:inline-block;
+	border-radius:10px;
 	width:5vmin;
 }
 #speech-container{
@@ -527,9 +585,10 @@ table{
 .tag{
 	background-color: #FF8C00;
 	font-size: 15px;
-	margin-bottom: 2vmin;
+	margin-right:5px;
 	overflow-wrap:break-word;
-	width: 10vmax;
+	padding:5px;
+	width: fit-content;
 }
 .tagList{
 	display:block;
@@ -547,17 +606,15 @@ table{
 }
 .tagMenu{
 	margin-left:1vmax;
-	padding-top:5vmin;
+
 }
 .tagMenuButton{
 	border-left:solid 3px #F5F5F5;
 	border-right:solid 3px #F5F5F5;
 }
 .tags{
-	float:left;
+	display:inline-block;
 	font-size:0px;
-	padding-top: 2vmin;
-	width:10vmax;
 }
 td>input{
 	font-size:20px;
@@ -588,8 +645,8 @@ td>input{
 	height:16px;
 }
 .title{
-	color:white;
 	font-size:20px;
+	text-decoration:none;
 }
 .title-container{
 	background: linear-gradient(#000055,#ffffff);
@@ -664,6 +721,9 @@ td>input{
 	border-radius:40px;
 	/*display:table;*/
 }
+.white{
+	color:white;
+}
 .writeIn>input{
 	font-size:20px;
 	border-left:none;
@@ -677,20 +737,20 @@ td>input{
 .wordForm{
 	background-color:#F5F5F5;
 	border: solid black;
-	float:left;
+	border-radius:20px;
 	font-size:20px;
 	height:auto;
-	margin-bottom: 2vmin;
+	margin-bottom: 10px;
 	margin-left:3vmax;
 	margin-top: 2vmin;
 	text-align:left;
 	width:50vmax;
 }
-.wordList{background-color: #F5F5F5;
+.wordList{
+	background-color: #F5F5F5;
 	border:3px solid black;
-	float: left;
+	border-radius:10px;
 	font-size:20px;
-	margin-bottom: 2vmin;
 	margin-top: 2vmin;
 	width:45vmax;
 	z-index:90;
@@ -1016,7 +1076,6 @@ td>input{
 		width:40vmin;
 	}
 	.wordForm{
-		margin-bottom:0px;
 		margin-left:2vmin;
 		margin-right:auto;
 		width:85vmin;

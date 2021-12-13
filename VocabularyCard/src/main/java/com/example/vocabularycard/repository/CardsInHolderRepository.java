@@ -9,6 +9,6 @@ import com.example.vocabularycard.entity.CardsInHolder;
 
 @Repository
 public interface CardsInHolderRepository extends JpaRepository<CardsInHolder,Integer> {
-	List<Integer> findByHolderId(Integer holderId);
+	List<CardsInHolder> findByHolderId(Integer holderId);
 	List<CardsInHolder> findByHolderIdAndCardId(Integer holderId,Integer cardId);
 }

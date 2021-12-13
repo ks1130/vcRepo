@@ -10,13 +10,18 @@
 <body>
 	<script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
 
+
+		<div id="header">
+			<a th:href="@{/vocabularyCard}" class="title navy">Vocabulary Card</a>
+			<a th:href="@{/logout}" class=headerButton>ログアウト</a>
+			<div class="headerMenu">
+				<button class="headerButton pointer orange" id="L1flash">L1</button>
+				<button class="headerButton pointer orange" id="L2flash">L2</button>
+				<button class="headerButton pointer gray" id="hint">Hint</button>
+			</div>
+		</div>
 	<div class="container">
-		<header>
-			<h1 class="title-container titleVC-container">
-				<a th:href="@{/vocabularyCard}" class="title titleVC">Vocabulary
-					Card</a>
-			</h1>
-		</header>
+	<div class="edit-container">
 		<!-- 操作メッセージ -->
 		<div th:if="${msg!=null}">
 			<div th:if="${msg.msgType=='E'}" class="error">
@@ -78,6 +83,7 @@
 				<button type="submit" th:formaction="@{/vocabularyCard/cancel}">キャンセル</button>
 			</div>
 		</form>
+	</div>
 	</div>
 	<div class="copyright">© 2021 KMTS</div>
 

@@ -28,13 +28,6 @@ $(".reset").on("click",function(){
 	resetPosition;
 });
 
-//カード番号を表示
-const card=document.getElementsByClassName("card");
-const number=document.querySelectorAll(".check-delete>p>span");
-for(i=0;i<card.length;i++){
-	number[i].textContent=i+1;
-}
-
 //タグ検索を設定する
 const tags=document.getElementsByClassName("tag");
 for(let i=0;i<tags.length;i++){
@@ -160,7 +153,20 @@ if(screen.width>480){
 		tag[i].addEventListener("touchend",touchEndEvent,false);
 	}
 	}
-
+/*
+//delete実行
+$("#deleteIcon").on("click",function(){
+	$("#checkDelete").submit();
+})
+//edit実行
+const editForm=document.getElementsByClassName("editForm");
+const editButton=document.getElementsByClassName("editButton");
+for(let i=0;i<editButton.length;i++){
+	editButton[i].addEventListener("click",function(){
+		editForm[i].submit();
+	})
+}
+*/
 
 //ページネイション機能
 //cardを配列として取得
@@ -235,6 +241,7 @@ var createTagButton=document.getElementById('doCreateTag');
 enableClick(createTagButton,createTagForm);
 
 //チェック時に削除ボタンを押せるようにする
+/*
 const checkboxArray=document.getElementsByClassName("checkbox");
 let deleteButton=document.getElementById('deleteButton');
 for(var i=0;i<checkboxArray.length;i++){
@@ -250,6 +257,7 @@ for(var i=0;i<checkboxArray.length;i++){
 		}
 	});
 }
+*/
 
 //カード作成フォームをエンターキーでフォーカス移動するように設定
 for(let i=0;i<createForm.length;i++){
@@ -552,7 +560,40 @@ $(function(){
 	})
 })
 
+$("#speakerIcon").on("click",function(){
+	$("#speech-container").toggleClass("displayNone");
+})
+$("#searchIcon").on("click",function(){
+	$("#search-container").toggleClass("displayNone");
+})
+$("#tagIcon").on("click",function(){
+	$("#tag-container").toggleClass("displayNone");
+})
+$("#cardInIcon").on("click",function(){
+	$("#create-container").toggleClass("displayNone");
+})
+$("#holderIcon").on("click",function(){
+	$("#holder-container").toggleClass("displayNone");
+})
+
+//単語帳のid送信用にinputに代入する
+const holderId=document.querySelectorAll(".holderId");
+const holderName=document.querySelectorAll(".holderName");
+const holderInput=document.querySelector("#holderInput");
+const displayHolder=document.querySelector("#displayHolder");
+const testInput=document.getElementById("testInput");
+const test=document.getElementById("test");
+
+for(let i=0; i<holderName.length;i++){
+	holderName[i].addEventListener("click",function(event){
+		event.preventDefault();
+		holderInput.value=holderId[i].value;
+		displayHolder.submit();
+	})
+}
+
 //メニューの切り替えを設定
+/*
 let premenu=0;
 let postmenu;
 function changeMenu(pre,post){
@@ -629,6 +670,7 @@ $(".classMenuButton").on("click",function(){
 	premenu=postmenu;
 	console.log("log:"+premenu+","+postmenu);
 });
+*/
 
 //menuの追従、スマホ用の設定
 function adjustMenu(){

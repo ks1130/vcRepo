@@ -350,6 +350,26 @@ public class VocabularyCardController {
 		holderRepository.saveAndFlush(holder);
 		return "redirect:/vocabularyCard";
 	}
+	@PostMapping("/vocabularyCard/displayHolder")
+	public ModelAndView displayHolder(@RequestParam(name="holderInput",required=false) Integer holderInput,ModelAndView mv) {
+		mv.setViewName("vocabularyCard");
+		List<CardsInHolder> cards=cardsInHolderRepository.findByHolderId(holderInput);
+		List<VocabularyCard> cardList=new ArrayList<>();
+		for(CardsInHolder card:cards) {
+			cardList.add(vocabularyCardRepository.getById(card.getCardId()));
+		}
+		mv.addObject("cardList", cardList);
+		mv.addObject("holderName", holderRepository.findById(holderInput));
+		Integer accountId=(Integer)session.getAttribute("accountId");
+		List<Tag> tagList=tagRepository.findByUserIdOrderByIdDesc(accountId);
+		//tugListをバインド
+		mv.addObject("tagList", tagList);
+		//form用のvocabularyDataを作成、バインド
+		mv.addObject("vocabularyCardData",new VocabularyCardData());
+		//form用のtugDataを作成、バインド
+		mv.addObject("tagData",new TagData());
+		return mv;
+	}
 	@PostMapping("/vocabularyCard/storeCards")
 	public String storeCards(
 			@RequestParam(name="id",required=false) ArrayList<Integer> id,
@@ -381,6 +401,11 @@ public class VocabularyCardController {
 	public String leaveClassroom() {
 		Account account=accountRepository.getById((Integer)session.getAttribute("accountId"));
 		account.setClassroomId(null);
+		return "redirect:/vocabularyCard";
+	}
+	@PostMapping("/vocabularyCard/test")
+	public String test(@RequestParam String test) {
+		System.out.println(test);
 		return "redirect:/vocabularyCard";
 	}
 }

@@ -37,7 +37,7 @@ public class LoginService implements UserDetailsService{
 	public boolean isValid(LoginData loginData,BindingResult result,Locale locale) {
 		Optional<Account> account=accountRepository.findByLoginId(loginData.getLoginId());
 		System.out.println(account);
-		if(account.isEmpty()) {
+		if(account==null) {
 			FieldError fieldError=new FieldError(
 					result.getObjectName(),
 					"loginId",

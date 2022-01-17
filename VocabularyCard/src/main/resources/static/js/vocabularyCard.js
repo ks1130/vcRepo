@@ -97,14 +97,14 @@ if(screen.width>480){
 		var touchObject = event.changedTouches[0];
         X=touchObject.clientX;
         Y=touchObject.clientY;
-        movedTag.style.left=X-60+"px";
-        movedTag.style.top=Y-15+"px";
+        movedTag.style.left=X+"px";
+        movedTag.style.top=Y+"px";
         console.log("X:"+X+",Y:"+Y);
         var droppedElement=document.elementFromPoint(X,Y);
     	console.log(droppedElement.className);
 		if(droppedElement!=event.target){
 			$(".menu-container").addClass("opacity");
-     	   	$(".float-container").css("zIndex","-10");
+     	   	$(".menu-container").css("zIndex","-10");
 		}
 	}
 	function touchEndEvent(event){
@@ -140,7 +140,7 @@ if(screen.width>480){
 		      			console.log("error");
 					}finally{
 						$(".menu-container").removeClass("opacity");
-						$(".float-container").css("zIndex","100");
+						$(".menu-container").css("zIndex","100");
 						movedTag.style.left=X+"";
 		        		movedTag.style.top=Y+"";
 						console.log("finally");
@@ -153,20 +153,15 @@ if(screen.width>480){
 		tag[i].addEventListener("touchend",touchEndEvent,false);
 	}
 	}
-/*
-//delete実行
-$("#deleteIcon").on("click",function(){
-	$("#checkDelete").submit();
-})
-//edit実行
-const editForm=document.getElementsByClassName("editForm");
-const editButton=document.getElementsByClassName("editButton");
-for(let i=0;i<editButton.length;i++){
-	editButton[i].addEventListener("click",function(){
-		editForm[i].submit();
+
+//tag表示ボタン
+const tagSwitchButton=document.getElementsByClassName("tagSwitchButton");
+const tagSwitch=document.getElementsByClassName("tagSwitch");
+for(let i=0;i<tagSwitchButton.length;i++){
+	tagSwitchButton[i].addEventListener("click",function(){
+		tagSwitch[i].classList.toggle("displayNone");
 	})
 }
-*/
 
 //ページネイション機能
 //cardを配列として取得
@@ -221,9 +216,13 @@ function enableClick(button,inputArray){
 			for (var j=0;j<inputArray.length;j++){
 				if(inputArray[j].value.trim()!=null&&inputArray[j].value.trim()!==""){
 				button.disabled=false;
+				button.classList.add("orange");
+				button.classList.add("pointer");
 				break;
 				}else{
 					button.disabled=true;
+					button.classList.remove("orange");
+					button.classList.remove("pointer");
 				}
 			}
 		});
@@ -239,25 +238,28 @@ enableClick(createButton,createForm);
 var createTagForm=document.getElementsByClassName('createTagForm');
 var createTagButton=document.getElementById('doCreateTag');
 enableClick(createTagButton,createTagForm);
+var createHolderForm=document.getElementsByClassName('createHolderForm');
+var createHolderButton=document.getElementById('doCreateHolder');
+enableClick(createHolderButton,createHolderForm);
 
-//チェック時に削除ボタンを押せるようにする
-/*
+//チェック時に削除ボタン、単語帳追加を押せるようにする
 const checkboxArray=document.getElementsByClassName("checkbox");
 let deleteButton=document.getElementById('deleteButton');
+$(".intoHolder").attr("disabled",true);
 for(var i=0;i<checkboxArray.length;i++){
-	deleteButton.disabled=true;
 	checkboxArray[i].addEventListener('change',()=>{
 		for(var j=0;j<checkboxArray.length;j++){
 		if(checkboxArray[j].checked==true){
-			deleteButton.disabled=false;
+			$(".intoHolder").attr("disabled",false).addClass("orange");
+
 			break;
 		}else{
-			deleteButton.disabled=true;
+			$(".intoHolder").attr("disabled",true);
+			$(".intoHolder").removeClass("orange");
 		}
 		}
 	});
 }
-*/
 
 //カード作成フォームをエンターキーでフォーカス移動するように設定
 for(let i=0;i<createForm.length;i++){
@@ -560,20 +562,49 @@ $(function(){
 	})
 })
 
+//各メニューを表示/非表示にする
+function removeCurrent(){
+	let current=document.querySelector(".current");
+	if(current!=null){
+		current.classList.remove("current");
+		current.classList.add("displayNone");
+	}
+}
+//表示中の要素以外がクリックされた場合に非表示にする
+document.addEventListener("click",function(event){
+	if((!event.target.closest(".current"))&&(!event.target.classList.contains("menuIcon"))){
+		removeCurrent();
+	}
+})
 $("#speakerIcon").on("click",function(){
-	$("#speech-container").toggleClass("displayNone");
+	if(!$("#speech-container").hasClass("current")){
+		removeCurrent();
+	}
+	$("#speech-container").toggleClass("displayNone").toggleClass("current");
 })
 $("#searchIcon").on("click",function(){
-	$("#search-container").toggleClass("displayNone");
+	if(!$("#search-container").hasClass("current")){
+		removeCurrent();
+	}
+	$("#search-container").toggleClass("displayNone").toggleClass("current");
 })
 $("#tagIcon").on("click",function(){
-	$("#tag-container").toggleClass("displayNone");
+	if(!$("#tag-container").hasClass("current")){
+		removeCurrent();
+	}
+	$("#tag-container").toggleClass("displayNone").toggleClass("current");
 })
 $("#cardInIcon").on("click",function(){
-	$("#create-container").toggleClass("displayNone");
+	if(!$("#create-container").hasClass("current")){
+		removeCurrent();
+	}
+	$("#create-container").toggleClass("displayNone").toggleClass("current");
 })
 $("#holderIcon").on("click",function(){
-	$("#holder-container").toggleClass("displayNone");
+	if(!$("#holder-container").hasClass("current")){
+		removeCurrent();
+	}
+	$("#holder-container").toggleClass("displayNone").toggleClass("current");
 })
 
 //単語帳のid送信用にinputに代入する
@@ -592,94 +623,14 @@ for(let i=0; i<holderName.length;i++){
 	})
 }
 
-//メニューの切り替えを設定
-/*
-let premenu=0;
-let postmenu;
-function changeMenu(pre,post){
-	console.log(pre);
-	console.log(post);
-	//premenuを非表示にする
-	if(pre==0){
-		$(".operationMenu").toggleClass("displayNone");
-		$(".operationMenuButton").toggleClass("selected");
-		$(".operationMenuButton").toggleClass("unselected");
-		$(".operationMenuButton").toggleClass("pointer");
-	}
-	if(pre==1){
-		$(".tagMenu").toggleClass("displayNone");
-		$(".tagMenuButton").toggleClass("unselected");
-		$(".tagMenuButton").toggleClass("selected");
-		$(".tagMenuButton").toggleClass("pointer");
-	}
-	if(pre==2){
-		$(".classMenu").toggleClass("displayNone");
-		$(".classMenuButton").toggleClass("unselected");
-		$(".classMenuButton").toggleClass("selected");
-		$(".classMenuButton").toggleClass("pointer");
-	}
-	//postmenuを表示する
-	if(post==0){
-		$(".operationMenu").toggleClass("displayNone");
-		$(".operationMenuButton").toggleClass("selected");
-		$(".operationMenuButton").toggleClass("unselected");
-		$(".operationMenuButton").toggleClass("pointer");
-	}
-	if(post==1){
-		$(".tagMenu").toggleClass("displayNone");
-		$(".tagMenuButton").toggleClass("unselected");
-		$(".tagMenuButton").toggleClass("selected");
-		$(".tagMenuButton").toggleClass("pointer");
-	}
-	if(post==2){
-		$(".classMenu").toggleClass("displayNone");
-		$(".classMenuButton").toggleClass("unselected");
-		$(".classMenuButton").toggleClass("selected");
-		$(".classMenuButton").toggleClass("pointer");
-	}
-}
-//var operationMenu=document.querySelectorAll(".operationMenu");
-$(".operationMenuButton").on("click",function(){
-	postmenu=0;
-	if(premenu===0){
-		return;
-	}else{
-		changeMenu(premenu,postmenu);
-	}
-	premenu=postmenu;
-	console.log("operation:"+premenu+","+postmenu);
-});
-//var tagMenu=document.querySelectorAll(".tagMenu");
-$(".tagMenuButton").on("click",function(){
-	postmenu=1;
-	if(premenu===1){
-		return;
-	}else{
-		changeMenu(premenu,postmenu);
-	}
-	premenu=postmenu;
-	console.log("tag:"+premenu+","+postmenu);
-});
-$(".classMenuButton").on("click",function(){
-	postmenu=2;
-	if(premenu===2){
-		return;
-	}else{
-		changeMenu(premenu,postmenu);
-	}
-	premenu=postmenu;
-	console.log("log:"+premenu+","+postmenu);
-});
-*/
-
 //menuの追従、スマホ用の設定
 function adjustMenu(){
 	if(screen.width<480){
 		$(".menuForMobile").toggleClass("displayNone");
-		$(".float-container").toggleClass("displayNone");
+		$(".menu-container").toggleClass("displayNone");
 		$(".menuForMobile").on("click",function(){
 			console.log("a");
-			$(".float-container").toggleClass("displayNone");
+			$(".menu-container").fadeToggle(300);
 		});
 	}
 }
@@ -710,3 +661,7 @@ for(let item of holder){
 	$("#storeCards").submit();
 	})
 }
+$(".toggleMenu").on("click",function(){
+	$("#innerMenu").slideToggle(300)
+	$(".toggleMenu").toggleClass("displayNone");
+})

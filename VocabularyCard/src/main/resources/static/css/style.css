@@ -23,10 +23,10 @@ button{
 }
 .card{
 	margin-bottom:100px;
-	margin-left:30vmax;
 	/*１枚目のカードの下に空白ができるのを防ぐため。
 	floatした親要素(.wordの親要素)の高さが未確定になるため、空白が生じる。*/
 	overflow: hidden;
+	width:100vw;
 }
 .center{
 	text-align:center;
@@ -37,7 +37,8 @@ button{
 }
 .checkbox{
 	height:18px;
-	margin-right:5px;
+	margin-right:10px;
+	vertical-align:middle;
 	width:18px;
 }
 .check-delete{
@@ -59,6 +60,7 @@ button{
 }
 .copyright{
 	bottom:0;
+	color:black;
 	font-size:10px;
 	left:0;
 	position:fixed;
@@ -72,6 +74,13 @@ button{
 }
 .displayByPage{
 	display:none;
+}
+#displaying{
+	color:#000055;
+	font-size:16px;
+	text-decoration:underline 1px #000055;
+	margin:0 auto 0 auto;
+	width:fit-content;
 }
 .displayNone{
 	display:none;
@@ -88,8 +97,10 @@ button{
 .editButton{
 	display:inline-block;
 	font-size:12px;
-	width:40px;
 	height:40px;
+	margin-right:10px;
+	vertical-align:bottom;
+	width:40px;
 }
 .edit-container{
 	margin-top:10vh;
@@ -135,6 +146,9 @@ button{
 	font-size:18px;
 	padding-left:5vmax;
 }
+.fixed{
+	position:fixed;
+}
 .flashCardButton{
 	border-left:solid 1px #000055;
 	border-right:solid 1px #000055;
@@ -156,19 +170,21 @@ button{
 	float:none;
 }
 .float-container{
-	float:left;
-	width:18vmax;
+	width:100vw;
 	z-index:100;
 }
 .float-end{
 	clear:both;
 }
 footer{
-	background-color:white;
+	background-color:#F5F5F5;
 	bottom:0;
 	color:#FF8C00;
-	height: 6vmin;
-	padding-top:-3vmin;position:fixed;width:100%;
+	height: 60px;
+	padding-top:20px;
+	position:fixed;
+	width:100%;
+	z-index:120;
 }
 .footerMenu{
 	display:inline;
@@ -184,6 +200,8 @@ footer{
 }
 .form{
 	align-content: center;
+	background-color:#F5F5F5;
+	box-shadow: 5px 0px 5px #999999, 0px 5px 5px #999999, -5px 0px 5px #999999, 0px -5px 5px #999999;
 	box-sizing:border-box;
 	margin-top:2vmin;
 	margin-bottom: 2vh;
@@ -246,9 +264,9 @@ h3{
 	font-size:20px;
 }
 #header{
-	background-color:white;
+	background-color: #F5F5F5;
+	padding-bottom:20px;
 	position:fixed;
-	height:10vmin;
 	width:100%;
 	z-index:100;
 }
@@ -257,13 +275,13 @@ h3{
 	border:none;
 	border-radius:10px;
 	font-size:12px;
-	height:4vmin;
 	padding:5px;
 	text-align:center;
 	text-decoration:none;
 	width:10vmax;
 }
 .headerMenu{
+	padding-bottom:50px;
 	text-align:center;
 	width:100%;
 }
@@ -280,6 +298,18 @@ h3{
 .hidden{
 	color: #F5F5F5;
 	text-decoration: underline 0px;
+}
+.toggleMenu{
+	background-color: #c4d7e7;
+	border-radius: 10px;
+	color:white;
+	font-size:24px;
+	margin:0 0 0 auto;
+	width:fit-content;
+}
+.holder{
+	background-color:#F5F5F5;
+	margin-left:20px;
 }
 .holderName{
 	display:inline-block;
@@ -320,6 +350,9 @@ h3{
 	border-radius:40px;
 	display:table;
 }
+.inlineBlock{
+	display:inline-block;
+}
 input{
 	background-color:#F5F5F5;
 	font-size:16px;
@@ -329,6 +362,7 @@ input{
 }
 .intoHolder{
 	display:inline;
+	font-size:20px;
 	padding:5px;
 	background-color:#c4d7e7;
 }
@@ -391,6 +425,14 @@ input{
 	width:40Vmax;
 
 }
+#logo{
+	border-radius:50%;
+	height:30px;
+	width:30px;
+}
+#logout{
+	display:none;
+}
 .classMenuButton{
 	float:right;
 
@@ -399,14 +441,15 @@ input{
 	margin-left:auto;
 	margin-right:auto;
 }
-.menu{
+/*.menu{
 	box-sizing: border-box;
-	clear:right;height:65vmin;
+	clear:right;
+	height:75vmin;
 	overflow:scroll;
 	top:0;
 	scrollbar-width:none;
 	-ms-overflow-style:none;
-}
+}*/
 .menuBorder{
 	border:3px solid black;
 }
@@ -421,20 +464,30 @@ input{
 	width:5.8vmax;
 }
 .menu-container{
+	-ms-overflow-style:none;
 	background-color: #F5F5F5;
 	box-sizing: border-box;
-	margin-top:10vmin;
+	clear:right;
+	margin-top:15vmin;
+	overflow:scroll;
 	position:fixed;
-	width:inherit;
+	scrollbar-width:none;
+	top:0;
+	width:100vw;
 	z-index:110;
 }
 .menuIcon{
 	border-radius:50%;
 	display:block;
-	height:56px;
+	height:40px;
+	margin-left:30px;
 	margin-top:15px;
-	width:56px;
+	width:40px;
 }
+.menuIcon:hover{
+	transform:scale(1.2,1.2);
+}
+
 .menuInput{
 	width:13vmax;
 }
@@ -459,9 +512,12 @@ input{
 	right:0;
 }
 .navi >li{
+	background-color:#c4d7e7;
+	border-radius:10px;
 	display:inline-block;
-	padding-left: 1vmax;
-	padding-right: 1vmax;
+	margin-left:3px;
+	margin-right:3px;
+	padding: 5px;
 }
 .navy{
 	color:#000055;
@@ -471,7 +527,10 @@ input{
 	font-size:12px;
 }
 .opacity{
-	opacity:0.1;
+	opacity:0;
+}
+.opacity03{
+	opacity:0.3
 }
 #operation-container{
 	background-color:#F5F5F5;
@@ -492,9 +551,6 @@ input{
 }
 .orange{
 	color:#FF8C00;
-}
-.pageNumber{
-	padding-top:1vmin;
 }
 .pointer{
 	cursor:pointer;
@@ -555,6 +611,11 @@ input{
 	text-align:left;
 	width:50vmax;
 }
+#screen{
+	display:block;
+	margin:15vh auto 0 auto;
+	width:60%;
+}
 select{
 	font-size:16px;
 }
@@ -575,7 +636,11 @@ select{
 	margin-top:1vmin;
 }
 .submitButton{
-	font-size:18px;
+	background-color:#c4d7e7;
+	border-radius:10px;
+	font-size:14px;
+	padding:5px;
+	margin:5px;
 }
 table{
 	color:#FF8C00;
@@ -605,16 +670,21 @@ table{
   	margin-left:1vmax;top:0;
 }
 .tagMenu{
-	margin-left:1vmax;
-
+	background-color:#F5F5F5;
 }
 .tagMenuButton{
 	border-left:solid 3px #F5F5F5;
 	border-right:solid 3px #F5F5F5;
 }
 .tags{
-	display:inline-block;
-	font-size:0px;
+	margin-left: auto;
+	margin-right:auto;
+	padding-top:10px;
+	width: 45vmax;
+}
+.tagSwitchButton{
+	height:40px;
+	width:40px;
 }
 td>input{
 	font-size:20px;
@@ -646,12 +716,13 @@ td>input{
 }
 .title{
 	font-size:20px;
+	margin-left: 10px;
 	text-decoration:none;
 }
 .title-container{
 	background: linear-gradient(#000055,#ffffff);
 	display:table;
-	height:60vmin;
+	height:100vh;
 	width:100%;
 }
 .titleST{
@@ -671,8 +742,8 @@ td>input{
 }
 .titleText{
 	color:white;
-	font-size:24px;
-	padding:10vmax;
+	font-size:16px;
+	padding:20px;
 }
 .topic{
 	color:#000055;
@@ -748,9 +819,10 @@ td>input{
 }
 .wordList{
 	background-color: #F5F5F5;
-	border:3px solid black;
-	border-radius:10px;
+	box-shadow: 5px 0px 5px #999999, 0px 5px 5px #999999, -5px 0px 5px #999999, 0px -5px 5px #999999;
 	font-size:20px;
+	margin-left: auto;
+    margin-right: auto;
 	margin-top: 2vmin;
 	width:45vmax;
 	z-index:90;
@@ -761,17 +833,13 @@ td>input{
 
 @media screen and (max-width:480px){
 	button{
-		border-radius:0;
-		font-size:12px;
 		-webkit-appearance:none;
 	}
 	.card{
-		float:left;
-		margin-left:1vmax;
+		margin-left:auto;
+		margin-right:auto;
 		padding-right:0px;
-	}
-	.check{
-		width:6vmin;
+		width:100vmin;
 	}
 	.check-delete{
 		width:13vmin;
@@ -809,6 +877,9 @@ td>input{
 	.feature{
 		font-size:12px;
 	}
+	.fixed{
+		position:relative;
+	}
 	.flashCardButton{
 		height:8.5vmax;
 		width:25vmin;
@@ -817,10 +888,6 @@ td>input{
 		position:fixed;
 		right:0;
 		width:80vmin;
-	}
-	footer{
-		height:10vmax;
-		padding-top:-3vmax;
 	}
 	.footerMenu{
 		float:left;
@@ -870,19 +937,19 @@ td>input{
 	h3{
 		font-size:18px;
 	}
+	#header>.logout{
+		display:none;
+	}
+	.headerMenu{
+		padding-bottom:0px;
+		padding-top: 40px;
+	}
 	#heading{
 		margin-right:0px;
 		text-align:left;
 	}
-	#hint{
-		font-size:20px;
-		width:25vmin;
-	}
-	#L1flash{
-		font-size:15px;
-	}
-	#L2flash{
-		font-size:15px;
+	.inlineBlock{
+		display:block;
 	}
 	#L1lang{
 		margin-bottom:3vmax;
@@ -909,6 +976,9 @@ td>input{
 		font-size:12px;
 		margin-left:1vmin;
 	}
+	.loginButton{
+		width:50vmin;
+	}
 	.login-container{
 		font-size:12px;
 		width:95vmin;
@@ -919,6 +989,14 @@ td>input{
 	.loginInput{
 		width:50vmin;
 	}
+	#logout{
+		display:block;
+		margin:20px auto 40px auto;
+		width:35vmin;
+	}
+	.logout{
+		display:none;
+	}
 	.menu{
 		height:75vmax;
 	}
@@ -928,6 +1006,9 @@ td>input{
 		width:25.8vmin;
 	}
 	.menu-container{
+		border-radius: 0px 0px 30px 30px;
+		height:100vmax;
+		padding-bottom:80px;
 		margin-top:0px;
 	}
 	.menuInput{
@@ -935,10 +1016,12 @@ td>input{
 		width:65vmin;
 	}
 	.menuForMobile{
-		height:inherit;
+		border-radius:10px;
+		height:50px;
 		position:fixed;
 		right:0;
-		z-index:100;
+		width:50px;
+		z-index:1000;
 	}
 	.menuForMobile>p{
 		display:table-cell;
@@ -949,11 +1032,13 @@ td>input{
 		float:right;
 		width:10vmax;
 	}
+	#movedTag{
+		border-radius:10px;
+	}
 	.navi >li{
 		display:inline-block;
-		font-size:20px;
-		padding-left: 6vmin;
-		padding-right: 2vmin;
+		font-size:16px;
+		margin-left:8px;
 	}
 	#operation-container{
 		background-color:#F5F5F5;
@@ -1006,20 +1091,17 @@ td>input{
 		margin-right:auto;
 		width:80vmin;
 	}
+	#screen{
+		width:80vw
+	}
 	select{
 		font-size:16px;
 	}
 	.speaker{
 		width:5vmax;
 	}
-	.submitButton{
-		font-size:16px;
-	}
 	.tag{
 		font-size:16px;
-		height:5.5vmax;
-		margin-bottom:0.3vmax;
-		width:45vmin;
 	}
 	.tagList{
 		margin-bottom:2vmax;
@@ -1028,9 +1110,7 @@ td>input{
 		margin-left:4vmin;
 	}
 	.tags{
-		margin-left:13vmin;/*check-deleteの幅に合わせている*/
-		padding-top:0px;
-		width:24vmin;
+		margin-left:20px;
 	}
 	td>input{
 		font-size:16px;
@@ -1054,8 +1134,8 @@ td>input{
 	.textForMobile{
 		display:inline-block;
 	}
-	.title-container{
-		height:8vmax;
+	.toggleMenu{
+		display:none;
 	}
 	.topic-container{
 		font-size:16px;
@@ -1083,7 +1163,9 @@ td>input{
 	.wordList{
 		font-size:16px;
 		margin-bottom:0px;
-		width:80vmin;
+		margin-left: auto;
+   		margin-right: auto;
+		width:90vmin;
 	}
 	.writeIn>input{
 		width:50vmin;

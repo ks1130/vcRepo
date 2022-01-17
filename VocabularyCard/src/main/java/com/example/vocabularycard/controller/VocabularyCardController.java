@@ -354,6 +354,8 @@ public class VocabularyCardController {
 	public ModelAndView displayHolder(@RequestParam(name="holderInput",required=false) Integer holderInput,ModelAndView mv) {
 		mv.setViewName("vocabularyCard");
 		List<CardsInHolder> cards=cardsInHolderRepository.findByHolderId(holderInput);
+		Optional<Holder> holder=holderRepository.findById(holderInput);
+		mv.addObject("displaying", holder.get().getName());
 		List<VocabularyCard> cardList=new ArrayList<>();
 		for(CardsInHolder card:cards) {
 			cardList.add(vocabularyCardRepository.getById(card.getCardId()));

@@ -13,15 +13,16 @@
 <body>
 	<script type="text/javascript" th:src="@{/js/jquery-3.6.0.min.js}"></script>
 	<div id="header">
-		<a th:href="@{/vocabularyCard}" class="title navy">Vocabulary Card</a>
-		<a th:href="@{/logout}" class=headerButton>ログアウト</a>
+		<img alt="icon" th:src="@{/images/favicon.jpg}" id="logo">
+		<a th:href="@{/vocabularyCard}" class="title navy pointer">Vocabulary Card</a>
+		<a th:href="@{/logout}" class="headerButton logout pointer">ログアウト</a>
 		<div class="headerMenu">
 			<button class="headerButton pointer orange" id="L1flash">L1</button>
 			<button class="headerButton pointer orange" id="L2flash">L2</button>
 			<button class="headerButton pointer gray" id="hint">Hint</button>
 		</div>
 	</div>
-	<img alt="menu" th:src="@{/images/menu.png}"
+	<img alt="menu" th:src="@{/images/menu.jpg}"
 		class="menuForMobile pointer displayNone">
 	<div class="container">
 		<!-- 操作メッセージ -->
@@ -41,183 +42,193 @@
 				<span class="icon W">!</span> <span>お使いのブラウザは音声読み上げに対応していません。</span>
 			</div>
 		</div>
-		<div class="float-container">
 			<div class="menu-container">
+			<a th:href="@{/logout}" class="headerButton" id="logout">ログアウト</a>
 				<!-- スクロールで追従する部分 -->
-				<div class="guide menu">
-					<div class="operationMenu">
-
-						<img alt="menu" th:src="@{/images/speaker.jpg}"
-							class="menuIcon pointer" id="speakerIcon">
-						<div id="speech-container" class="form displayNone">
-							<div id="volume-container">
-								<input type="range" min=0 max=1 step=0.1 id="volume">
-							</div>
-							<div id="lang-container">
-								<div>読み上げ設定</div>
-								<span class="label">L1</span> <select id="lang1">
-									<option value="en-US">英語(アメリカ)</option>
-									<option value="en-GB">英語(イギリス)</option>
-									<option value="zh-CN">簡体字(中国)</option>
-									<option value="zh-HK">繁体字(香港)</option>
-									<option value="zh-TW">繁体字(台湾)</option>
-									<option value="ko-KR">韓国語</option>
-									<option value="de-DE">ドイツ語</option>
-									<option value="es-ES">スペイン語</option>
-									<option value="fr-FR">フランス語</option>
-									<option value="hi-IN">ヒンディー語</option>
-									<option value="id-ID">インドネシア語</option>
-									<option value="it-IT">イタリア語</option>
-									<option value="nl-NL">オランダ語</option>
-									<option value="pl-PL">ポーランド語</option>
-									<option value="pt-BR">ポルトガル語</option>
-									<option value="ru-RU">ロシア語</option>
-									<option value="jp-JP">日本語</option>
-								</select> <br> <span class="label">L2</span> <select id="lang2">
-									<option value="en-US">英語(アメリカ)</option>
-									<option value="en-GB">英語(イギリス)</option>
-									<option value="zh-CN">簡体字(中国)</option>
-									<option value="zh-HK">繁体字(香港)</option>
-									<option value="zh-TW">繁体字(台湾)</option>
-									<option value="ko-KR">韓国語</option>
-									<option value="de-DE">ドイツ語</option>
-									<option value="es-ES">スペイン語</option>
-									<option value="fr-FR">フランス語</option>
-									<option value="hi-IN">ヒンディー語</option>
-									<option value="id-ID">インドネシア語</option>
-									<option value="it-IT">イタリア語</option>
-									<option value="nl-NL">オランダ語</option>
-									<option value="pl-PL">ポーランド語</option>
-									<option value="pt-BR">ポルトガル語</option>
-									<option value="ru-RU">ロシア語</option>
-									<option value="ja-JP">日本語</option>
-								</select> <br> <span class="label">voice</span> <select
-									id="voiceSelect">
-								</select>
+				<div id="innerMenu">
+						<div class="inlineBlock">
+							<img alt="menu" th:src="@{/images/speaker.jpg}"
+								class="menuIcon pointer" id="speakerIcon">
+							<div id="speech-container" class="form displayNone frameBorder fixed">
+								<div id="volume-container">
+									<input type="range" min=0 max=1 step=0.1 id="volume">
+								</div>
+								<div id="lang-container">
+									<span class="label">L1</span> <select id="lang1">
+										<option value="en-US">英語(アメリカ)</option>
+										<option value="en-GB">英語(イギリス)</option>
+										<option value="zh-CN">簡体字(中国)</option>
+										<option value="zh-HK">繁体字(香港)</option>
+										<option value="zh-TW">繁体字(台湾)</option>
+										<option value="ko-KR">韓国語</option>
+										<option value="de-DE">ドイツ語</option>
+										<option value="es-ES">スペイン語</option>
+										<option value="fr-FR">フランス語</option>
+										<option value="hi-IN">ヒンディー語</option>
+										<option value="id-ID">インドネシア語</option>
+										<option value="it-IT">イタリア語</option>
+										<option value="nl-NL">オランダ語</option>
+										<option value="pl-PL">ポーランド語</option>
+										<option value="pt-BR">ポルトガル語</option>
+										<option value="ru-RU">ロシア語</option>
+										<option value="jp-JP">日本語</option>
+									</select> <br> <span class="label">L2</span> <select id="lang2">
+										<option value="en-US">英語(アメリカ)</option>
+										<option value="en-GB">英語(イギリス)</option>
+										<option value="zh-CN">簡体字(中国)</option>
+										<option value="zh-HK">繁体字(香港)</option>
+										<option value="zh-TW">繁体字(台湾)</option>
+										<option value="ko-KR">韓国語</option>
+										<option value="de-DE">ドイツ語</option>
+										<option value="es-ES">スペイン語</option>
+										<option value="fr-FR">フランス語</option>
+										<option value="hi-IN">ヒンディー語</option>
+										<option value="id-ID">インドネシア語</option>
+										<option value="it-IT">イタリア語</option>
+										<option value="nl-NL">オランダ語</option>
+										<option value="pl-PL">ポーランド語</option>
+										<option value="pt-BR">ポルトガル語</option>
+										<option value="ru-RU">ロシア語</option>
+										<option value="ja-JP">日本語</option>
+									</select> <br> <span class="label">voice</span> <select
+										id="voiceSelect">
+									</select>
+								</div>
 							</div>
 						</div>
 
 						<!-- 検索form -->
-						<img alt="menu" th:src="@{/images/search.jpg}"
-							class="menuIcon pointer" id="searchIcon">
-						<div id="search-container" class="displayNone">
-							<form th:action="@{/vocabularyCard/search}" method="post"
-								id="search" th:object="${vocabularyCardQuery}">
-								<div class="form frameBorder">
-									<input type="text" name="searchSpelling"
-										class="searchForm menuInput" maxlength="50"
-										placeholder="LANGUAGE1" autocomplete="off"
-										autocapitalize="off"> <input type="text"
-										name="searchMeaning" class="searchForm menuInput"
-										maxlength="50" placeholder="LANGUAGE2" autocomplete="off"
-										autocapitalize="off">
-									<button id="doSearch" class="reset submitButton">検索</button>
-								</div>
-							</form>
-						</div>
-
-						<img alt="menu" th:src="@{/images/create.jpg}"
-							class="menuIcon pointer" id="cardInIcon">
-						<!-- 追加用form -->
-						<div id="create-container" class="displayNone">
-							<form th:action="@{/vocabularyCard/create}" method="post"
-								th:object="${vocabularyCardData}" class="form" id="create">
-								<div class="frameBorder">
-									<p class="label">LANGUAGE1</p>
-									<input type="text" name="spelling1" placeholder="word 1(必須)"
-										class="createForm menuInput" maxlength="50" autocomplete="off"
-										autocapitalize="off">
-									<div class="error" th:errors="*{spelling1}" th:errorclass="red"></div>
-									<input type="text" name="spelling2" placeholder="word 2"
-										class="createForm menuInput" max="50" autocomplete="off"
-										autocapitalize="off"> <input type="text"
-										name="spelling3" th:value="*{spelling3}" placeholder="word 3"
-										class="createForm menuInput" maxlength="50" autocomplete="off"
-										autocapitalize="off">
-									<p class="label">LANGUAGE2</p>
-									<input type="text" name="meaning1" placeholder="word 1"
-										class="createForm menuInput" maxlength="50" autocomplete="off"
-										autocapitalize="off"> <input type="text"
-										name="meaning2" placeholder="word 2"
-										class="createForm menuInput" maxlength="50" autocomplete="off"
-										autocapitalize="off"> <input type="text"
-										name="meaning3" placeholder="word 3"
-										class="createForm menuInput" maxlength="50" autocomplete="off"
-										autocapitalize="off">
-									<button type="submit" id="doCreate" class="keep submitButton">カード作成</button>
-								</div>
-							</form>
-						</div>
-
-						<!-- タグ追加用のform -->
-						<img alt="menu" th:src="@{/images/tag.jpg}"
-							class="menuIcon pointer" id="tagIcon">
-						<div id="tag-container" class="displayNone">
-							<form th:action="@{/vocabularyCard/createTag}" method="post"
-								th:object="${tagData}" class="form">
-								<div class="frameBorder">
-									<input type="text" name="name" placeholder="tag"
-										class="createTagForm menuInput" maxlength="50"
-										autocomplete="off" autocapitalize="off">
-									<div class="error" th:if="${#fields.hasErrors('name')}"
-										th:errors="*{name}" th:errorclass="red"></div>
-									<button type="submit" id="doCreateTag"
-										class="keep submitButton">タグ作成</button>
-								</div>
-							</form>
-							<!-- タグ表示及びタグ検索 jsでinputに上書き、各タグボタンをクリック時に送信 -->
-							<div class="tagMenu">
-								<div th:each="tag:${tagList}" class="tagList reset">
-									<button th:text="${tag.name}" class="tag pointer"
-										draggable="true" form="searchTag"></button>
-									<input type="checkbox" class="check-delete-tag checkbox"
-										name="tagId" th:value="${tag.id}" form="checkDelete">
-								</div>
-								<!-- ドラッグアンドドロップで使用するカードid、タグ名送信用のフォーム -->
-
-								<form method="post" th:action="@{/vocabularyCard/addTag}"
-									id="addTag">
-									<input type="hidden" name="cardId" id="addedCard"> <input
-										type="hidden" name="draggedTag" id="addedTag">
+						<div class="inlineBlock">
+							<img alt="menu" th:src="@{/images/search.jpg}"
+								class="menuIcon pointer" id="searchIcon">
+							<div id="search-container" class="displayNone fixed">
+								<form th:action="@{/vocabularyCard/search}" method="post"
+									id="search" th:object="${vocabularyCardQuery}">
+									<div class="form frameBorder">
+										<input type="text" name="searchSpelling"
+											class="searchForm menuInput" maxlength="50"
+											placeholder="LANGUAGE1" autocomplete="off"
+											autocapitalize="off"> <input type="text"
+											name="searchMeaning" class="searchForm menuInput"
+											maxlength="50" placeholder="LANGUAGE2" autocomplete="off"
+											autocapitalize="off">
+										<button id="doSearch" class="reset submitButton">検索</button>
+									</div>
 								</form>
 							</div>
 						</div>
 
-						<img alt="menu" th:src="@{/images/holder.jpg}"
-							class="menuIcon pointer" id="holderIcon">
-						<div id="holder-container" class="displayNone">
-							<form th:action="@{/vocabularyCard/createHolder}" method="post"
-								th:obect="${holderData}" class="frameBorder form">
-								<input th:value="*{name}" name="name" class="menuInput">
-								<input type="checkbox" name="isShared" class="menuInput">
-								<button class="submitButton">単語帳を作成</button>
-							</form>
-							<form th:action="@{/vocabularyCard/storeCards}" method="post"
-								id="storeCards">
-								<div th:each="hl:${holderList}">
-									<!-- cardIdの取得はjsで行う -->
-									<div class="holder">
-										<div th:text="${hl.name}" class="holderName pointer"></div>
-										<input th:value="${hl.id}" name="holderId" type="hidden"
-											class="holderId">
-										<button class="intoHolder pointer">+</button>
-										<br>
+						<div class="inlineBlock">
+							<img alt="menu" th:src="@{/images/create.jpg}"
+								class="menuIcon pointer" id="cardInIcon">
+							<!-- 追加用form -->
+							<div id="create-container" class="displayNone fixed">
+								<form th:action="@{/vocabularyCard/create}" method="post"
+									th:object="${vocabularyCardData}" class="form" id="create">
+									<div class="frameBorder">
+										<p class="label">LANGUAGE1</p>
+										<input type="text" name="spelling1" placeholder="word 1(必須)"
+											class="createForm menuInput" maxlength="50"
+											autocomplete="off" autocapitalize="off">
+										<div class="error" th:errors="*{spelling1}"
+											th:errorclass="red"></div>
+										<input type="text" name="spelling2" placeholder="word 2"
+											class="createForm menuInput" max="50" autocomplete="off"
+											autocapitalize="off"> <input type="text"
+											name="spelling3" th:value="*{spelling3}" placeholder="word 3"
+											class="createForm menuInput" maxlength="50"
+											autocomplete="off" autocapitalize="off">
+										<p class="label">LANGUAGE2</p>
+										<input type="text" name="meaning1" placeholder="word 1"
+											class="createForm menuInput" maxlength="50"
+											autocomplete="off" autocapitalize="off"> <input
+											type="text" name="meaning2" placeholder="word 2"
+											class="createForm menuInput" maxlength="50"
+											autocomplete="off" autocapitalize="off"> <input
+											type="text" name="meaning3" placeholder="word 3"
+											class="createForm menuInput" maxlength="50"
+											autocomplete="off" autocapitalize="off">
+										<button type="submit" id="doCreate" class="keep submitButton">カード作成</button>
 									</div>
-								</div>
-							</form>
-							<form th:action="@{/vocabularyCard/displayHolder}" method="post"
-								id="displayHolder">
-								<input id="holderInput" name="holderInput" type="hidden">
-							</form>
+								</form>
+							</div>
+						</div>
+
+						<!-- タグ追加用のform -->
+						<div class="inlineBlock">
+							<img alt="menu" th:src="@{/images/tag.jpg}"
+								class="menuIcon pointer" id="tagIcon">
+				<div id="tag-container" class="displayNone fixed">
+				<div class="">
+					<form th:action="@{/vocabularyCard/createTag}" method="post"
+						th:object="${tagData}" class="form frameBorder">
+						<input type="text" name="name" placeholder="tag"
+							class="createTagForm menuInput" maxlength="50" autocomplete="off"
+							autocapitalize="off">
+						<div class="error" th:if="${#fields.hasErrors('name')}"
+							th:errors="*{name}" th:errorclass="red"></div>
+						<button type="submit" id="doCreateTag" class="keep submitButton">タグ作成</button>
+					</form>
+					<!-- タグ表示及びタグ検索 jsでinputに上書き、各タグボタンをクリック時に送信 -->
+					<div class="tagMenu frameBorder form">
+						<div th:each="tag:${tagList}" class="tagList reset">
+							<button th:text="${tag.name}" class="tag pointer"
+								draggable="true" form="searchTag"></button>
+							<input type="checkbox" class="check-delete-tag checkbox"
+								name="tagId" th:value="${tag.id}" form="checkDelete">
+						</div>
+						<!-- ドラッグアンドドロップで使用するカードid、タグ名送信用のフォーム -->
+
+						<form method="post" th:action="@{/vocabularyCard/addTag}"
+							id="addTag">
+							<input type="hidden" name="cardId" id="addedCard"> <input
+								type="hidden" name="draggedTag" id="addedTag">
+						</form>
+					</div>
+				</div>
+				</div>
+			</div>
+
+						<div class="inlineBlock">
+							<img alt="menu" th:src="@{/images/holder.jpg}"
+								class="menuIcon pointer" id="holderIcon">
+							<div id="holder-container" class="displayNone fixed">
+								<form th:action="@{/vocabularyCard/createHolder}" method="post"
+									th:obect="${holderData}" class="frameBorder form">
+									<input th:value="*{name}" name="name"
+										class="menuInput createHolderForm"> share<input
+										type="checkbox" name="isShared" class="share"
+										placeholder="単語帳のタイトル">
+									<button class="submitButton" id="doCreateHolder">単語帳を作成</button>
+								</form>
+								<form th:action="@{/vocabularyCard/storeCards}" method="post"
+									id="storeCards" class="form frameBorder">
+									<div th:each="hl:${holderList}">
+										<!-- cardIdの取得はjsで行う -->
+										<div class="holder">
+											<div th:text="${hl.name}" class="holderName pointer"></div>
+											<input th:value="${hl.id}" name="holderId" type="hidden"
+												class="holderId">
+											<button class="intoHolder pointer">+</button>
+											<br>
+										</div>
+									</div>
+								</form>
+								<form th:action="@{/vocabularyCard/displayHolder}" method="post"
+									id="displayHolder">
+									<input id="holderInput" name="holderInput" type="hidden">
+								</form>
+							</div>
 						</div>
 
 						<!-- 削除ボタン -->
-						<form method="post" th:action="@{/vocabularyCard/delete}"
-						id="checkDelete">
-							<input type="image" alt="menu" th:src="@{/images/delete.png}"
-							class="menuIcon pointer" id="deleteIcon">
-						</form>
-					</div>
+						<div class="inlineBlock fixed">
+							<form method="post" th:action="@{/vocabularyCard/delete}"
+								id="checkDelete">
+								<input type="image" alt="menu" th:src="@{/images/delete.jpg}"
+									class="menuIcon pointer" id="deleteIcon">
+							</form>
+						</div>
 
 					<form method="post" th:action="@{/vocabularyCard/search}"
 						th:object="${vocabularyCardQuery}" id="searchTag">
@@ -272,11 +283,14 @@
 						</div>
 						<div id="voice" class="displayNone">voice</div>
 					</div>
+					</div>
+					<div id="hideMenu" class="pointer toggleMenu">▲</div>
+					<div id="showMenu" class="pointer toggleMenu displayNone">▼</div>
 				</div>
-			</div>
-		</div>
+
 
 		<div id="cardList">
+			<div id="displaying" th:text="${displaying}"></div>
 			<!-- カードの数だけ<div>を生成  タグには検索用フォームと関連付ける-->
 			<div th:each="vc:${cardList}" class="card displayByPage">
 				<div th:text="${vc.id}" class="id"></div>
@@ -346,26 +360,30 @@
 					</div>
 				</section>
 				<section class="tags">
+					<input type="checkbox" th:value="${vc.id}" name="id"
+						class="checkbox ids" form="checkDelete">
 					<form th:action="@{/vocabularyCard/__${vc.id}__}" name="edit"
 						method="post" class="editForm">
 						<input type="image" alt="menu" th:src="@{/images/edit.jpg}"
 							class="editButton pointer keep">
 					</form>
-					<input type="checkbox" th:value="${vc.id}" name="id"
-						class="checkbox ids" form="checkDelete">
-					<button th:if="${vc.tag1!=null && vc.tag1!=''}" type="submit"
-						th:text="${vc.tag1}" class="tag pointer" form="searchTag"></button>
-					<button th:if="${vc.tag2!=null && vc.tag2!=''}" type="submit"
-						th:text="${vc.tag2}" class="tag pointer" form="searchTag"></button>
-					<button th:if="${vc.tag3!=null && vc.tag3!=''}" type="submit"
+					<img alt="tag" th:src="@{/images/tag.jpg}" class="tagSwitchButton pointer">
+					<div class="tagSwitch displayNone">
+						<button th:if="${vc.tag1!=null && vc.tag1!=''}" type="submit"
+							th:text="${vc.tag1}" class="tag pointer" form="searchTag"></button>
+						<button th:if="${vc.tag2!=null && vc.tag2!=''}" type="submit"
+							th:text="${vc.tag2}" class="tag pointer" form="searchTag"></button>
+						<button th:if="${vc.tag3!=null && vc.tag3!=''}" type="submit"
 						th:text="${vc.tag3}" class="tag pointer" form="searchTag"></button>
+					</div>
 				</section>
 
 				<div class="float-end"></div>
 			</div>
 		</div>
+		</div>
 		<br>
-	</div>
+
 	<div id="movedTag" class="displayNone tag">movedTag</div>
 	<!-- 言語設定を保存するためのフォーム -->
 	<form th:action="@{/vocabularyCard/setLang}" method="post" id="setLang"
